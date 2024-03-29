@@ -1,8 +1,26 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Jua, Do_Hyeon, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const jua = Jua({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: "normal",
+  variable: "--jua-font",
+});
+
+const doHyeon = Do_Hyeon({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: "normal",
+  variable: "--doHyeon-font",
+});
+
+const notoKr = Noto_Sans_KR({
+  subsets: ["latin"],
+  style: ["normal"],
+  variable: "--notoKr-font",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -18,7 +36,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable}`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
