@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .bg-primary {
+    @apply bg-emerald-400;
+  }
+  .text-primary {
+    @apply text-violet-600;
+  }
+  .text-warn {
+    @apply text-red-500;
+  }
+}

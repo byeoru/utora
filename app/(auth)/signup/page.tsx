@@ -1,20 +1,52 @@
+"use client";
+
 import BackButton from "@/components/back-button";
 import BackSpan from "@/components/back-span";
 import Input from "@/components/input";
+import { useFormState } from "react-dom";
+import { signUp } from "./action";
 
 export default function SignUp() {
+  const [state, action] = useFormState(signUp, null);
   return (
     <>
       <BackButton />
       <span className="font-bold text-2xl">회원가입</span>
-      <form className="w-full font-semibold gap-5 flex flex-col justify-center">
-        <Input label="이메일" required name="email" />
-        <Input label="비밀번호" required name="password" />
-        <Input label="비밀번호 재확인" required name="re-password" />
-        <Input label="닉네임" required name="nickname" />
-        <button className="bg-emerald-400 py-3 rounded-md">가입하기</button>
+      <form
+        action={action}
+        className="w-full font-semibold gap-5 flex flex-col justify-center"
+      >
+        <Input
+          label="이메일"
+          id="email"
+          name="email"
+          type="email"
+          errors={state?.fieldErrors.email}
+        />
+        <Input
+          label="비밀번호"
+          id="password"
+          name="password"
+          type="password"
+          errors={state?.fieldErrors.password}
+        />
+        <Input
+          label="비밀번호 재확인"
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          errors={state?.fieldErrors.confirmPassword}
+        />
+        <Input
+          label="닉네임"
+          id="nickname"
+          name="nickname"
+          type="text"
+          errors={state?.fieldErrors.nickname}
+        />
+        <button className="bg-primary py-3 rounded-md">가입하기</button>
         <div className="text-xs text-slate-500 text-center">
-          이미 <span className="text-violet-600">유토라 </span>
+          이미 <span className="text-primary">유토라 </span>
           <span className="mr-2">회원이신가요?</span>
           <BackSpan text="로그인" />
         </div>

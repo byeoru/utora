@@ -12,7 +12,7 @@ export default function BackSpan({ text }: BackSpanPropsType) {
     router.back();
   };
   return (
-    <span onClick={onClick} className="text-violet-600 hover:cursor-pointer">
+    <span onClick={onClick} className="text-primary hover:cursor-pointer">
       {text}
     </span>
   );

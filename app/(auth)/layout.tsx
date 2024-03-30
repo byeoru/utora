@@ -7,12 +7,11 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex">
-      <div className="w-1/3 min-h-screen bg-emerald-400 flex-col gap-10 justify-center items-center hidden md:flex">
+      <div className="w-1/3 min-h-screen bg-primary flex-col gap-10 justify-center items-center hidden md:flex">
         <Logo />
         <span className="font-doHyeon text-center px-10">
           토론 커뮤니티
-          <span className="text-violet-600"> 유토라</span>에 오신 것을
-          환영합니다.
+          <span className="text-primary"> 유토라</span>에 오신 것을 환영합니다.
         </span>
       </div>
       <div className="min-h-screen max-w-screen-sm w-full md:w-2/3 font-notoKr flex flex-col gap-14 justify-start md:justify-center pt-24 md:pt-0 items-start px-10">
