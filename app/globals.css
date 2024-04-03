@@ -12,4 +12,7 @@
   .text-warn {
     @apply text-red-500;
   }
+  .underline-primary {
+    @apply no-underline underline-offset-4 hover:underline hover:text-primary transition;
+  }
 }

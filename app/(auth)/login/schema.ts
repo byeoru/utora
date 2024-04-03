@@ -15,10 +15,12 @@ export const loginSchema = z.object({
       required_error: REQUIRED_ERROR_EMAIL,
     })
     .email(INVALID_TYPE_ERROR_EMAIL)
+    .min(1, REQUIRED_ERROR_EMAIL)
     .max(MAX_LENGTH_EMAIL, MAX_LENGTH_EMAIL_ERROR),
   password: z
     .string({
       required_error: REQUIRED_ERROR_PWD,
     })
+    .min(1, REQUIRED_ERROR_PWD)
     .max(MAX_LENGTH_PWD, MAX_LENGTH_PWD_ERROR),
 });

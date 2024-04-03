@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable} body`}
+        className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable}`}
       >
         {children}
       </body>
