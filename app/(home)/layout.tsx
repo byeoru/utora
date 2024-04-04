@@ -35,7 +35,9 @@ export default function RootLayout({
           />
         </SideNavigationGroup>
       </nav>
-      <div className="flex-1 mt-12 bg-white overflow-y-auto">{children}</div>
+      <div className="flex-1 mt-12 bg-slate-50 overflow-y-auto w-full">
+        {children}
+      </div>
     </div>
   );
 }

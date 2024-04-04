@@ -34,3 +34,11 @@ export const DUPLICATE_ERROR_NICKNAME = "이미 존재하는 닉네임입니다.
 
 // login failed
 export const FAILED_LOGIN_ERROR = "이메일 또는 비밀번호가 맞지 않습니다.";
+
+// post
+export const MIN_LENGTH_POST_NAME = 2;
+export const MIN_LENGTH_POST_NAME_ERROR =
+  "제목은 최소 2글자 이상이어야 합니다.";
+export const MIN_LENGTH_POST_CONTENT = 10;
+export const MIN_LENGTH_POST_CONTENT_ERROR =
+  "본문은 최소 10글자 이상이어야 합니다.";

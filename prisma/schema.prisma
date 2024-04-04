@@ -16,9 +16,21 @@ model User {
 
   created_at DateTime @map("createdAt") @default(now())
   updated_at DateTime @map("updatedAt") @updatedAt
+
+  general_posts GeneralPost[]
 }
 
 model GeneralPost {
   id Int @id @default(autoincrement())
-  
+  title String
+  content String
+
+  created_at DateTime @map("createdAt") @default(now())
+  updated_at DateTime @map("updatedAt") @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  user_id Int
+
+  @@index([user_id])
 }
