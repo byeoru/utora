@@ -24,7 +24,7 @@ const notoKr = Noto_Sans_KR({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | 유토라 | 자유로운 토론의 장",
+    template: "유토라 | %s",
     default: "유토라 | 자유로운 토론의 장",
   },
 };

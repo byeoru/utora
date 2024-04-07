@@ -3,7 +3,7 @@
 import { useFormStatus } from "react-dom";
 
 interface ButtonPropsType {
-  text: string;
+  text: React.ReactNode;
 }
 
 export default function Button({ text }: ButtonPropsType) {
@@ -11,7 +11,7 @@ export default function Button({ text }: ButtonPropsType) {
   return (
     <button
       disabled={pending}
-      className="bg-primary py-3 rounded-md disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300"
+      className="w-full bg-primary py-3 rounded-md disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300"
     >
       {text}
     </button>

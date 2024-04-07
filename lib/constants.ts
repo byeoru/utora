@@ -42,3 +42,20 @@ export const MIN_LENGTH_POST_NAME_ERROR =
 export const MIN_LENGTH_POST_CONTENT = 10;
 export const MIN_LENGTH_POST_CONTENT_ERROR =
   "본문은 최소 10글자 이상이어야 합니다.";
+
+// comment
+export const MIN_LENGTH_COMMENT = 1;
+export const MIN_LENGTH_COMMENT_ERROR = "댓글을 입력하세요.";
+export const FETCH_COMMENTS_SIZE = 20;
+export const FETCH_COMMENTS_ERROR = "댓글을 불러오는데 실패하였습니다.";
+export const COMMENT_SAVE_ERROR = "댓글 작성에 실패하였습니다.";
+
+// common
+export const DELETE_COMPLETE = "삭제가 완료되었습니다.";
+
+// theme
+export const MIN_LENGTH_TOPIC = 10;
+export const MIN_LENGTH_TOPIC_ERROR = "주제는 최소 10글자 이상이어야 합니다.";
+export const MIN_LENGTH_TOPIC_PROPOSE_REASON = 10;
+export const MIN_LENGTH_TOPIC_PROPOSE_REASON_ERROR =
+  "주제 제시 이유는 최소 10글자 이상이어야 합니다.";

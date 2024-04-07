@@ -23,7 +23,7 @@ export default function SideNavigationItem({
       } hover:bg-emerald-300 transition-colors`}
     >
       {icon}
-      <span>{text}</span>
+      <span className="hidden lg:flex">{text}</span>
     </Link>
   );
 }

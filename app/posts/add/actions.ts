@@ -27,7 +27,7 @@ export async function post(formData: FormData) {
     return validation.error.flatten();
   }
 
-  const post = await db.generalPost.create({
+  const post = await db.post.create({
     data: {
       title: validation.data.title,
       content: validation.data.content,
