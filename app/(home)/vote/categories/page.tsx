@@ -93,8 +93,9 @@ export default function Topics() {
         </div>
       </div>
       <div className="w-full max-w-screen-lg p-2 md:p-5 flex flex-col gap-2 m-auto lg:grid lg:grid-cols-3 lg:aspect-auto">
-        {Object.keys(categories).map((key) => (
+        {Object.keys(categories).map((key, index) => (
           <Link
+            key={index}
             href={`/vote/categories/${key}`}
             className="w-full bg-slate-200 font-notoKr rounded-md p-5 flex flex-col gap-5"
           >

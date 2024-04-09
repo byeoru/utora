@@ -58,7 +58,7 @@ export default function CommentGroup({
         setCommentsState(comments);
       }
     })();
-  }, [commentsCountState]);
+  }, [commentsCountState, postId]);
 
   const onCommentDelete = async (id: number) => {
     const result = await deleteComment(id);
