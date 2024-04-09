@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex flex-col">
-      <div className="w-full z-20 backface-invisible">
+      <div className="w-full">
         <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center ">
           <div className="lg:w-44 h-full flex items-center lg:text-3xl">
             <Link href="/">
@@ -36,7 +36,7 @@ export default function RootLayout({
           />
         </nav>
       </div>
-      <div className="w-full flex h-screen">
+      <div className="w-full flex h-[calc(100vh-4.5rem)] sm:h-[calc(100vh-2rem)] lg:h-[calc(100vh-2rem)]">
         <nav className="pl-3 pr-3 py-2 overflow-y-auto hidden sm:flex flex-col lg:w-48">
           <SideNavigationGroup>
             <SideNavigationItem
