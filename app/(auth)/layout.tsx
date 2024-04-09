@@ -14,7 +14,7 @@ export default function RootLayout({
           <span className="text-primary"> 유토라</span>에 오신 것을 환영합니다.
         </span>
       </div>
-      <div className="min-h-screen max-w-screen-sm w-full md:w-2/3 font-notoKr flex flex-col gap-14 justify-start md:justify-center pt-24 md:pt-0 items-start px-10">
+      <div className="min-h-screen max-w-screen-sm w-full md:w-2/3 font-notoKr flex flex-col gap-14 justify-start md:justify-center pt-10 md:pt-0 items-start px-10">
         {children}
       </div>
     </div>

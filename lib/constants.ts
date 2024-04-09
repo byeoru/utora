@@ -53,7 +53,7 @@ export const COMMENT_SAVE_ERROR = "댓글 작성에 실패하였습니다.";
 // common
 export const DELETE_COMPLETE = "삭제가 완료되었습니다.";
 
-// theme
+// topic
 export const MIN_LENGTH_TOPIC = 10;
 export const MIN_LENGTH_TOPIC_ERROR = "주제는 최소 10글자 이상이어야 합니다.";
 export const MIN_LENGTH_TOPIC_PROPOSE_REASON = 10;

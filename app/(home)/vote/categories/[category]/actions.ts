@@ -1,36 +1,9 @@
 "use server";
 
 import getSession from "@/lib/session";
-import { topicProposeSchema } from "./schema";
 import db from "@/lib/db";
 import { EDebateCategory, Prisma } from "@prisma/client";
 import { OrderByKeyType } from "@/components/order-by-group";
-
-export async function createTopic(_: any, formData: FormData) {
-  const validation = topicProposeSchema.safeParse({
-    topic: formData.get("topic"),
-    proposeReason: formData.get("proposeReason"),
-    category: formData.get("category"),
-  });
-
-  if (!validation.success) {
-    return validation.error.flatten();
-  }
-
-  const session = await getSession();
-  try {
-    await db.proposedTopic.create({
-      data: {
-        topic: validation.data.topic,
-        propose_reason: validation.data.proposeReason,
-        user_id: session.id,
-        category: validation.data.category,
-      },
-    });
-  } catch (error) {
-    return null;
-  }
-}
 
 export type GetTopicsType = Prisma.PromiseReturnType<typeof getTopics>;
 export async function getTopics(

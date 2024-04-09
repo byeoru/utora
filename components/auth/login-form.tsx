@@ -43,7 +43,7 @@ export default function LoginForm() {
         <div className="w-1/3 h-px bg-slate-300" />
       </div>
       <div className="w-full flex justify-center items-center">
-        TODO : 간편인증 구현
+        개발중입니다
       </div>
     </>
   );
