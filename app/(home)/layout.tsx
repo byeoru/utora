@@ -13,27 +13,30 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex h-screen">
-      <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center fixed">
-        <div className="lg:w-44 h-full flex items-center lg:text-3xl">
-          <Link href="/">
-            <span className="text-primary font-jua">유토라</span>
-          </Link>
+      <div className="w-full fixed">
+        <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center ">
+          <div className="lg:w-44 h-full flex items-center lg:text-3xl">
+            <Link href="/">
+              <span className="text-primary font-jua">유토라</span>
+            </Link>
+          </div>
+          <div className="h-full flex items-center text-sm font-doHyeon">
+            <LoginButton />
+          </div>
         </div>
-        <div className="h-full flex items-center text-sm font-doHyeon">
-          <LoginButton />
-        </div>
+        <nav className="w-full h-10 shadow-sm sm:hidden flex gap-2 justify-center items-center">
+          <TopNavigationItem href="/" icon={<HomeIcon className="size-5" />} />
+          <TopNavigationItem
+            href="/popular"
+            icon={<ArrowTrendingUpIcon className="size-5" />}
+          />
+          <TopNavigationItem
+            href="/vote/categories"
+            icon={<Vote className="size-5" />}
+          />
+        </nav>
       </div>
-      <nav className="w-full h-10 fixed shadow-sm sm:hidden mt-8 lg:mt-12 flex gap-2 justify-center items-center">
-        <TopNavigationItem href="/" icon={<HomeIcon className="size-5" />} />
-        <TopNavigationItem
-          href="/popular"
-          icon={<ArrowTrendingUpIcon className="size-5" />}
-        />
-        <TopNavigationItem
-          href="/vote/categories"
-          icon={<Vote className="size-5" />}
-        />
-      </nav>
+
       <nav className="bg-white mt-8 lg:mt-12 pl-3 pr-3 py-2 overflow-y-auto hidden sm:flex flex-col lg:w-48">
         <SideNavigationGroup>
           <SideNavigationItem
@@ -55,7 +58,7 @@ export default function RootLayout({
           />
         </SideNavigationGroup>
       </nav>
-      <div className="flex-1 mt-[4.5rem] lg:mt-12 bg-slate-50 overflow-y-auto w-full">
+      <div className="flex-1 mt-[4.5rem] sm:mt-8 lg:mt-12 bg-slate-50 overflow-y-auto w-full">
         {children}
       </div>
     </div>
