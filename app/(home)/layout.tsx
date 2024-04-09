@@ -36,7 +36,7 @@ export default function RootLayout({
           />
         </nav>
       </div>
-      <div className="w-full flex h-[calc(100vh-4.5rem)] sm:h-[calc(100vh-2rem)] lg:h-[calc(100vh-2rem)]">
+      <div className="w-full flex h-[calc(100vh-4.5rem)] sm:h-[calc(100vh-2rem)] lg:h-[calc(100vh-3rem)]">
         <nav className="pl-3 pr-3 py-2 overflow-y-auto hidden sm:flex flex-col lg:w-48">
           <SideNavigationGroup>
             <SideNavigationItem
