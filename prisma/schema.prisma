@@ -30,8 +30,8 @@ model Post {
   id Int @id @default(autoincrement())
   title String
   content String
-  like Int @default(0)
-  dislike Int @default(0)
+  likeCount Int @default(0)
+  dislikeCount Int @default(0)
   views Int @default(0)
 
   created_at DateTime @default(now())
@@ -88,7 +88,16 @@ model PostDislike {
 }
 
 enum EDebateCategory {
-  game
+  politics_society
+  economy_finance
+  culture_arts
+  science_technology
+  sports_entertainment
+  environment_sustainability
+  education_scholarship
+  health_well_being
+  religion_philosophy
+  history_anthropology
 }
 
 model ProposedTopic {
@@ -96,8 +105,8 @@ model ProposedTopic {
   topic String
   propose_reason String
   category EDebateCategory
-  like Int @default(0)
-  dislike Int @default(0)
+  likeCount Int @default(0)
+  dislikeCount Int @default(0)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -107,6 +116,9 @@ model ProposedTopic {
   user_id Int?
 
   @@index([user_id])
+
+  proposed_topic_likes ProposedTopicLike[]
+  proposed_topic_dislikes ProposedTopicDislike[]
 }
 
 model ProposedTopicLike {
@@ -114,11 +126,14 @@ model ProposedTopicLike {
   updated_at DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  proposed_topic ProposedTopic @relation(fields: [proposed_topic_id], references: [id], onDelete: Cascade)
   
   user_id Int
   proposed_topic_id Int
 
   @@id(name: "id", [user_id, proposed_topic_id])
+
+  @@index([proposed_topic_id])
 }
 
 model ProposedTopicDislike {
@@ -126,9 +141,12 @@ model ProposedTopicDislike {
   updated_at DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  proposed_topic ProposedTopic @relation(fields: [proposed_topic_id], references: [id], onDelete: Cascade)
   
   user_id Int
   proposed_topic_id Int
 
   @@id(name: "id", [user_id, proposed_topic_id])
+
+  @@index([proposed_topic_id])
 }

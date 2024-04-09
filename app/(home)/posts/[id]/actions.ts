@@ -6,6 +6,7 @@ import { comment } from "./schema";
 import { Prisma } from "@prisma/client";
 import { FETCH_COMMENTS_SIZE } from "@/lib/constants";
 
+export type GetPostType = Prisma.PromiseReturnType<typeof getPost>;
 export async function getPost(postId: number) {
   try {
     const post = await db.post.update({
@@ -39,7 +40,7 @@ export async function getPost(postId: number) {
 export async function getLikeDislikeStatus(postId: number) {
   const session = await getSession();
   try {
-    const like = await db.postLike.findUnique({
+    const isLiked = await db.postLike.findUnique({
       where: {
         id: {
           user_id: session.id,
@@ -50,7 +51,7 @@ export async function getLikeDislikeStatus(postId: number) {
         user_id: true,
       },
     });
-    const dislike = await db.postDislike.findUnique({
+    const isDisliked = await db.postDislike.findUnique({
       where: {
         id: {
           user_id: session.id,
@@ -62,14 +63,15 @@ export async function getLikeDislikeStatus(postId: number) {
       },
     });
     return {
-      isLiked: Boolean(like),
-      isDisliked: Boolean(dislike),
+      isLiked: Boolean(isLiked),
+      isDisliked: Boolean(isDisliked),
     };
   } catch (error) {
     return null;
   }
 }
 
+export type LikePostType = Prisma.PromiseReturnType<typeof likePost>;
 export async function likePost(postId: number) {
   const session = await getSession();
   try {
@@ -84,7 +86,7 @@ export async function likePost(postId: number) {
         id: postId,
       },
       data: {
-        like: {
+        likeCount: {
           increment: 1,
         },
       },
@@ -92,6 +94,9 @@ export async function likePost(postId: number) {
   } catch (error) {}
 }
 
+export type CancelLikePostType = Prisma.PromiseReturnType<
+  typeof cancelLikePost
+>;
 export async function cancelLikePost(postId: number) {
   const session = await getSession();
   try {
@@ -108,7 +113,7 @@ export async function cancelLikePost(postId: number) {
         id: postId,
       },
       data: {
-        like: {
+        likeCount: {
           increment: -1,
         },
       },
@@ -116,6 +121,7 @@ export async function cancelLikePost(postId: number) {
   } catch (error) {}
 }
 
+export type DislikePostType = Prisma.PromiseReturnType<typeof dislikePost>;
 export async function dislikePost(postId: number) {
   const session = await getSession();
   try {
@@ -130,7 +136,7 @@ export async function dislikePost(postId: number) {
         id: postId,
       },
       data: {
-        dislike: {
+        dislikeCount: {
           increment: 1,
         },
       },
@@ -138,6 +144,9 @@ export async function dislikePost(postId: number) {
   } catch (error) {}
 }
 
+export type CancelDislikePostType = Prisma.PromiseReturnType<
+  typeof cancelDislikePost
+>;
 export async function cancelDislikePost(postId: number) {
   const session = await getSession();
   try {
@@ -154,7 +163,7 @@ export async function cancelDislikePost(postId: number) {
         id: postId,
       },
       data: {
-        dislike: {
+        dislikeCount: {
           increment: -1,
         },
       },

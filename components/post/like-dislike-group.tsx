@@ -4,10 +4,10 @@ import { useState } from "react";
 import DislikeButton from "./dislike-button";
 import LikeButton from "./like-button";
 import {
-  cancelDislikePost,
-  cancelLikePost,
-  dislikePost,
-  likePost,
+  CancelDislikePostType,
+  CancelLikePostType,
+  DislikePostType,
+  LikePostType,
 } from "@/app/(home)/posts/[id]/actions";
 
 interface LikeDislikeGroupPropsType {
@@ -16,6 +16,10 @@ interface LikeDislikeGroupPropsType {
   likeCount: number;
   dislikeCount: number;
   postId: number;
+  onLikeClick: (postId: number) => Promise<LikePostType>;
+  onCancelLikeClick: (postId: number) => Promise<CancelLikePostType>;
+  onDislikeClick: (postId: number) => Promise<DislikePostType>;
+  onCancelDislikeClick: (postId: number) => Promise<CancelDislikePostType>;
 }
 
 export default function LikeDislikeGroup({
@@ -24,44 +28,48 @@ export default function LikeDislikeGroup({
   likeCount,
   dislikeCount,
   postId,
+  onLikeClick,
+  onCancelLikeClick,
+  onDislikeClick,
+  onCancelDislikeClick,
 }: LikeDislikeGroupPropsType) {
   const [likeState, setLikeState] = useState({ isLiked, likeCount });
   const [dislikeState, setDislikeState] = useState({
     isDisliked,
     dislikeCount,
   });
-  const onLikeClick = async () => {
+  const onLikeClickEvent = async () => {
     if (likeState.isLiked) {
       // 좋아요 취소
       setLikeState((prev) => ({
         isLiked: !prev.isLiked,
         likeCount: prev.likeCount - 1,
       }));
-      await cancelLikePost(postId);
+      await onCancelLikeClick(postId);
     } else {
       // 좋아요
       setLikeState((prev) => ({
         isLiked: !prev.isLiked,
         likeCount: prev.likeCount + 1,
       }));
-      await likePost(postId);
+      await onLikeClick(postId);
     }
   };
-  const onDislikeClick = async () => {
+  const onDislikeClickEvent = async () => {
     if (dislikeState.isDisliked) {
       // 싫어요 취소
       setDislikeState((prev) => ({
         isDisliked: !prev.isDisliked,
         dislikeCount: prev.dislikeCount - 1,
       }));
-      await cancelDislikePost(postId);
+      await onCancelDislikeClick(postId);
     } else {
       // 싫어요
       setDislikeState((prev) => ({
         isDisliked: !prev.isDisliked,
         dislikeCount: prev.dislikeCount + 1,
       }));
-      await dislikePost(postId);
+      await onDislikeClick(postId);
     }
   };
   return (
@@ -70,13 +78,13 @@ export default function LikeDislikeGroup({
         isLiked={likeState.isLiked}
         isDisliked={dislikeState.isDisliked}
         likeCount={likeState.likeCount}
-        onClick={onLikeClick}
+        onClick={onLikeClickEvent}
       />
       <DislikeButton
         isDisliked={dislikeState.isDisliked}
         isLiked={likeState.isLiked}
         dislikeCount={dislikeState.dislikeCount}
-        onClick={onDislikeClick}
+        onClick={onDislikeClickEvent}
       />
     </div>
   );

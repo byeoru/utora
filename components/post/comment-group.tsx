@@ -119,8 +119,9 @@ export default function CommentGroup({
         ))}
       </div>
       <div className="w-full flex justify-center gap-3">
-        {pageCountList.map((count) => (
+        {pageCountList.map((count, index) => (
           <button
+            key={index}
             onClick={async () => await onPageCountClick(count)}
             className="px-2 hover:bg-green-400 transition-colors rounded-md"
           >

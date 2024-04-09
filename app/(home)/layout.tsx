@@ -37,7 +37,7 @@ export default function RootLayout({
         </SideNavigationGroup>
         <SideNavigationGroup>
           <SideNavigationItem
-            href="/debate/topics"
+            href="/vote/categories/"
             text="주제 투표"
             icon={<DocumentCheckIcon className="size-6" />}
           />

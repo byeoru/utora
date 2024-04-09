@@ -1,5 +1,12 @@
 import { notFound } from "next/navigation";
-import { getLikeDislikeStatus, getPost } from "./actions";
+import {
+  cancelDislikePost,
+  cancelLikePost,
+  dislikePost,
+  getLikeDislikeStatus,
+  getPost,
+  likePost,
+} from "./actions";
 import { formatToTimeAgo } from "@/lib/utils";
 import Divider from "@/components/divider";
 import { EyeIcon } from "@heroicons/react/24/outline";
@@ -58,9 +65,13 @@ export default async function PostDetail({
             <LikeDislikeGroup
               isLiked={likeDislikeStatus.isLiked}
               isDisliked={likeDislikeStatus.isDisliked}
-              likeCount={post.like}
-              dislikeCount={post.dislike}
+              likeCount={post.likeCount}
+              dislikeCount={post.dislikeCount}
               postId={post.id}
+              onLikeClick={likePost}
+              onCancelLikeClick={cancelLikePost}
+              onDislikeClick={dislikePost}
+              onCancelDislikeClick={cancelDislikePost}
             />
           </div>
           <div className="md:hidden w-full h-24 bg-gray-300 flex justify-center items-center">
