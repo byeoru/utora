@@ -14,14 +14,13 @@ export default async function VoteCategory({
   params: { category: string };
 }) {
   if (!(params.category in categories)) {
+    console.log("error1");
     return notFound();
   }
 
-  const topics = await getTopics(
-    categories[params.category].title as EDebateCategory,
-    "popular"
-  );
+  const topics = await getTopics(params.category as EDebateCategory, "popular");
   if (!topics) {
+    console.log(topics);
     return notFound();
   }
 
@@ -65,7 +64,7 @@ export default async function VoteCategory({
             </ul>
             <Divider />
             <TopicList
-              category={categories[params.category].title as EDebateCategory}
+              category={params.category as EDebateCategory}
               initialList={topics}
               onPopularClick={getTopics}
               onLatestClick={getTopics}

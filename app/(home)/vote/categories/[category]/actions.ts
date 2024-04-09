@@ -55,7 +55,7 @@ export async function getTopics(
     });
     return topics;
   } catch (error) {
-    return null;
+    return console.log(`error: ${error}`);
   }
 }
 
