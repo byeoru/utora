@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full flex h-screen">
-      <div className="w-full fixed bg-white z-30">
+    <div className="w-full flex flex-col sm:flex-row min-h-screen">
+      <div className="w-full sm:fixed bg-white z-30">
         <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center ">
           <div className="lg:w-44 h-full flex items-center lg:text-3xl">
             <Link href="/">
@@ -58,7 +58,7 @@ export default function RootLayout({
           />
         </SideNavigationGroup>
       </nav>
-      <div className="flex-1 bg-slate-50 mt-[4.5rem] sm:mt-8 lg:mt-12 overflow-y-auto w-full">
+      <div className="flex-1 bg-slate-50 sm:mt-8 lg:mt-12 overflow-y-auto w-full">
         {children}
       </div>
     </div>
