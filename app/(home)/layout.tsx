@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col">
-      <div className="w-full">
+    <div className="w-full flex h-screen">
+      <div className="w-full fixed bg-white z-30">
         <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center ">
           <div className="lg:w-44 h-full flex items-center lg:text-3xl">
             <Link href="/">
@@ -36,31 +36,30 @@ export default function RootLayout({
           />
         </nav>
       </div>
-      <div className="w-full flex h-[calc(100vh-4.5rem)] sm:h-[calc(100vh-2rem)] lg:h-[calc(100vh-3rem)]">
-        <nav className="pl-3 pr-3 py-2 overflow-y-auto hidden sm:flex flex-col lg:w-48">
-          <SideNavigationGroup>
-            <SideNavigationItem
-              href="/"
-              text="홈"
-              icon={<HomeIcon className="size-6" />}
-            />
-            <SideNavigationItem
-              href="/popular"
-              text="인기"
-              icon={<ArrowTrendingUpIcon className="size-6" />}
-            />
-          </SideNavigationGroup>
-          <SideNavigationGroup>
-            <SideNavigationItem
-              href="/vote/categories"
-              text="주제 투표"
-              icon={<Vote className="size-6" />}
-            />
-          </SideNavigationGroup>
-        </nav>
-        <div className="flex-1 bg-slate-50 overflow-y-auto w-full">
-          {children}
-        </div>
+
+      <nav className="sm:mt-8 lg:mt-12 pl-3 pr-3 py-2 overflow-y-auto hidden sm:flex flex-col lg:w-48">
+        <SideNavigationGroup>
+          <SideNavigationItem
+            href="/"
+            text="홈"
+            icon={<HomeIcon className="size-6" />}
+          />
+          <SideNavigationItem
+            href="/popular"
+            text="인기"
+            icon={<ArrowTrendingUpIcon className="size-6" />}
+          />
+        </SideNavigationGroup>
+        <SideNavigationGroup>
+          <SideNavigationItem
+            href="/vote/categories"
+            text="주제 투표"
+            icon={<Vote className="size-6" />}
+          />
+        </SideNavigationGroup>
+      </nav>
+      <div className="flex-1 flex-grow bg-slate-50 mt-[4.5rem] sm:mt-8 lg:mt-12 overflow-y-auto w-full">
+        {children}
       </div>
     </div>
   );
