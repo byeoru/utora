@@ -58,7 +58,7 @@ export default function RootLayout({
           />
         </SideNavigationGroup>
       </nav>
-      <div className="flex-1 flex-grow bg-slate-50 mt-[4.5rem] sm:mt-8 lg:mt-12 overflow-y-auto w-full">
+      <div className="flex-1 bg-slate-50 mt-[4.5rem] sm:mt-8 lg:mt-12 overflow-y-auto w-full">
         {children}
       </div>
     </div>

@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 interface OrderByGroupPropsType {
-  onPopularClick: () => void;
-  onLatestClick: () => void;
+  onPopularClick: () => Promise<void>;
+  onLatestClick: () => Promise<void>;
 }
 
 const orderBy = {
@@ -19,13 +19,13 @@ export default function OrderByGroup({
 }: OrderByGroupPropsType) {
   const [orderByState, setOrderByState] = useState<OrderByKeyType>("popular");
 
-  const onPopularClickEvent = () => {
+  const onPopularClickEvent = async () => {
     setOrderByState("popular");
-    onPopularClick();
+    await onPopularClick();
   };
-  const onLatestClickEvent = () => {
+  const onLatestClickEvent = async () => {
     setOrderByState("latest");
-    onLatestClick();
+    await onLatestClick();
   };
   return (
     <div className="w-full px-10 py-2 bg-slate-500 flex gap-5 justify-center items-center rounded-md font-jua text-sm">

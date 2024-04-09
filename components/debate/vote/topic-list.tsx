@@ -29,10 +29,12 @@ export default function TopicList({
 
   const onPopularClickEvent = async () => {
     const topic = await onPopularClick(category, "popular");
+    setTopicState([]);
     setTopicState(topic);
   };
   const onLatestClickEvent = async () => {
     const topic = await onLatestClick(category, "latest");
+    setTopicState([]);
     setTopicState(topic);
   };
   return (

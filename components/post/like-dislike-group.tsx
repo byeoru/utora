@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DislikeButton from "./dislike-button";
 import LikeButton from "./like-button";
 import {
@@ -38,6 +38,11 @@ export default function LikeDislikeGroup({
     isDisliked,
     dislikeCount,
   });
+
+  useEffect(() => {
+    setLikeState({ isLiked, likeCount });
+    setDislikeState({ isDisliked, dislikeCount });
+  }, [likeCount, dislikeCount]);
   const onLikeClickEvent = async () => {
     if (likeState.isLiked) {
       // 좋아요 취소
