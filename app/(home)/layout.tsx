@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex h-screen">
-      <div className="w-full fixed">
+      <div className="w-full fixed z-20">
         <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center ">
           <div className="lg:w-44 h-full flex items-center lg:text-3xl">
             <Link href="/">
