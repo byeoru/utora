@@ -24,3 +24,19 @@ export function formatToTimeAgo(date: Date): string {
     return formatter.format(diff, "days");
   }
 }
+
+export function toFlattenArray(arr: any[]): any[] {
+  const stack = [...arr];
+  const result = [];
+
+  while (stack.length) {
+    const next = stack.pop();
+    if (Array.isArray(next)) {
+      stack.push(...next);
+    } else {
+      result.push(next);
+    }
+  }
+
+  return result;
+}

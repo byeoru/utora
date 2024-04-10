@@ -10,6 +10,10 @@ const publicOnlyUrls: Routes = {
   "/login": true,
   "/signup": true,
   "/popular": true,
+  "/vote/categories": true,
+  "/debate": true,
+  // cron test
+  "/api/cron/debate/room": true,
 };
 
 export async function middleware(request: NextRequest) {

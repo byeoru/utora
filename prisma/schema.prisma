@@ -25,6 +25,7 @@ model User {
   proposed_topics ProposedTopic[]
   proposed_topic_likes ProposedTopicLike[]
   proposed_topic_dislikes ProposedTopicDislike[]
+  this_week_topics ThisWeekTopic[]
 }
 
 model Post {
@@ -150,4 +151,22 @@ model ProposedTopicDislike {
   @@id(name: "id", [user_id, proposed_topic_id])
 
   @@index([proposed_topic_id])
+}
+
+model ThisWeekTopic {
+  id Int @id @default(autoincrement())
+  topic String
+  propose_reason String
+  category EDebateCategory
+  likeCount Int
+  dislikeCount Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  user_id Int?
+
+  @@index([user_id])
 }

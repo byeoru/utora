@@ -23,7 +23,7 @@ export default function CommentItem({
     <div key={id} className="w-full py-5 rounded-lg flex gap-3 justify-between">
       <div className="flex flex-col gap-1 items-center">
         <div className="size-11 bg-slate-200 rounded-full"></div>
-        <span className="text-sm font-jua">{nickname ?? "탈퇴한 이용자"}</span>
+        <span className="text-sm font-jua">{nickname ?? "@탈퇴한 계정"}</span>
       </div>
       <div className="flex-1 p-2 font-notoKr text-sm font-semibold bg-slate-200 rounded-md">
         <span>{content}</span>
