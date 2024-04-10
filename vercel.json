@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/debate/room",
-      "schedule": "1 * * * *"
+      "schedule": "* * * * *"
     }
   ]
 }
