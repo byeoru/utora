@@ -20,7 +20,6 @@ export default async function VoteCategory({
 
   const topics = await getTopics(params.category as EDebateCategory, "popular");
   if (!topics) {
-    console.log(topics);
     return notFound();
   }
 
@@ -29,11 +28,12 @@ export default async function VoteCategory({
     <div className="w-full flex flex-col m-auto">
       <div className="w-full shadow-md p-5 lg:p-12 bg-slate-50 gap-2 flex flex-col justify-center items-center">
         <div className="w-full flex flex-col justify-center items-center max-w-screen-lg m-auto">
-          <span className="font-doHyeon">
+          <span className="font-doHyeon flex gap-3 items-center">
+            {categories[params.category].icon}
             <span className="text-2xl md:text-3xl lg:text-4xl text-primary">{`${
               categories[params.category].title
             } `}</span>
-            <span className="text-md md:text-lg lg:text-xl">
+            <span className="text-md md:text-lg lg:text-xl self-end">
               토론 주제 투표
             </span>
           </span>
@@ -46,21 +46,26 @@ export default async function VoteCategory({
         {topics.length > 0 ? (
           <>
             <ul className="w-full m-auto grid lg:grid-cols-3 grid-cols-1 lg:gap-4 gap-2">
-              {topics.slice(0, loopCount).map((topic, index) => (
-                <TopRankTopicItem
-                  key={topic.id}
-                  ranking={index + 1}
-                  topicId={topic.id}
-                  topic={topic.topic}
-                  proposeReason={topic.propose_reason}
-                  createdAt={topic.created_at}
-                  likeCount={topic.likeCount}
-                  dislikeCount={topic.dislikeCount}
-                  nickname={topic.user?.nickname}
-                  isLiked={topic.proposed_topic_likes.length > 0}
-                  isDisliked={topic.proposed_topic_dislikes.length > 0}
-                />
-              ))}
+              {topics.slice(0, loopCount).map((topic, index) => {
+                if (topic.likeCount < 1) {
+                  return;
+                }
+                return (
+                  <TopRankTopicItem
+                    key={topic.id}
+                    ranking={index + 1}
+                    topicId={topic.id}
+                    topic={topic.topic}
+                    proposeReason={topic.propose_reason}
+                    createdAt={topic.created_at}
+                    likeCount={topic.likeCount}
+                    dislikeCount={topic.dislikeCount}
+                    nickname={topic.user?.nickname}
+                    isLiked={topic.proposed_topic_likes.length > 0}
+                    isDisliked={topic.proposed_topic_dislikes.length > 0}
+                  />
+                );
+              })}
             </ul>
             <Divider />
             <TopicList

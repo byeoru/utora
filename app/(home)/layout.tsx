@@ -3,7 +3,7 @@ import SideNavigationGroup from "@/components/nav/side-navigation-group";
 import SideNavigationItem from "@/components/nav/side-navigation-item";
 import TopNavigationItem from "@/components/nav/top-navigation-item";
 import { ArrowTrendingUpIcon, HomeIcon } from "@heroicons/react/24/outline";
-import { Vote } from "lucide-react";
+import { Speech, Vote } from "lucide-react";
 import Link from "next/link";
 
 export default function RootLayout({
@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full flex flex-col sm:flex-row min-h-screen">
-      <div className="w-full sm:fixed bg-white z-30">
+    <div className="w-full h-full flex flex-col sm:flex-row">
+      <div className="w-full sm:fixed bg-white">
         <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center ">
           <div className="lg:w-44 h-full flex items-center lg:text-3xl">
             <Link href="/">
@@ -34,10 +34,14 @@ export default function RootLayout({
             href="/vote/categories"
             icon={<Vote className="size-5" />}
           />
+          <TopNavigationItem
+            href="/debate"
+            icon={<Speech className="size-5" />}
+          />
         </nav>
       </div>
 
-      <nav className="sm:mt-8 lg:mt-12 pl-3 pr-3 py-2 overflow-y-auto hidden sm:flex flex-col lg:w-48">
+      <nav className="bg-white sm:mt-8 lg:mt-12 pl-3 pr-3 py-2 overflow-y-auto hidden sm:flex flex-col lg:w-48">
         <SideNavigationGroup>
           <SideNavigationItem
             href="/"
@@ -56,9 +60,14 @@ export default function RootLayout({
             text="주제 투표"
             icon={<Vote className="size-6" />}
           />
+          <SideNavigationItem
+            href="/debate"
+            text="토론장"
+            icon={<Speech className="size-6" />}
+          />
         </SideNavigationGroup>
       </nav>
-      <div className="flex-1 bg-slate-50 sm:mt-8 lg:mt-12 overflow-y-auto w-full">
+      <div className="flex-1 sm:mt-8 lg:mt-12 bg-slate-50 overflow-y-auto w-full">
         {children}
       </div>
     </div>
