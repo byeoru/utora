@@ -1,4 +1,4 @@
-import { categories } from "@/app/(home)/vote/categories/page";
+import { categories } from "@/lib/constants";
 import db from "@/lib/db";
 import { toFlattenArray } from "@/lib/utils";
 import { EDebateCategory, Prisma } from "@prisma/client";

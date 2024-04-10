@@ -4,9 +4,9 @@ import { EDebateCategory } from "@prisma/client";
 import TopRankTopicItem from "@/components/debate/vote/top-rank-topic-item";
 import Divider from "@/components/divider";
 import TopicList from "@/components/debate/vote/topic-list";
-import { categories } from "../page";
 import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
+import { categories } from "@/lib/constants";
 
 export default async function VoteCategory({
   params,

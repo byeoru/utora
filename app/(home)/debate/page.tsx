@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { categories } from "../vote/categories/page";
 import { getThisWeekTopics } from "./actions";
 import { HandThumbDownIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
+import { categories } from "@/lib/constants";
 
 export default async function Debate() {
   const thisWeekTopics = await getThisWeekTopics();

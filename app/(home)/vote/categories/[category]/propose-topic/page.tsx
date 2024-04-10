@@ -1,11 +1,11 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { categories } from "../../page";
 import { createTopic } from "./actions";
 import { EDebateCategory } from "@prisma/client";
 import Button from "@/components/button";
 import { redirect } from "next/navigation";
+import { categories } from "@/lib/constants";
 
 export default function ProposeTopic({
   params,
