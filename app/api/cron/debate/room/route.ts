@@ -40,7 +40,7 @@ export async function POST() {
   } catch (error) {
     selectedTopics = await getSelectedTopics();
     if (!selectedTopics) {
-      return Response.error().statusText;
+      return Response.error();
     }
   }
   try {
@@ -55,7 +55,7 @@ export async function POST() {
       });
       return Response.json({ ok: true });
     } catch (error) {
-      return Response.error().statusText;
+      return Response.error();
     }
   }
 }
