@@ -86,7 +86,7 @@ export async function likePost(postId: number) {
         id: postId,
       },
       data: {
-        likeCount: {
+        like_count: {
           increment: 1,
         },
       },
@@ -113,7 +113,7 @@ export async function cancelLikePost(postId: number) {
         id: postId,
       },
       data: {
-        likeCount: {
+        like_count: {
           increment: -1,
         },
       },
@@ -136,7 +136,7 @@ export async function dislikePost(postId: number) {
         id: postId,
       },
       data: {
-        dislikeCount: {
+        dislike_count: {
           increment: 1,
         },
       },
@@ -163,7 +163,7 @@ export async function cancelDislikePost(postId: number) {
         id: postId,
       },
       data: {
-        dislikeCount: {
+        dislike_count: {
           increment: -1,
         },
       },

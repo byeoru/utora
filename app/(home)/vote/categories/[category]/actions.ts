@@ -27,8 +27,8 @@ export async function getTopics(
         topic: true,
         propose_reason: true,
         created_at: true,
-        likeCount: true,
-        dislikeCount: true,
+        like_count: true,
+        dislike_count: true,
         proposed_topic_likes: {
           where: {
             user_id: session.id,
@@ -73,7 +73,7 @@ export async function likeTopic(topicId: number) {
         id: topicId,
       },
       data: {
-        likeCount: {
+        like_count: {
           increment: 1,
         },
       },
@@ -97,7 +97,7 @@ export async function cancelLikeTopic(topicId: number) {
         id: topicId,
       },
       data: {
-        likeCount: {
+        like_count: {
           increment: -1,
         },
       },
@@ -119,7 +119,7 @@ export async function dislikeTopic(topicId: number) {
         id: topicId,
       },
       data: {
-        dislikeCount: {
+        dislike_count: {
           increment: 1,
         },
       },
@@ -143,7 +143,7 @@ export async function cancelDislikeTopic(topicId: number) {
         id: topicId,
       },
       data: {
-        dislikeCount: {
+        dislike_count: {
           increment: -1,
         },
       },

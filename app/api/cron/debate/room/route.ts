@@ -12,13 +12,13 @@ const getSelectedTopics = async () => {
       db.proposedTopic.findMany({
         where: {
           category: category as EDebateCategory,
-          likeCount: {
+          like_count: {
             gt: 0,
           },
         },
         take: 3,
         orderBy: {
-          likeCount: "desc",
+          like_count: "desc",
         },
       })
     )
@@ -43,8 +43,8 @@ export async function POST() {
             topic: selectedTopic.topic,
             propose_reason: selectedTopic.propose_reason,
             category: selectedTopic.category,
-            likeCount: selectedTopic.likeCount,
-            dislikeCount: selectedTopic.dislikeCount,
+            like_count: selectedTopic.likeCount,
+            dislike_count: selectedTopic.dislikeCount,
             user_id: selectedTopic.user_id,
           };
         }),
@@ -60,8 +60,8 @@ export async function POST() {
               topic: selectedTopic.topic,
               propose_reason: selectedTopic.propose_reason,
               category: selectedTopic.category,
-              likeCount: selectedTopic.likeCount,
-              dislikeCount: selectedTopic.dislikeCount,
+              like_count: selectedTopic.likeCount,
+              dislike_count: selectedTopic.dislikeCount,
               user_id: selectedTopic.user_id,
             };
           }),

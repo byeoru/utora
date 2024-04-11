@@ -52,8 +52,8 @@ export default function TopicList({
             nickname={topic.user?.nickname}
             proposeReason={topic.propose_reason}
             createdAt={topic.created_at}
-            likeCount={topic.likeCount}
-            dislikeCount={topic.dislikeCount}
+            likeCount={topic.like_count}
+            dislikeCount={topic.dislike_count}
             isLiked={topic.proposed_topic_likes.length > 0}
             isDisliked={topic.proposed_topic_dislikes.length > 0}
           />

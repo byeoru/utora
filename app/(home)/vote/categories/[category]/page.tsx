@@ -47,7 +47,7 @@ export default async function VoteCategory({
           <>
             <ul className="w-full m-auto grid lg:grid-cols-3 grid-cols-1 lg:gap-4 gap-2">
               {topics.slice(0, loopCount).map((topic, index) => {
-                if (topic.likeCount < 1) {
+                if (topic.like_count < 1) {
                   return;
                 }
                 return (
@@ -58,8 +58,8 @@ export default async function VoteCategory({
                     topic={topic.topic}
                     proposeReason={topic.propose_reason}
                     createdAt={topic.created_at}
-                    likeCount={topic.likeCount}
-                    dislikeCount={topic.dislikeCount}
+                    likeCount={topic.like_count}
+                    dislikeCount={topic.dislike_count}
                     nickname={topic.user?.nickname}
                     isLiked={topic.proposed_topic_likes.length > 0}
                     isDisliked={topic.proposed_topic_dislikes.length > 0}

@@ -65,8 +65,8 @@ export default async function PostDetail({
             <LikeDislikeGroup
               isLiked={likeDislikeStatus.isLiked}
               isDisliked={likeDislikeStatus.isDisliked}
-              likeCount={post.likeCount}
-              dislikeCount={post.dislikeCount}
+              likeCount={post.like_count}
+              dislikeCount={post.dislike_count}
               postId={post.id}
               onLikeClick={likePost}
               onCancelLikeClick={cancelLikePost}
