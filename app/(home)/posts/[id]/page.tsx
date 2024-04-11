@@ -25,14 +25,7 @@ export default async function PostDetail({
   }
 
   const post = await getPost(id);
-  if (!post) {
-    return notFound();
-  }
-
   const likeDislikeStatus = await getLikeDislikeStatus(post.id);
-  if (!likeDislikeStatus) {
-    return notFound();
-  }
   const session = await getSession();
   return (
     <>

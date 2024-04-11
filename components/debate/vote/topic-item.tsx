@@ -6,6 +6,7 @@ import {
 } from "@/app/(home)/vote/categories/[category]/actions";
 import LikeDislikeGroup from "@/components/post/like-dislike-group";
 import { formatToTimeAgo } from "@/lib/utils";
+import { BookmarkMinus, BookmarkPlus } from "lucide-react";
 
 interface TopicItemPropsType {
   topicId: number;
@@ -31,12 +32,21 @@ export default function TopicItem({
   isDisliked,
 }: TopicItemPropsType) {
   return (
-    <li className="flex-1 flex flex-col relative justify-between bg-slate-200 rounded-xl px-4 py-4 break-word shadow-md">
+    <li className="flex-1 flex flex-col relative justify-between bg-slate-50 rounded-xl px-4 py-4 break-word shadow-md">
       <div className="flex flex-col gap-3">
         <span className="font-jua text-lg break-all mr-7">{topic}</span>
-        <span className="font-jua text-slate-500">
-          주제 발의자: <span className="text-primary">{nickname}</span>
-        </span>
+        <div className="flex justify-between items-center">
+          <span className="font-jua text-slate-500">
+            주제 발의자: <span className="text-primary">{nickname}</span>
+          </span>
+          {isLiked ? (
+            <BookmarkPlus className="size-5 text-blue-600" />
+          ) : isDisliked ? (
+            <BookmarkMinus className="size-5 text-red-600" />
+          ) : (
+            ""
+          )}
+        </div>
         <span className="font-notoKr text-xs lg:text-sm opacity-50 self-end">
           {formatToTimeAgo(createdAt)}
         </span>

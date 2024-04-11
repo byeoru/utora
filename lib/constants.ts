@@ -125,3 +125,6 @@ export const categories: ObjectType = {
     icon: null,
   },
 };
+
+// debate room
+export const SUPABASE_URL = "https://toxakqydxmsmomvwkqsh.supabase.co";

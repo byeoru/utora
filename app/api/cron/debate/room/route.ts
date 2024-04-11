@@ -16,6 +16,14 @@ const getSelectedTopics = async () => {
             gt: 0,
           },
         },
+        select: {
+          topic: true,
+          propose_reason: true,
+          category: true,
+          like_count: true,
+          dislike_count: true,
+          user_id: true,
+        },
         take: 3,
         orderBy: {
           like_count: "desc",
@@ -32,44 +40,22 @@ export async function POST() {
   } catch (error) {
     selectedTopics = await getSelectedTopics();
     if (!selectedTopics) {
-      return Response.error();
+      return Response.error().statusText;
     }
   }
   try {
     await db.thisWeekTopic.createMany({
-      data: [
-        ...toFlattenArray(selectedTopics).map((selectedTopic) => {
-          return {
-            topic: selectedTopic.topic,
-            propose_reason: selectedTopic.propose_reason,
-            category: selectedTopic.category,
-            like_count: selectedTopic.likeCount,
-            dislike_count: selectedTopic.dislikeCount,
-            user_id: selectedTopic.user_id,
-          };
-        }),
-      ],
+      data: [...toFlattenArray(selectedTopics), {}],
     });
     return Response.json({ ok: true });
   } catch (error) {
     try {
       await db.thisWeekTopic.createMany({
-        data: [
-          ...toFlattenArray(selectedTopics).map((selectedTopic) => {
-            return {
-              topic: selectedTopic.topic,
-              propose_reason: selectedTopic.propose_reason,
-              category: selectedTopic.category,
-              like_count: selectedTopic.likeCount,
-              dislike_count: selectedTopic.dislikeCount,
-              user_id: selectedTopic.user_id,
-            };
-          }),
-        ],
+        data: [...toFlattenArray(selectedTopics)],
       });
       return Response.json({ ok: true });
     } catch (error) {
-      return Response.error();
+      return Response.error().statusText;
     }
   }
 }

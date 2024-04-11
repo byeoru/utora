@@ -169,4 +169,48 @@ model ThisWeekTopic {
   user_id Int?
 
   @@index([user_id])
+
+  debate_room DebateRoom?
+}
+
+model DebateRoom {
+  id String @id @default(cuid())
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  this_week_topic ThisWeekTopic @relation(fields: [this_week_topic_id], references: [id], onDelete: Cascade)
+
+  this_week_topic_id Int @unique
+
+  messages DebateMessage[]
+  selected_debate_messages SelectedDebateMessage[]
+}
+
+model DebateMessage {
+  id Int @id @default(autoincrement())
+  payload String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  debate_room DebateRoom @relation(fields: [debate_room_id], references: [id], onDelete: Cascade)
+
+  debate_room_id String
+
+  @@index([debate_room_id])
+}
+
+model SelectedDebateMessage {
+  id Int @id @default(autoincrement())
+  payload String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  debate_room DebateRoom @relation(fields: [debate_room_id], references: [id], onDelete: Cascade)
+
+  debate_room_id String
+
+  @@index([debate_room_id])
 }

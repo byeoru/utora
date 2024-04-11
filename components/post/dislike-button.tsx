@@ -1,4 +1,5 @@
-import { HandThumbDownIcon } from "@heroicons/react/24/solid";
+import { HandThumbDownIcon as HandThumbDownIconSolid } from "@heroicons/react/24/solid";
+import { HandThumbDownIcon as HandThumbDownIconOutline } from "@heroicons/react/24/outline";
 
 interface DislikeButtonPropsType {
   isDisliked: boolean;
@@ -20,12 +21,15 @@ export default function DislikeButton({
     <button
       onClick={onDislikeClick}
       disabled={isLiked}
-      className="flex gap-2 items-center px-3 py-1 transition-colors hover:bg-red-200 rounded-lg"
+      className={`flex gap-2 items-center px-3 py-1 transition-colors sm:hover:bg-red-200 rounded-lg`}
     >
-      <span className="text-red-400">{`싫어요 ${dislikeCount}`}</span>
-      <HandThumbDownIcon
-        className={`size-5 ${isDisliked ? "text-red-500" : "text-white"}`}
-      />
+      {isDisliked ? (
+        <HandThumbDownIconSolid className="size-5 text-red-500" />
+      ) : (
+        <HandThumbDownIconOutline className="size-5 text-red-400" />
+      )}
+
+      <span className="text-red-400">{dislikeCount}</span>
     </button>
   );
 }

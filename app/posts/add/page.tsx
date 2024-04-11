@@ -4,6 +4,7 @@ import Tiptap from "@/components/editor/tiptap";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { post } from "./actions";
+import { notFound } from "next/navigation";
 
 export default function PostAdd() {
   const [content, setContent] = useState<string>("");
@@ -15,7 +16,6 @@ export default function PostAdd() {
   const onSubmit = async (formData: FormData) => {
     formData.append("content", content);
     const result = await post(formData);
-    console.log(`result: ${result}`);
     if (result?.fieldErrors) {
       const message = `${result.fieldErrors.title ?? ""}\n${
         result.fieldErrors.content ?? ""

@@ -1,6 +1,7 @@
 "use server";
 
 import db from "@/lib/db";
+import { notFound } from "next/navigation";
 
 export async function getThisWeekTopics() {
   try {
@@ -31,6 +32,44 @@ export async function getThisWeekTopics() {
     return sortedTopics;
   } catch (error) {
     console.log(error);
-    return null;
+    return notFound();
+  }
+}
+
+export async function checkDebateRoom(thisWeekTopicId: number) {
+  try {
+    const thisWeekTopic = await db.thisWeekTopic.findUnique({
+      where: {
+        id: thisWeekTopicId,
+      },
+      select: {
+        debate_room: true,
+      },
+    });
+    return thisWeekTopic?.debate_room?.id;
+  } catch (error) {
+    console.log(error);
+    return notFound();
+  }
+}
+
+export async function createDebateRoom(thisWeekTopicId: number) {
+  try {
+    const room = await db.debateRoom.create({
+      data: {
+        this_week_topic: {
+          connect: {
+            id: thisWeekTopicId,
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    return room.id;
+  } catch (error) {
+    console.log(error);
+    return notFound();
   }
 }

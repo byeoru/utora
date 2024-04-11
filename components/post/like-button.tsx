@@ -1,4 +1,5 @@
-import { HandThumbUpIcon } from "@heroicons/react/24/solid";
+import { HandThumbUpIcon as HandThumbUpIconSolid } from "@heroicons/react/24/solid";
+import { HandThumbUpIcon as HandThumbUpIconOutline } from "@heroicons/react/24/outline";
 
 interface LikeButtonPropsType {
   isLiked: boolean;
@@ -20,12 +21,15 @@ export default function LikeButton({
     <button
       onClick={onLikeClick}
       disabled={isDisliked}
-      className="flex gap-2 items-center px-3 py-1 transition-colors hover:bg-blue-200 rounded-lg"
+      className="flex gap-2 items-center px-3 py-1 transition-colors sm:hover:bg-blue-200 rounded-lg"
     >
-      <span className="text-blue-400">{`좋아요 ${likeCount}`}</span>
-      <HandThumbUpIcon
-        className={`size-5 ${isLiked ? "text-blue-500" : "text-white"}`}
-      />
+      {isLiked ? (
+        <HandThumbUpIconSolid className="size-5 text-blue-500" />
+      ) : (
+        <HandThumbUpIconOutline className="size-5 text-blue-400" />
+      )}
+
+      <span className="text-blue-400">{likeCount}</span>
     </button>
   );
 }

@@ -19,10 +19,6 @@ export default async function VoteCategory({
   }
 
   const topics = await getTopics(params.category as EDebateCategory, "popular");
-  if (!topics) {
-    return notFound();
-  }
-
   const loopCount = Math.min(topics.length, 3);
   return (
     <div className="w-full flex flex-col m-auto">

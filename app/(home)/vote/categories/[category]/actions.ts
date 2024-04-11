@@ -4,6 +4,7 @@ import getSession from "@/lib/session";
 import db from "@/lib/db";
 import { EDebateCategory, Prisma } from "@prisma/client";
 import { OrderByKeyType } from "@/components/order-by-group";
+import { notFound } from "next/navigation";
 
 export type GetTopicsType = Prisma.PromiseReturnType<typeof getTopics>;
 export async function getTopics(
@@ -14,7 +15,7 @@ export async function getTopics(
   try {
     let orderByObj = {};
     if (orderBy === "popular") {
-      orderByObj = { likeCount: "desc" };
+      orderByObj = { like_count: "desc" };
     } else if (orderBy === "latest") {
       orderByObj = { created_at: "desc" };
     }
@@ -55,7 +56,7 @@ export async function getTopics(
     });
     return topics;
   } catch (error) {
-    return console.log(`error: ${error}`);
+    return notFound();
   }
 }
 

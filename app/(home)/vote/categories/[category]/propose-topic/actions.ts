@@ -3,7 +3,7 @@
 import getSession from "@/lib/session";
 import { topicProposeSchema } from "./schema";
 import db from "@/lib/db";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export async function createTopic(formData: FormData) {
   const validation = topicProposeSchema.safeParse({
@@ -22,11 +22,16 @@ export async function createTopic(formData: FormData) {
       data: {
         topic: validation.data.topic,
         propose_reason: validation.data.proposeReason,
-        user_id: session.id,
+        user: {
+          // session id는 존재하지만 db table에는 삭제되었을 경우를 대비
+          connect: {
+            id: session.id,
+          },
+        },
         category: validation.data.category,
       },
     });
   } catch (error) {
-    return null;
+    return notFound();
   }
 }

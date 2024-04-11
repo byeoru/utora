@@ -5,6 +5,7 @@ import getSession from "@/lib/session";
 import { comment } from "./schema";
 import { Prisma } from "@prisma/client";
 import { FETCH_COMMENTS_SIZE } from "@/lib/constants";
+import { notFound } from "next/navigation";
 
 export type GetPostType = Prisma.PromiseReturnType<typeof getPost>;
 export async function getPost(postId: number) {
@@ -33,7 +34,7 @@ export async function getPost(postId: number) {
     });
     return post;
   } catch (error) {
-    return null;
+    return notFound();
   }
 }
 
@@ -67,7 +68,7 @@ export async function getLikeDislikeStatus(postId: number) {
       isDisliked: Boolean(isDisliked),
     };
   } catch (error) {
-    return null;
+    return notFound();
   }
 }
 

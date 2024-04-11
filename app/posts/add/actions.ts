@@ -3,11 +3,10 @@
 import db from "@/lib/db";
 import { postSchema } from "./schema";
 import getSession from "@/lib/session";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export async function post(formData: FormData) {
   const session = await getSession();
-  console.log(`sessionId: ${session.id}`);
 
   if (!session.id) {
     return {
@@ -27,19 +26,23 @@ export async function post(formData: FormData) {
     return validation.error.flatten();
   }
 
-  const post = await db.post.create({
-    data: {
-      title: validation.data.title,
-      content: validation.data.content,
-      user: {
-        connect: {
-          id: session.id,
+  try {
+    const post = await db.post.create({
+      data: {
+        title: validation.data.title,
+        content: validation.data.content,
+        user: {
+          connect: {
+            id: session.id,
+          },
         },
       },
-    },
-    select: {
-      id: true,
-    },
-  });
-  redirect(`/posts/${post.id}`);
+      select: {
+        id: true,
+      },
+    });
+    redirect(`/posts/${post.id}`);
+  } catch (error) {
+    return notFound();
+  }
 }
