@@ -32,8 +32,8 @@ model Post {
   id Int @id @default(autoincrement())
   title String
   content String
-  likeCount Int @default(0)
-  dislikeCount Int @default(0)
+  like_count Int @default(0)
+  dislik_count Int @default(0)
   views Int @default(0)
 
   created_at DateTime @default(now())
@@ -107,8 +107,8 @@ model ProposedTopic {
   topic String
   propose_reason String
   category EDebateCategory
-  likeCount Int @default(0)
-  dislikeCount Int @default(0)
+  like_count Int @default(0)
+  dislike_count Int @default(0)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -158,8 +158,8 @@ model ThisWeekTopic {
   topic String
   propose_reason String
   category EDebateCategory
-  likeCount Int
-  dislikeCount Int
+  like_count Int
+  dislike_count Int
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

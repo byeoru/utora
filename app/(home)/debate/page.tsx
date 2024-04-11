@@ -52,13 +52,13 @@ export default async function Debate() {
                           <div className="flex items-center gap-1">
                             <HandThumbUpIcon className="size-3 text-red-400" />
                             <span className="text-xs text-slate-500">
-                              {topic.likeCount}
+                              {topic.like_count}
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <HandThumbDownIcon className="size-3 text-blue-400" />
                             <span className="text-xs text-slate-500">
-                              {topic.dislikeCount}
+                              {topic.dislike_count}
                             </span>
                           </div>
                         </div>
