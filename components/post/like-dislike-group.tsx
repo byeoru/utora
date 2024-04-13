@@ -78,7 +78,7 @@ export default function LikeDislikeGroup({
     }
   };
   return (
-    <div className="flex gap-1 font-jua">
+    <div className="flex font-jua">
       <LikeButton
         isLiked={likeState.isLiked}
         isDisliked={dislikeState.isDisliked}

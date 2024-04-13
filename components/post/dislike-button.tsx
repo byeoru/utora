@@ -1,5 +1,4 @@
-import { HandThumbDownIcon as HandThumbDownIconSolid } from "@heroicons/react/24/solid";
-import { HandThumbDownIcon as HandThumbDownIconOutline } from "@heroicons/react/24/outline";
+import { ChevronDown } from "lucide-react";
 
 interface DislikeButtonPropsType {
   isDisliked: boolean;
@@ -23,13 +22,15 @@ export default function DislikeButton({
       disabled={isLiked}
       className={`flex gap-2 items-center px-3 py-1 transition-colors sm:hover:bg-red-200 rounded-lg`}
     >
-      {isDisliked ? (
-        <HandThumbDownIconSolid className="size-4 sm:size-5 text-red-500" />
-      ) : (
-        <HandThumbDownIconOutline className="size-4 sm:size-5 text-red-400" />
-      )}
+      <ChevronDown
+        className={`size-4 sm:size-5 ${
+          isDisliked ? "text-red-500" : "text-slate-500"
+        }`}
+      />
 
-      <span className="text-red-400 text-sm sm:text-base">{dislikeCount}</span>
+      <span className="text-slate-500 font-doHyeon text-sm sm:text-base">
+        {dislikeCount}
+      </span>
     </button>
   );
 }

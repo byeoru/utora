@@ -2,6 +2,7 @@ import { getThisWeekTopics } from "./actions";
 import { HandThumbDownIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
 import { categories } from "@/lib/constants";
 import EnterRoomButton from "@/components/debate/enter-room-button";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default async function Debate() {
   const thisWeekTopics = await getThisWeekTopics();
@@ -51,13 +52,13 @@ export default async function Debate() {
                           </div>
                           <div className="flex gap-3 justify-end font-doHyeon">
                             <div className="flex items-center gap-1">
-                              <HandThumbUpIcon className="size-3 text-red-400" />
+                              <ChevronUp className="size-4 text-red-400" />
                               <span className="text-xs text-slate-500">
                                 {topic.like_count}
                               </span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <HandThumbDownIcon className="size-3 text-blue-400" />
+                              <ChevronDown className="size-4 text-blue-400" />
                               <span className="text-xs text-slate-500">
                                 {topic.dislike_count}
                               </span>
