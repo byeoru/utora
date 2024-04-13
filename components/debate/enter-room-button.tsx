@@ -1,7 +1,7 @@
 "use client";
 
 import { checkDebateRoom, createDebateRoom } from "@/app/(home)/debate/actions";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 
 interface EnterRoomButtonPropsType {
@@ -12,19 +12,25 @@ export default function EnterRoomButton({
   thisWeekTopicId,
 }: EnterRoomButtonPropsType) {
   const { pending } = useFormStatus();
+  const router = useRouter();
   const enterDebateRoom = async () => {
     let roomId = await checkDebateRoom(thisWeekTopicId);
     if (!roomId) {
       roomId = await createDebateRoom(thisWeekTopicId);
     }
-    redirect(`/debate/${roomId}`);
+    await router.push(`/debate/${roomId}`);
   };
   return (
     <form
-      className="flex justify-center items-center font-notoKr p-3 lg:p-2 bg-primary rounded-lg text-white font-semibold text-sm shadow-md disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300"
+      className="font-notoKr rounded-lg font-semibold text-sm shadow-md disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300"
       action={enterDebateRoom}
     >
-      <button disabled={pending}>입장</button>
+      <button
+        className="w-full h-full bg-primary text-white rounded-lg flex justify-center items-center p-3 lg:p-2"
+        disabled={pending}
+      >
+        입장
+      </button>
     </form>
   );
 }

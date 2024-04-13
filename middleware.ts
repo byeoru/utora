@@ -12,7 +12,6 @@ const publicOnlyUrls: Routes = {
   "/popular": true,
   "/vote/categories": true,
   "/debate": true,
-  // cron test
   "/api/cron/debate/room": true,
 };
 
