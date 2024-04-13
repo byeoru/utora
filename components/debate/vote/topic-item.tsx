@@ -32,7 +32,7 @@ export default function TopicItem({
   isDisliked,
 }: TopicItemPropsType) {
   return (
-    <li className="flex flex-col relative justify-between bg-slate-50 rounded-xl p-2 sm:p-4 break-word shadow-md">
+    <li className="flex flex-col relative justify-between border-b p-2 sm:p-4 break-word">
       <div className="flex flex-col gap-1">
         <span className="font-jua text-base sm:text-lg break-all mr-7">
           {topic}

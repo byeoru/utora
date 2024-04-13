@@ -34,7 +34,7 @@ export default function TopRankTopicItem({
   isDisliked,
 }: TopRankTopicItemPropsType) {
   return (
-    <li className="flex flex-col relative justify-between bg-slate-200 rounded-xl lg:aspect-square p-2 sm:p-4 break-word shadow-md">
+    <li className="flex flex-col relative justify-between bg-slate-50 rounded-xl lg:aspect-square p-2 sm:p-4 break-word shadow-md">
       <span className="font-jua absolute right-2 top-1 opacity-50 text-sm sm:text-base">
         {ranking} 위
       </span>
