@@ -6,7 +6,7 @@ import {
   deleteComment,
   getComments,
   saveComment,
-} from "@/app/(home)/posts/[id]/actions";
+} from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
 import { useFormState } from "react-dom";
 import Button from "../button";
 import { useEffect, useRef, useState } from "react";

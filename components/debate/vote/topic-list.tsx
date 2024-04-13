@@ -1,6 +1,6 @@
 "use client";
 
-import { GetTopicsType } from "@/app/(home)/vote/categories/[category]/actions";
+import { GetTopicsType } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
 import OrderByGroup, { OrderByKeyType } from "@/components/order-by-group";
 import { EDebateCategory } from "@prisma/client";
 import { useState } from "react";

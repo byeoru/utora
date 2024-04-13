@@ -1,6 +1,9 @@
 "use client";
 
-import { checkDebateRoom, createDebateRoom } from "@/app/(home)/debate/actions";
+import {
+  checkDebateRoom,
+  createDebateRoom,
+} from "@/app/(home)/(use-side-nav)/debate/actions";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 

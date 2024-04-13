@@ -3,7 +3,7 @@ import {
   cancelLikeTopic,
   dislikeTopic,
   likeTopic,
-} from "@/app/(home)/vote/categories/[category]/actions";
+} from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
 import LikeDislikeGroup from "@/components/post/like-dislike-group";
 import { formatToTimeAgo } from "@/lib/utils";
 import { BookmarkMinus, BookmarkPlus } from "lucide-react";

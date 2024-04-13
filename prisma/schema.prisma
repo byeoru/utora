@@ -9,6 +9,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Admin {
+  id Int @id @default(autoincrement())
+  email String? @unique
+  password String?
+  nickname String @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  
+  notices Notice[]
+}
+
 model User {
   id Int @id @default(autoincrement())
   email String? @unique
@@ -26,6 +38,21 @@ model User {
   proposed_topic_likes ProposedTopicLike[]
   proposed_topic_dislikes ProposedTopicDislike[]
   this_week_topics ThisWeekTopic[]
+}
+
+model Notice {
+  id Int @id @default(autoincrement())
+  title String
+  content String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  admin Admin? @relation(fields: [admin_id], references: [id], onDelete: SetNull)
+
+  admin_id Int?
+
+  @@index([admin_id])
 }
 
 model Post {
