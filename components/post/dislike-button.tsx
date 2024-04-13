@@ -24,12 +24,12 @@ export default function DislikeButton({
       className={`flex gap-2 items-center px-3 py-1 transition-colors sm:hover:bg-red-200 rounded-lg`}
     >
       {isDisliked ? (
-        <HandThumbDownIconSolid className="size-5 text-red-500" />
+        <HandThumbDownIconSolid className="size-4 sm:size-5 text-red-500" />
       ) : (
-        <HandThumbDownIconOutline className="size-5 text-red-400" />
+        <HandThumbDownIconOutline className="size-4 sm:size-5 text-red-400" />
       )}
 
-      <span className="text-red-400">{dislikeCount}</span>
+      <span className="text-red-400 text-sm sm:text-base">{dislikeCount}</span>
     </button>
   );
 }
