@@ -4,7 +4,7 @@ import { getNotices } from "./actions";
 export default async function Notice() {
   const notices = await getNotices();
   return (
-    <ul className="w-full mx-auto max-w-screen-md p-2">
+    <ul className="w-full mx-auto max-w-screen-md p-2 sm:mt-8 lg:mt-12">
       {notices.map((notice, index) => (
         <li
           key={index}

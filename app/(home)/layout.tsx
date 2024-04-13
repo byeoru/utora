@@ -41,7 +41,7 @@ export default function RootLayout({
           />
         </nav>
       </div>
-      <div className="sm:mt-8 lg:mt-12 overflow-y-auto w-full">{children}</div>
+      <div className="w-full flex">{children}</div>
     </div>
   );
 }

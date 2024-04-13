@@ -36,7 +36,7 @@ export default function RootLayout({
           />
         </SideNavigationGroup>
       </nav>
-      <>{children}</>
+      <div className="sm:mt-8 lg:mt-12 overflow-y-auto w-full">{children}</div>
     </>
   );
 }
