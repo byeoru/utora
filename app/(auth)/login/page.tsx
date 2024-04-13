@@ -10,6 +10,7 @@ export default function Login() {
   return (
     <>
       <HomeButton />
+      <span className="font-notoKr font-bold text-red-500">Alpha Version</span>
       <LoginForm />
     </>
   );
