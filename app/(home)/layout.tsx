@@ -18,6 +18,7 @@ export default function RootLayout({
           <div className="lg:w-44 h-full flex items-center lg:text-3xl">
             <Link href="/">
               <span className="text-primary font-jua">유토라</span>
+              <span className="text-xs font-doHyeon text-primary">.beta</span>
             </Link>
           </div>
           <div className="h-full flex items-center text-sm font-doHyeon">
