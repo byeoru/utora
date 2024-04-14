@@ -47,9 +47,9 @@ export default function TopRankTopicItem({
             | 주제 발의자: <span className="text-primary">{nickname}</span>
           </span>
           {isLiked ? (
-            <BookmarkPlus className="size-4 sm:size-5 text-blue-600" />
+            <BookmarkPlus className="size-4 sm:size-5 text-red-600" />
           ) : isDisliked ? (
-            <BookmarkMinus className="size-4 sm:size-5 text-red-600" />
+            <BookmarkMinus className="size-4 sm:size-5 text-blue-600" />
           ) : (
             ""
           )}
