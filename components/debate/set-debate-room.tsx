@@ -9,7 +9,6 @@ import DebateChatList from "./debate-chat-list";
 import { useState } from "react";
 import { Component, Fan, Flower } from "lucide-react";
 import Button from "../button";
-import { EDebateRole } from "@prisma/client";
 
 interface SetDebateRoomPropsType {
   supabasePublicKey: string;
@@ -56,7 +55,7 @@ export default function SetDebateRoom({
           <div className="w-full grid grid-cols-2 gap-3 ">
             <button
               onClick={() => setMyRoleState({ debateRole: "Proponent" })}
-              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto focus:bg-violet-200"
+              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto hover:bg-violet-200 sm:focus:bg-violet-200"
             >
               <div className="flex flex-col gap-2">
                 <span className="font-doHyeon text-lg self-center">
@@ -81,7 +80,7 @@ export default function SetDebateRoom({
               onClick={() =>
                 setMyRoleState({ debateRole: "ProponentSupporter" })
               }
-              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto focus:bg-violet-200"
+              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto hover:bg-violet-200 sm:focus:bg-violet-200"
             >
               <div className="flex flex-col gap-2">
                 <span className="font-doHyeon text-lg self-center">
@@ -108,7 +107,7 @@ export default function SetDebateRoom({
           <div className="w-full grid grid-cols-2 gap-3">
             <button
               onClick={() => setMyRoleState({ debateRole: "Opponent" })}
-              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto focus:bg-violet-200"
+              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto hover:bg-violet-200 sm:focus:bg-violet-200"
             >
               <div className="flex flex-col gap-2">
                 <span className="font-doHyeon text-lg self-center">
@@ -133,7 +132,7 @@ export default function SetDebateRoom({
               onClick={() =>
                 setMyRoleState({ debateRole: "OpponentSupporter" })
               }
-              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto focus:bg-violet-200"
+              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto hover:bg-violet-200 sm:focus:bg-violet-200"
             >
               <div className="flex flex-col gap-2">
                 <span className="font-doHyeon text-lg self-center">
@@ -160,7 +159,7 @@ export default function SetDebateRoom({
           <div className="w-full grid grid-cols-1 gap-3">
             <button
               onClick={() => setMyRoleState({ debateRole: "Audience" })}
-              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto focus:bg-violet-200"
+              className="px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto hover:bg-violet-200 sm:focus:bg-violet-200"
             >
               <div className="flex flex-col gap-2">
                 <span className="font-doHyeon text-lg self-center">| 관중</span>

@@ -53,6 +53,6 @@ export default function DebateChatList({
     return () => {
       channel.current?.unsubscribe();
     };
-  }, [debateRoomId]);
+  }, [debateRoomId, supabasePublicKey]);
   return <div className="w-full bg-red-100 flex"></div>;
 }
