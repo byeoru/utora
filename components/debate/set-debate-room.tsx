@@ -2,6 +2,7 @@
 
 import {
   GetDebateRoomMessagesType,
+  GetDebateRoomTopicInfoType,
   GetMyDebateRole,
   saveMyDebateRole,
 } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
@@ -25,6 +26,7 @@ interface SetDebateRoomPropsType {
   nickname: string;
   initialMessages: GetDebateRoomMessagesType;
   myDebateRole: GetMyDebateRole;
+  topicInfo: GetDebateRoomTopicInfoType;
 }
 
 export default function SetDebateRoom({
@@ -34,6 +36,7 @@ export default function SetDebateRoom({
   nickname,
   initialMessages,
   myDebateRole,
+  topicInfo,
 }: SetDebateRoomPropsType) {
   const [myRoleState, setMyRoleState] = useState(myDebateRole);
   const [savedRoleState, setSavedRoleState] = useState(myDebateRole);
@@ -43,7 +46,11 @@ export default function SetDebateRoom({
       alert("참여 진영을 선택하세요.");
       return;
     }
-    const myRole = await saveMyDebateRole(debateRoomId, myRoleState.debateRole);
+    const myRole = await saveMyDebateRole(
+      debateRoomId,
+      myRoleState.debate_role,
+      myRoleState.debate_role_kr
+    );
     setSavedRoleState(myRole);
   };
   return savedRoleState ? (
@@ -52,7 +59,10 @@ export default function SetDebateRoom({
       debateRoomId={debateRoomId}
       userId={userId}
       nickname={nickname}
+      debateRole={savedRoleState.debate_role}
+      debateRoleKr={savedRoleState.debate_role_kr}
       initialMessages={initialMessages}
+      topicInfo={topicInfo}
     />
   ) : (
     <div className="w-full flex flex-col lg:gap-10 justify-center items-center p-2 max-w-screen-xl m-auto ">
@@ -63,9 +73,14 @@ export default function SetDebateRoom({
           </h2>
           <div className="w-full lg:h-full grid grid-cols-2 gap-3 ">
             <button
-              onClick={() => setMyRoleState({ debateRole: "Proponent" })}
+              onClick={() =>
+                setMyRoleState({
+                  debate_role: "Proponent",
+                  debate_role_kr: "찬성측 토론 참여자",
+                })
+              }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
-                myRoleState?.debateRole === EDebateRole.Proponent
+                myRoleState?.debate_role === EDebateRole.Proponent
                   ? "ring-2 ring-violet-300"
                   : ""
               }`}
@@ -78,7 +93,7 @@ export default function SetDebateRoom({
               </div>
               <div
                 className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
-                  myRoleState?.debateRole === EDebateRole.Proponent
+                  myRoleState?.debate_role === EDebateRole.Proponent
                     ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
@@ -88,10 +103,13 @@ export default function SetDebateRoom({
             </button>
             <button
               onClick={() =>
-                setMyRoleState({ debateRole: "ProponentSupporter" })
+                setMyRoleState({
+                  debate_role: "ProponentSupporter",
+                  debate_role_kr: "찬성측 토론 서포터",
+                })
               }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
-                myRoleState?.debateRole === EDebateRole.ProponentSupporter
+                myRoleState?.debate_role === EDebateRole.ProponentSupporter
                   ? "ring-2 ring-violet-300"
                   : ""
               }`}
@@ -106,7 +124,7 @@ export default function SetDebateRoom({
               </div>
               <div
                 className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
-                  myRoleState?.debateRole === EDebateRole.ProponentSupporter
+                  myRoleState?.debate_role === EDebateRole.ProponentSupporter
                     ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
@@ -122,9 +140,14 @@ export default function SetDebateRoom({
           </h2>
           <div className="w-full lg:h-full grid grid-cols-2 gap-3">
             <button
-              onClick={() => setMyRoleState({ debateRole: "Opponent" })}
+              onClick={() =>
+                setMyRoleState({
+                  debate_role: "Opponent",
+                  debate_role_kr: "반대측 토론 참여자",
+                })
+              }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
-                myRoleState?.debateRole === EDebateRole.Opponent
+                myRoleState?.debate_role === EDebateRole.Opponent
                   ? "ring-2 ring-violet-300"
                   : ""
               }`}
@@ -139,7 +162,7 @@ export default function SetDebateRoom({
               </div>
               <div
                 className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
-                  myRoleState?.debateRole === EDebateRole.Opponent
+                  myRoleState?.debate_role === EDebateRole.Opponent
                     ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
@@ -149,10 +172,13 @@ export default function SetDebateRoom({
             </button>
             <button
               onClick={() =>
-                setMyRoleState({ debateRole: "OpponentSupporter" })
+                setMyRoleState({
+                  debate_role: "OpponentSupporter",
+                  debate_role_kr: "반대측 토론 서포터",
+                })
               }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
-                myRoleState?.debateRole === EDebateRole.OpponentSupporter
+                myRoleState?.debate_role === EDebateRole.OpponentSupporter
                   ? "ring-2 ring-violet-300"
                   : ""
               }`}
@@ -167,7 +193,7 @@ export default function SetDebateRoom({
               </div>
               <div
                 className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
-                  myRoleState?.debateRole === EDebateRole.OpponentSupporter
+                  myRoleState?.debate_role === EDebateRole.OpponentSupporter
                     ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
@@ -183,9 +209,14 @@ export default function SetDebateRoom({
           </h2>
           <div className="w-full lg:h-full grid grid-cols-1 gap-3">
             <button
-              onClick={() => setMyRoleState({ debateRole: "Audience" })}
+              onClick={() =>
+                setMyRoleState({
+                  debate_role: "Audience",
+                  debate_role_kr: "관중",
+                })
+              }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
-                myRoleState?.debateRole === EDebateRole.Audience
+                myRoleState?.debate_role === EDebateRole.Audience
                   ? "ring-2 ring-violet-300"
                   : ""
               }`}
@@ -198,7 +229,7 @@ export default function SetDebateRoom({
               </div>
               <div
                 className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
-                  myRoleState?.debateRole === EDebateRole.Audience
+                  myRoleState?.debate_role === EDebateRole.Audience
                     ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
@@ -211,9 +242,9 @@ export default function SetDebateRoom({
       </div>
       <form action={saveMyRole} className="w-full flex justify-center lg:w-96">
         <button
-          disabled={pending || !myRoleState?.debateRole}
+          disabled={pending || !myRoleState?.debate_role}
           className={`w-full transition-colors py-2 px-3 rounded-md font-semibold font-notoKr ${
-            myRoleState?.debateRole
+            myRoleState?.debate_role
               ? "bg-violet-300"
               : "bg-slate-300 cursor-not-allowed"
           }`}

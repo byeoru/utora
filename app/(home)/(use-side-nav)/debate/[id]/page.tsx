@@ -1,5 +1,6 @@
 import {
   getDebateRoomMessages,
+  getDebateRoomTopicInfo,
   getMyDebateRole,
   getUserProfile,
 } from "./actions";
@@ -13,6 +14,7 @@ export default async function DebateRoom({
   const myDebateRole = await getMyDebateRole(params.id);
   const supabasePublicKey = process.env.SUPABASE_PUBLIC_KEY!;
   const initialMessages = await getDebateRoomMessages(params.id);
+  const topicInfo = await getDebateRoomTopicInfo(params.id);
   const myProfile = await getUserProfile();
   if (!myProfile) {
     alert("계정 정보를 찾을 수 없습니다.");
@@ -27,6 +29,7 @@ export default async function DebateRoom({
       nickname={myProfile.nickname}
       initialMessages={initialMessages}
       myDebateRole={myDebateRole}
+      topicInfo={topicInfo}
     />
   );
 }

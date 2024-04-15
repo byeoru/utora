@@ -67,7 +67,8 @@ export async function getMyDebateRole(debateRoomId: string) {
         },
       },
       select: {
-        debateRole: true,
+        debate_role: true,
+        debate_role_kr: true,
       },
     });
     return debateRole;
@@ -79,7 +80,8 @@ export async function getMyDebateRole(debateRoomId: string) {
 
 export async function saveMyDebateRole(
   debateRoomId: string,
-  debateRole: EDebateRole
+  debateRole: EDebateRole,
+  debateRoleKr: string
 ) {
   const session = await getSession();
   try {
@@ -87,13 +89,40 @@ export async function saveMyDebateRole(
       data: {
         user_id: session.id,
         debate_room_id: debateRoomId,
-        debateRole,
+        debate_role: debateRole,
+        debate_role_kr: debateRoleKr,
       },
       select: {
-        debateRole: true,
+        debate_role: true,
+        debate_role_kr: true,
       },
     });
     return myDebateRole;
+  } catch (error) {
+    console.log(error);
+    return notFound();
+  }
+}
+
+export type GetDebateRoomTopicInfoType = Prisma.PromiseReturnType<
+  typeof getDebateRoomTopicInfo
+>;
+export async function getDebateRoomTopicInfo(debateRoomId: string) {
+  try {
+    const debateRoom = await db.debateRoom.findUnique({
+      where: {
+        id: debateRoomId,
+      },
+      select: {
+        this_week_topic: {
+          select: {
+            topic: true,
+            propose_reason: true,
+          },
+        },
+      },
+    });
+    return debateRoom?.this_week_topic;
   } catch (error) {
     console.log(error);
     return notFound();

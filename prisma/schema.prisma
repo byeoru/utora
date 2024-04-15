@@ -225,7 +225,8 @@ enum EDebateRole {
 }
 
 model JoinedUserDebateRole {
-  debateRole EDebateRole
+  debate_role EDebateRole
+  debate_role_kr String
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
