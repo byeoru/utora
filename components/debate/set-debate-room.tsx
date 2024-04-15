@@ -61,10 +61,10 @@ export default function SetDebateRoom({
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             찬성측
           </h2>
-          <div className="w-full h-full grid grid-cols-2 gap-3 ">
+          <div className="w-full lg:h-full grid grid-cols-2 gap-3 ">
             <button
               onClick={() => setMyRoleState({ debateRole: "Proponent" })}
-              className={`flex flex-col gap-10 lg:min-h-96 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.Proponent
                   ? "ring-2 ring-violet-300"
                   : ""
@@ -90,7 +90,7 @@ export default function SetDebateRoom({
               onClick={() =>
                 setMyRoleState({ debateRole: "ProponentSupporter" })
               }
-              className={`flex flex-col gap-10 lg:min-h-96 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.ProponentSupporter
                   ? "ring-2 ring-violet-300"
                   : ""
@@ -120,10 +120,10 @@ export default function SetDebateRoom({
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             반대측
           </h2>
-          <div className="w-full h-full grid grid-cols-2 gap-3">
+          <div className="w-full lg:h-full grid grid-cols-2 gap-3">
             <button
               onClick={() => setMyRoleState({ debateRole: "Opponent" })}
-              className={`flex flex-col gap-10 lg:min-h-96 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.Opponent
                   ? "ring-2 ring-violet-300"
                   : ""
@@ -151,7 +151,7 @@ export default function SetDebateRoom({
               onClick={() =>
                 setMyRoleState({ debateRole: "OpponentSupporter" })
               }
-              className={`flex flex-col lg:min-h-96 gap-10 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.OpponentSupporter
                   ? "ring-2 ring-violet-300"
                   : ""
@@ -181,10 +181,10 @@ export default function SetDebateRoom({
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             중립
           </h2>
-          <div className="w-full h-full grid grid-cols-1 gap-3">
+          <div className="w-full lg:h-full grid grid-cols-1 gap-3">
             <button
               onClick={() => setMyRoleState({ debateRole: "Audience" })}
-              className={`flex flex-col lg:min-h-96 gap-10 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.Audience
                   ? "ring-2 ring-violet-300"
                   : ""
