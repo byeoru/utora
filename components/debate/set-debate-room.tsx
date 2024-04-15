@@ -61,40 +61,42 @@ export default function SetDebateRoom({
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             찬성측
           </h2>
-          <div className="w-full grid grid-cols-2 gap-3 ">
+          <div className="w-full h-full grid grid-cols-2 gap-3 ">
             <button
               onClick={() => setMyRoleState({ debateRole: "Proponent" })}
-              className={`px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 lg:min-h-96 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.Proponent
-                  ? "bg-violet-200 ring-2 ring-violet-300"
+                  ? "ring-2 ring-violet-300"
                   : ""
               }`}
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg">| 토론 참여자</span>
                 <span className="font-notoKr text-sm text-start">
                   {PROPONENT_TEXT}
                 </span>
               </div>
-              <Fan
-                className={`size-6 ${
+              <div
+                className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
                   myRoleState?.debateRole === EDebateRole.Proponent
-                    ? "animate-ping"
+                    ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
-              />
+              >
+                <Fan className="size-6" />
+              </div>
             </button>
             <button
               onClick={() =>
                 setMyRoleState({ debateRole: "ProponentSupporter" })
               }
-              className={`px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 lg:min-h-96 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.ProponentSupporter
-                  ? "bg-violet-200 ring-2 ring-violet-300"
+                  ? "ring-2 ring-violet-300"
                   : ""
               }`}
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg self-center">
                   || 토론 서포터
                 </span>
@@ -102,13 +104,15 @@ export default function SetDebateRoom({
                   {PROPONENT_SUPPORTER_TEXT}
                 </span>
               </div>
-              <Flower
-                className={`size-6, ${
+              <div
+                className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
                   myRoleState?.debateRole === EDebateRole.ProponentSupporter
-                    ? "animate-ping"
+                    ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
-              />
+              >
+                <Flower className="size-6" />
+              </div>
             </button>
           </div>
         </div>
@@ -116,16 +120,16 @@ export default function SetDebateRoom({
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             반대측
           </h2>
-          <div className="w-full grid grid-cols-2 gap-3">
+          <div className="w-full h-full grid grid-cols-2 gap-3">
             <button
               onClick={() => setMyRoleState({ debateRole: "Opponent" })}
-              className={`px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col gap-10 lg:min-h-96 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.Opponent
-                  ? "bg-violet-200 ring-2 ring-violet-300"
+                  ? "ring-2 ring-violet-300"
                   : ""
               }`}
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg self-center">
                   | 토론 참여자
                 </span>
@@ -133,25 +137,27 @@ export default function SetDebateRoom({
                   {OPPONENT_TEXT}
                 </span>
               </div>
-              <Fan
-                className={`size-6 ${
+              <div
+                className={`w-full h-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
                   myRoleState?.debateRole === EDebateRole.Opponent
-                    ? "animate-ping"
+                    ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
-              />
+              >
+                <Fan className="size-6" />
+              </div>
             </button>
             <button
               onClick={() =>
                 setMyRoleState({ debateRole: "OpponentSupporter" })
               }
-              className={`px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col lg:min-h-96 gap-10 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.OpponentSupporter
-                  ? "bg-violet-200 ring-2 ring-violet-300"
+                  ? "ring-2 ring-violet-300"
                   : ""
               }`}
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg self-center">
                   || 토론 서포터
                 </span>
@@ -159,13 +165,15 @@ export default function SetDebateRoom({
                   {OPPONENT_SUPPORTER_TEXT}
                 </span>
               </div>
-              <Flower
-                className={`size-6 ${
+              <div
+                className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
                   myRoleState?.debateRole === EDebateRole.OpponentSupporter
-                    ? "animate-ping"
+                    ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
-              />
+              >
+                <Flower className="size-6" />
+              </div>
             </button>
           </div>
         </div>
@@ -173,28 +181,30 @@ export default function SetDebateRoom({
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             중립
           </h2>
-          <div className="w-full grid grid-cols-1 gap-3">
+          <div className="w-full h-full grid grid-cols-1 gap-3">
             <button
               onClick={() => setMyRoleState({ debateRole: "Audience" })}
-              className={`px-2 py-4 flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
+              className={`flex flex-col lg:min-h-96 gap-10 justify-between items-center rounded-md aspect-auto ${
                 myRoleState?.debateRole === EDebateRole.Audience
-                  ? "bg-violet-200 ring-2 ring-violet-300"
+                  ? "ring-2 ring-violet-300"
                   : ""
               }`}
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg self-center">| 관중</span>
                 <span className="font-notoKr text-sm text-start">
                   {AUDIENCE_TEXT}
                 </span>
               </div>
-              <Component
-                className={`size-6 ${
+              <div
+                className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
                   myRoleState?.debateRole === EDebateRole.Audience
-                    ? "animate-ping"
+                    ? "bg-violet-300 text-white *:animate-spin"
                     : ""
                 }`}
-              />
+              >
+                <Component className="size-6" />
+              </div>
             </button>
           </div>
         </div>
