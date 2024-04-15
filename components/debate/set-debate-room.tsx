@@ -138,7 +138,7 @@ export default function SetDebateRoom({
                 </span>
               </div>
               <div
-                className={`w-full h-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
+                className={`w-full flex justify-center items-center bg-slate-100 py-4 rounded-b-md transition-colors ${
                   myRoleState?.debateRole === EDebateRole.Opponent
                     ? "bg-violet-300 text-white *:animate-spin"
                     : ""
