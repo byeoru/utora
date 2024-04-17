@@ -1,8 +1,10 @@
 "use client";
 
 import {
-  GetDebateRoomMessagesType,
+  GetDebateCommentMessagesType,
+  GetDebateMessagesType,
   GetDebateRoomTopicInfoType,
+  GetDebateSupportMessagesType,
   GetMyDebateRole,
   saveMyDebateRole,
 } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
@@ -12,9 +14,19 @@ import { Component, Fan, Flower } from "lucide-react";
 import { EDebateRole } from "@prisma/client";
 import { useFormStatus } from "react-dom";
 import {
+  AUDIENCE_KR,
   AUDIENCE_TEXT,
+  DEBATER_KR,
+  DEBATE_SUPPORTER_KR,
+  NEUTRALITY_KR,
+  OPPONENT_KR,
+  OPPONENT_SIDE_KR,
+  OPPONENT_SUPPORTER_KR,
   OPPONENT_SUPPORTER_TEXT,
   OPPONENT_TEXT,
+  PROPONENT_KR,
+  PROPONENT_SIDE_KR,
+  PROPONENT_SUPPORTER_KR,
   PROPONENT_SUPPORTER_TEXT,
   PROPONENT_TEXT,
 } from "@/lib/constants";
@@ -25,7 +37,10 @@ interface SetDebateRoomPropsType {
   debateRoomId: string;
   userId?: number;
   nickname?: string;
-  initialMessages: GetDebateRoomMessagesType;
+  initialDebateMessages: GetDebateMessagesType;
+  initialSubMessages:
+    | GetDebateSupportMessagesType
+    | GetDebateCommentMessagesType;
   myDebateRole: GetMyDebateRole;
   topicInfo: GetDebateRoomTopicInfoType;
 }
@@ -35,7 +50,8 @@ export default function SetDebateRoom({
   debateRoomId,
   userId,
   nickname,
-  initialMessages,
+  initialDebateMessages,
+  initialSubMessages,
   myDebateRole,
   topicInfo,
 }: SetDebateRoomPropsType) {
@@ -68,7 +84,8 @@ export default function SetDebateRoom({
       nickname={nickname!}
       debateRole={savedRoleState.debate_role}
       debateRoleKr={savedRoleState.debate_role_kr}
-      initialMessages={initialMessages}
+      initialDebateMessages={initialDebateMessages}
+      initialSubMessages={initialSubMessages}
       topicInfo={topicInfo}
     />
   ) : (
@@ -76,14 +93,14 @@ export default function SetDebateRoom({
       <div className="w-full flex flex-col lg:flex-row gap-10 py-5">
         <div className="flex flex-col gap-5 items-center bg-slate-50 rounded-md">
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
-            찬성측
+            {PROPONENT_SIDE_KR}
           </h2>
           <div className="w-full lg:h-full grid grid-cols-2 gap-3 ">
             <button
               onClick={() =>
                 setMyRoleState({
                   debate_role: "Proponent",
-                  debate_role_kr: "찬성측 토론 참여자",
+                  debate_role_kr: PROPONENT_KR,
                 })
               }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
@@ -93,7 +110,7 @@ export default function SetDebateRoom({
               }`}
             >
               <div className="flex flex-col gap-2 px-2 py-4">
-                <span className="font-doHyeon text-lg">| 토론 참여자</span>
+                <span className="font-doHyeon text-lg">| {DEBATER_KR}</span>
                 <span className="font-notoKr text-sm text-start">
                   {PROPONENT_TEXT}
                 </span>
@@ -112,7 +129,7 @@ export default function SetDebateRoom({
               onClick={() =>
                 setMyRoleState({
                   debate_role: "ProponentSupporter",
-                  debate_role_kr: "찬성측 토론 서포터",
+                  debate_role_kr: PROPONENT_SUPPORTER_KR,
                 })
               }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
@@ -123,7 +140,7 @@ export default function SetDebateRoom({
             >
               <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg self-center">
-                  || 토론 서포터
+                  || {DEBATE_SUPPORTER_KR}
                 </span>
                 <span className="font-notoKr text-sm text-start">
                   {PROPONENT_SUPPORTER_TEXT}
@@ -143,14 +160,14 @@ export default function SetDebateRoom({
         </div>
         <div className="flex flex-col gap-5 items-center bg-slate-50 rounded-md">
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
-            반대측
+            {OPPONENT_SIDE_KR}
           </h2>
           <div className="w-full lg:h-full grid grid-cols-2 gap-3">
             <button
               onClick={() =>
                 setMyRoleState({
                   debate_role: "Opponent",
-                  debate_role_kr: "반대측 토론 참여자",
+                  debate_role_kr: OPPONENT_KR,
                 })
               }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
@@ -161,7 +178,7 @@ export default function SetDebateRoom({
             >
               <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg self-center">
-                  | 토론 참여자
+                  | {DEBATER_KR}
                 </span>
                 <span className="font-notoKr text-sm text-start">
                   {OPPONENT_TEXT}
@@ -181,7 +198,7 @@ export default function SetDebateRoom({
               onClick={() =>
                 setMyRoleState({
                   debate_role: "OpponentSupporter",
-                  debate_role_kr: "반대측 토론 서포터",
+                  debate_role_kr: OPPONENT_SUPPORTER_KR,
                 })
               }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${
@@ -192,7 +209,7 @@ export default function SetDebateRoom({
             >
               <div className="flex flex-col gap-2 px-2 py-4">
                 <span className="font-doHyeon text-lg self-center">
-                  || 토론 서포터
+                  || {DEBATE_SUPPORTER_KR}
                 </span>
                 <span className="font-notoKr text-sm text-start">
                   {OPPONENT_SUPPORTER_TEXT}
@@ -212,14 +229,14 @@ export default function SetDebateRoom({
         </div>
         <div className="flex flex-col gap-5 items-center bg-slate-50 rounded-md">
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
-            중립
+            {NEUTRALITY_KR}
           </h2>
           <div className="w-full lg:h-full grid grid-cols-1 gap-3">
             <button
               onClick={() =>
                 setMyRoleState({
                   debate_role: "Audience",
-                  debate_role_kr: "관중",
+                  debate_role_kr: AUDIENCE_KR,
                 })
               }
               className={`flex flex-col gap-10 justify-between items-center rounded-md aspect-auto ${

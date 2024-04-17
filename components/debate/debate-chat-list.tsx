@@ -1,8 +1,11 @@
 "use client";
 
 import {
-  GetDebateRoomMessagesType,
+  GetDebateCommentMessagesType,
+  GetDebateMessagesType,
   GetDebateRoomTopicInfoType,
+  GetDebateSupportMessagesType,
+  saveDebateMessage,
 } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
 import { SUPABASE_URL } from "@/lib/constants";
 import { EDebateRole } from "@prisma/client";
@@ -19,7 +22,10 @@ interface DebateChatListPropsType {
   nickname: string;
   debateRole: EDebateRole;
   debateRoleKr: string;
-  initialMessages: GetDebateRoomMessagesType;
+  initialDebateMessages: GetDebateMessagesType;
+  initialSubMessages:
+    | GetDebateSupportMessagesType
+    | GetDebateCommentMessagesType;
   topicInfo: GetDebateRoomTopicInfoType;
 }
 
@@ -30,26 +36,68 @@ export default function DebateChatList({
   nickname,
   debateRole,
   debateRoleKr,
-  initialMessages,
+  initialDebateMessages,
+  initialSubMessages,
   topicInfo,
 }: DebateChatListPropsType) {
-  const [allMessages, setAllMessages] = useState(initialMessages);
-  const [sendMessage, setSendMessage] = useState("");
+  const [debateMessages, setDebateMessages] = useState(initialDebateMessages);
+  const [sendDebateMessage, setSendDebateMessage] = useState("");
+  const [subMessages, setSubMessages] = useState(initialSubMessages);
+  const [sendSubMessage, setSendSubMessage] = useState("");
   const channel = useRef<RealtimeChannel>();
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onDebateMsgChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const {
       target: { value },
     } = event;
-    setSendMessage(value);
+    setSendDebateMessage(value);
   };
-  const onSubmit = async (event: React.FormEvent) => {
+  const onDebateMsgSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setAllMessages((prevMsgs) => [
+    setSendDebateMessage("");
+    await saveDebateMessage(debateRoomId, sendDebateMessage, debateRole);
+    await channel.current?.send({
+      type: "broadcast",
+      event: "message",
+      payload: {
+        id: Date.now(),
+        payload: sendDebateMessage,
+        created_at: new Date(),
+        debate_role: debateRole,
+        user_id: userId,
+        user: {
+          nickname,
+        },
+      },
+    });
+    setDebateMessages((prevMsgs) => [
       ...prevMsgs,
       {
         id: Date.now(),
-        payload: sendMessage,
+        payload: sendDebateMessage,
         created_at: new Date(),
+        debate_role: debateRole,
+        user_id: userId,
+        user: {
+          nickname,
+        },
+      },
+    ]);
+  };
+  const onSubMsgChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const {
+      target: { value },
+    } = event;
+    setSendSubMessage(value);
+  };
+  const onSubMsgSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setSubMessages((prevMsgs) => [
+      ...prevMsgs,
+      {
+        id: Date.now(),
+        payload: sendSubMessage,
+        created_at: new Date(),
+        debate_role: debateRole,
         user_id: userId,
         user: {
           nickname,
@@ -60,9 +108,22 @@ export default function DebateChatList({
   useEffect(() => {
     const client = createClient(SUPABASE_URL, supabasePublicKey);
     channel.current = client.channel(`debate-room-${debateRoomId}`);
-    channel.current.on("broadcast", { event: "message" }, (payload) => {
-      setAllMessages((prevMsgs) => [...prevMsgs, payload.payload]);
-    });
+    channel.current
+      .on("broadcast", { event: "message" }, (payload) => {
+        console.log(payload);
+        switch (payload.payload.debate_role) {
+          case "Proponent":
+          case "Opponent":
+            setDebateMessages((prevMsgs) => [...prevMsgs, payload.payload]);
+            break;
+          case "ProponentSupporter":
+          case "OpponentSupporter":
+          case "Audience":
+            setSubMessages((prevMsgs) => [...prevMsgs, payload.payload]);
+            break;
+        }
+      })
+      .subscribe();
     return () => {
       channel.current?.unsubscribe();
     };
@@ -88,15 +149,27 @@ export default function DebateChatList({
           토론방
         </span>
         <div
-          className={`w-full lg:flex-1 relative aspect-square bg-slate-100 shadow-md ${
+          className={`w-full flex lg:flex-1 relative aspect-square bg-slate-100 shadow-md ${
             debateRole === "Proponent" || debateRole === "Opponent"
               ? "pb-24"
               : ""
           }`}
         >
+          <div className="w-full p-3 flex flex-col flex-1">
+            {debateMessages.map((msg) => (
+              <div key={msg.id}>{msg.payload}</div>
+            ))}
+          </div>
           {debateRole === "Proponent" || debateRole === "Opponent" ? (
-            <form className="w-full absolute bottom-0 left-0 flex gap-1">
-              <textarea className="w-full h-24 resize-none border-none focus:ring-0" />
+            <form
+              onSubmit={onDebateMsgSubmit}
+              className="w-full absolute bottom-0 left-0 flex gap-1"
+            >
+              <textarea
+                value={sendDebateMessage}
+                onChange={onDebateMsgChange}
+                className="w-full h-24 resize-none border-none focus:ring-0"
+              />
               <Button className="p-5">
                 <Send className="size-5" />
               </Button>
@@ -133,9 +206,17 @@ export default function DebateChatList({
         <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">
           {subChatRoomName}
         </span>
-        <div className="w-full relative flex lg:flex-1 aspect-square bg-slate-100">
-          <form className="w-full flex gap-1 absolute bottom-0 left-0 shadow-md">
-            <textarea className="w-full h-24  resize-none border-none focus:ring-0" />
+        <div className="w-full relative pb-24 flex lg:flex-1 aspect-square bg-slate-100">
+          <div className="w-full flex flex-1 p-3"></div>
+          <form
+            onSubmit={onSubMsgSubmit}
+            className="w-full flex gap-1 absolute bottom-0 left-0 shadow-md"
+          >
+            <textarea
+              value={sendSubMessage}
+              onChange={onSubMsgChange}
+              className="w-full h-24  resize-none border-none focus:ring-0"
+            />
             <Button className="p-5">
               <Send className="size-5" />
             </Button>

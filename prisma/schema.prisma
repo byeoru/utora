@@ -39,6 +39,8 @@ model User {
   proposed_topic_dislikes ProposedTopicDislike[]
   this_week_topics ThisWeekTopic[]
   debate_messages DebateMessage[]
+  debate_support_messages DebateSupportMessage[]
+  debate_comments DebateComment[]
 }
 
 model Notice {
@@ -211,9 +213,11 @@ model DebateRoom {
 
   this_week_topic_id Int @unique
 
-  messages DebateMessage[]
+  debate_messages DebateMessage[]
+  debate_support_messages DebateSupportMessage[]
+  debate_comments DebateComment[]
   selected_debate_messages SelectedDebateMessage[]
-  joined_user_debate_role JoinedUserDebateRole[]
+  joined_user_debate_roles JoinedUserDebateRole[]
 }
 
 enum EDebateRole {
@@ -244,6 +248,43 @@ model JoinedUserDebateRole {
 model DebateMessage {
   id Int @id @default(autoincrement())
   payload String
+  debate_role EDebateRole
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  debate_room DebateRoom @relation(fields: [debate_room_id], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  debate_room_id String
+  user_id Int?
+
+  @@index([debate_room_id])
+  @@index([user_id])
+}
+
+model DebateSupportMessage {
+  id Int @id @default(autoincrement())
+  payload String
+  debate_role EDebateRole
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  debate_room DebateRoom @relation(fields: [debate_room_id], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  debate_room_id String
+  user_id Int?
+
+  @@index([debate_room_id])
+  @@index([user_id])
+}
+
+model DebateComment {
+  id Int @id @default(autoincrement())
+  payload String
+  debate_role EDebateRole
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
