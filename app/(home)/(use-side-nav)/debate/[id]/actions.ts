@@ -36,6 +36,9 @@ export async function getDebateRoomMessages(debateRoomId: string) {
   }
 }
 
+export type GetUserProfileType = Prisma.PromiseReturnType<
+  typeof getUserProfile
+>;
 export async function getUserProfile() {
   const session = await getSession();
   try {

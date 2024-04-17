@@ -1,6 +1,5 @@
 import { getThisWeekTopics } from "./actions";
-import { HandThumbDownIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
-import { categories } from "@/lib/constants";
+import { DELETED_ACCOUNT_NICKNAME, categories } from "@/lib/constants";
 import EnterRoomButton from "@/components/debate/enter-room-button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
@@ -46,7 +45,8 @@ export default async function Debate() {
                             <span className="font-jua text-xs flex gap-1 opacity-50">
                               <span>발의자:</span>
                               <span>
-                                {topic.user?.nickname ?? "@탈퇴한 계정"}
+                                {topic.user?.nickname ??
+                                  DELETED_ACCOUNT_NICKNAME}
                               </span>
                             </span>
                           </div>

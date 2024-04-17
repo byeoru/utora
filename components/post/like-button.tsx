@@ -1,5 +1,3 @@
-import { HandThumbUpIcon as HandThumbUpIconSolid } from "@heroicons/react/24/solid";
-import { HandThumbUpIcon as HandThumbUpIconOutline } from "@heroicons/react/24/outline";
 import { ChevronUp } from "lucide-react";
 
 interface LikeButtonPropsType {
@@ -10,7 +8,6 @@ interface LikeButtonPropsType {
 }
 
 export default function LikeButton({
-  isLiked,
   isDisliked,
   likeCount,
   onClick,

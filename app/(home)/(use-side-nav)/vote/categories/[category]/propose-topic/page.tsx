@@ -47,9 +47,9 @@ export default function ProposeTopic({
             {state?.fieldErrors.proposeReason}
           </span>
         </div>
-        <Button
-          text={<span className="font-notoKr text-white">작성완료</span>}
-        />
+        <Button>
+          <span className="font-notoKr text-white">작성완료</span>
+        </Button>
         <span>{state?.fieldErrors.category}</span>
       </form>
     </div>

@@ -43,7 +43,7 @@ export default function SignupForm() {
           type="text"
           errors={state?.fieldErrors.nickname}
         />
-        <Button text="가입하기" />
+        <Button className="w-full rounded-md">가입하기</Button>
         <div className="text-xs text-slate-500 text-center">
           이미 <span className="text-primary">유토라 </span>
           <span className="mr-2">회원이신가요?</span>

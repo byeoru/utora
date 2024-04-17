@@ -3,17 +3,18 @@
 import { useFormStatus } from "react-dom";
 
 interface ButtonPropsType {
-  text: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export default function Button({ text }: ButtonPropsType) {
+export default function Button({ children, className }: ButtonPropsType) {
   const { pending } = useFormStatus();
   return (
     <button
       disabled={pending}
-      className="w-full bg-primary py-3 rounded-md disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300"
+      className={`${className} bg-primary py-3 disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300`}
     >
-      {text}
+      {children}
     </button>
   );
 }

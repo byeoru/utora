@@ -1,8 +1,6 @@
 "use server";
 
 import db from "@/lib/db";
-import getSession from "@/lib/session";
-import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 
 export async function getThisWeekTopics() {

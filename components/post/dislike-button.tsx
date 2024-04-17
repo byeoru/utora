@@ -8,7 +8,6 @@ interface DislikeButtonPropsType {
 }
 
 export default function DislikeButton({
-  isDisliked,
   isLiked,
   dislikeCount,
   onClick,

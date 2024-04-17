@@ -93,14 +93,14 @@ export default function CommentGroup({
           className="w-full font-notoKr text-sm resize-none h-24 rounded-md overflow-hidden border-none focus:ring-0"
         />
         {state?.formErrors ? (
-          <span className=" text-red-600 text-sm">
+          <span className="text-red-600 text-sm">
             {state.formErrors.toString()}
           </span>
         ) : null}
         <div className="w-full sm:w-32 self-end">
-          <Button
-            text={<span className="text-white font-jua">작성완료</span>}
-          />
+          <Button>
+            <span className="text-white font-jua">작성완료</span>
+          </Button>
         </div>
       </form>
       <span className="font-jua text-lg">{`댓글 수: ${commentsCountState}`}</span>

@@ -5,6 +5,7 @@ import {
   likeTopic,
 } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
 import LikeDislikeGroup from "@/components/post/like-dislike-group";
+import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
 import { BookmarkMinus, BookmarkPlus } from "lucide-react";
 
@@ -39,7 +40,10 @@ export default function TopicItem({
         </span>
         <div className="flex justify-between items-center">
           <span className="font-jua text-slate-500 text-sm sm:text-base">
-            | 주제 발의자: <span className="text-primary">{nickname}</span>
+            | 주제 발의자:{" "}
+            <span className="text-primary">
+              {nickname ?? DELETED_ACCOUNT_NICKNAME}
+            </span>
           </span>
           {isLiked ? (
             <BookmarkPlus className="size-4 sm:size-5 text-red-600" />

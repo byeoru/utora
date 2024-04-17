@@ -18,12 +18,13 @@ import {
   PROPONENT_SUPPORTER_TEXT,
   PROPONENT_TEXT,
 } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 
 interface SetDebateRoomPropsType {
   supabasePublicKey: string;
   debateRoomId: string;
-  userId: number;
-  nickname: string;
+  userId?: number;
+  nickname?: string;
   initialMessages: GetDebateRoomMessagesType;
   myDebateRole: GetMyDebateRole;
   topicInfo: GetDebateRoomTopicInfoType;
@@ -38,9 +39,15 @@ export default function SetDebateRoom({
   myDebateRole,
   topicInfo,
 }: SetDebateRoomPropsType) {
+  const router = useRouter();
   const [myRoleState, setMyRoleState] = useState(myDebateRole);
   const [savedRoleState, setSavedRoleState] = useState(myDebateRole);
   const { pending } = useFormStatus();
+  if (!userId) {
+    // TODO: 나중에 수정할 것
+    alert("계정 정보를 찾을 수 없습니다 다시 로그인하세요.");
+    router.replace("/debate");
+  }
   const saveMyRole = async () => {
     if (!myRoleState) {
       alert("참여 진영을 선택하세요.");
@@ -57,8 +64,8 @@ export default function SetDebateRoom({
     <DebateChatList
       supabasePublicKey={supabasePublicKey}
       debateRoomId={debateRoomId}
-      userId={userId}
-      nickname={nickname}
+      userId={userId!}
+      nickname={nickname!}
       debateRole={savedRoleState.debate_role}
       debateRoleKr={savedRoleState.debate_role_kr}
       initialMessages={initialMessages}

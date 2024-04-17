@@ -4,7 +4,6 @@ import Tiptap from "@/components/editor/tiptap";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { post } from "./actions";
-import { notFound } from "next/navigation";
 
 export default function PostAdd() {
   const [content, setContent] = useState<string>("");
