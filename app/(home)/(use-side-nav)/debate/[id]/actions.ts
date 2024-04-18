@@ -90,6 +90,27 @@ export async function getDebateSupportMessages(debateRoomId: string) {
   }
 }
 
+export async function saveDebateSupportMessage(
+  debateRoomId: string,
+  message: string,
+  debateRole: EDebateRole
+) {
+  const session = await getSession();
+  try {
+    await db.debateSupportMessage.create({
+      data: {
+        payload: message,
+        user_id: session.id,
+        debate_room_id: debateRoomId,
+        debate_role: debateRole,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return notFound();
+  }
+}
+
 export type GetDebateCommentMessagesType = Prisma.PromiseReturnType<
   typeof getDebateSupportMessages
 >;
@@ -116,6 +137,27 @@ export async function getDebateCommentMessages(debateRoomId: string) {
       },
     });
     return messages;
+  } catch (error) {
+    console.log(error);
+    return notFound();
+  }
+}
+
+export async function saveDebateCommentMessage(
+  debateRoomId: string,
+  message: string,
+  debateRole: EDebateRole
+) {
+  const session = await getSession();
+  try {
+    await db.debateComment.create({
+      data: {
+        payload: message,
+        user_id: session.id,
+        debate_room_id: debateRoomId,
+        debate_role: debateRole,
+      },
+    });
   } catch (error) {
     console.log(error);
     return notFound();

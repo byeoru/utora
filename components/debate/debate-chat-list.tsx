@@ -5,7 +5,9 @@ import {
   GetDebateMessagesType,
   GetDebateRoomTopicInfoType,
   GetDebateSupportMessagesType,
+  saveDebateCommentMessage,
   saveDebateMessage,
+  saveDebateSupportMessage,
 } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
 import { SUPABASE_URL } from "@/lib/constants";
 import { EDebateRole } from "@prisma/client";
@@ -61,6 +63,7 @@ export default function DebateChatList({
       payload: {
         id: Date.now(),
         payload: sendDebateMessage,
+        room: "debate",
         created_at: new Date(),
         debate_role: debateRole,
         user_id: userId,
@@ -91,6 +94,41 @@ export default function DebateChatList({
   };
   const onSubMsgSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setSendSubMessage("");
+    switch (debateRole) {
+      case "Audience":
+        await saveDebateCommentMessage(
+          debateRoomId,
+          sendSubMessage,
+          debateRole
+        );
+        break;
+      case "Proponent":
+      case "ProponentSupporter":
+      case "Opponent":
+      case "OpponentSupporter":
+        await saveDebateSupportMessage(
+          debateRoomId,
+          sendSubMessage,
+          debateRole
+        );
+        break;
+    }
+    await channel.current?.send({
+      type: "broadcast",
+      event: "message",
+      payload: {
+        id: Date.now(),
+        payload: sendSubMessage,
+        room: "sub",
+        created_at: new Date(),
+        debate_role: debateRole,
+        user_id: userId,
+        user: {
+          nickname,
+        },
+      },
+    });
     setSubMessages((prevMsgs) => [
       ...prevMsgs,
       {
@@ -110,17 +148,29 @@ export default function DebateChatList({
     channel.current = client.channel(`debate-room-${debateRoomId}`);
     channel.current
       .on("broadcast", { event: "message" }, (payload) => {
-        console.log(payload);
-        switch (payload.payload.debate_role) {
-          case "Proponent":
-          case "Opponent":
-            setDebateMessages((prevMsgs) => [...prevMsgs, payload.payload]);
-            break;
-          case "ProponentSupporter":
-          case "OpponentSupporter":
-          case "Audience":
-            setSubMessages((prevMsgs) => [...prevMsgs, payload.payload]);
-            break;
+        const recievedData = payload.payload;
+        if (payload.payload.room === "debate") {
+          setDebateMessages((prevMsgs) => [...prevMsgs, recievedData]);
+          return;
+        }
+        if (payload.payload.room === "sub") {
+          if (
+            (debateRole === "Proponent" ||
+              debateRole === "ProponentSupporter") &&
+            (recievedData.room === "Proponent" ||
+              recievedData.room === "ProponentSupporter")
+          ) {
+            setSubMessages((prevMsgs) => [...prevMsgs, recievedData]);
+            return;
+          }
+          if (
+            (debateRole === "Opponent" || debateRole === "OpponentSupporter") &&
+            (recievedData.room === "Opponent" ||
+              recievedData.room === "OpponentSupporter")
+          ) {
+            setSubMessages((prevMsgs) => [...prevMsgs, recievedData]);
+            return;
+          }
         }
       })
       .subscribe();
@@ -207,7 +257,11 @@ export default function DebateChatList({
           {subChatRoomName}
         </span>
         <div className="w-full relative pb-24 flex lg:flex-1 aspect-square bg-slate-100">
-          <div className="w-full flex flex-1 p-3"></div>
+          <div className="w-full flex flex-col flex-1 p-3">
+            {subMessages.map((msg) => (
+              <div key={msg.id}>{msg.payload}</div>
+            ))}
+          </div>
           <form
             onSubmit={onSubMsgSubmit}
             className="w-full flex gap-1 absolute bottom-0 left-0 shadow-md"
