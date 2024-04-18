@@ -50,22 +50,24 @@ export default async function Debate() {
                               </span>
                             </span>
                           </div>
-                          <div className="flex gap-3 justify-end font-doHyeon">
-                            <div className="flex items-center gap-1">
-                              <ChevronUp className="size-4 text-red-400" />
-                              <span className="text-xs text-slate-500">
-                                {topic.like_count}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <ChevronDown className="size-4 text-blue-400" />
-                              <span className="text-xs text-slate-500">
-                                {topic.dislike_count}
-                              </span>
+                          <div className="flex  justify-between font-doHyeon">
+                            <EnterRoomButton thisWeekTopicId={topic.id} />
+                            <div className="flex gap-3">
+                              <div className="flex items-center gap-1">
+                                <ChevronUp className="size-4 text-red-400" />
+                                <span className="text-xs text-slate-500">
+                                  {topic.like_count}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <ChevronDown className="size-4 text-blue-400" />
+                                <span className="text-xs text-slate-500">
+                                  {topic.dislike_count}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <EnterRoomButton thisWeekTopicId={topic.id} />
                       </li>
                     ))}
                 </ul>
