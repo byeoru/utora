@@ -24,8 +24,8 @@ export default function PostAdd() {
   };
 
   return (
-    <div className="mx-auto max-w-screen-md px-3">
-      <h1 className="font-jua text-2xl text-primary mb-5 mt-10">자유게시판</h1>
+    <div className="w-full mx-auto max-w-screen-md p-2 sm:mt-8 lg:mt-12">
+      <h1 className="font-jua text-2xl text-primary">자유게시판</h1>
       <form className="flex flex-col" action={onSubmit}>
         <input
           name="title"

@@ -1,6 +1,6 @@
+import JoinDebateButton from "@/components/debate/join-debate-button";
 import { getThisWeekTopics } from "./actions";
 import { DELETED_ACCOUNT_NICKNAME, categories } from "@/lib/constants";
-import EnterRoomButton from "@/components/debate/enter-room-button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default async function Debate() {
@@ -37,7 +37,7 @@ export default async function Debate() {
                         key={topic.id}
                         className="w-full flex lg:flex-col gap-2"
                       >
-                        <div className="w-full bg-white shadow-md rounded-lg p-3 flex flex-col aspect-auto gap-3 ring-1 ring-violet-100">
+                        <div className="w-full bg-white shadow-md rounded-lg p-3 flex flex-col aspect-auto gap-3">
                           <span className="font-notoKr font-semibold text-xs lg:text-sm">
                             {topic.topic}
                           </span>
@@ -51,7 +51,7 @@ export default async function Debate() {
                             </span>
                           </div>
                           <div className="flex  justify-between font-doHyeon">
-                            <EnterRoomButton thisWeekTopicId={topic.id} />
+                            <JoinDebateButton thisWeekTopicId={topic.id} />
                             <div className="flex gap-3">
                               <div className="flex items-center gap-1">
                                 <ChevronUp className="size-4 text-red-400" />

@@ -7,8 +7,7 @@ export default function Categories() {
       <div className="w-full shadow-md p-5 lg:p-12 bg-slate-50 gap-2 flex flex-col justify-center items-center">
         <div className="w-full flex flex-col gap-2 justify-center items-center max-w-screen-lg m-auto break-words">
           <span className="font-notoKr font-bold text-sm lg:text-lg">
-            사회, 과학, 기술, 환경 등 다양한 카테고리 중 관심 있는 카테고리를
-            선택하세요.
+            관심 있는 카테고리를 선택하세요.
           </span>
           <span className="font-notoKr font-semibold text-xs lg:text-base">
             직접 토론 주제를 발의하거나 타인이 발의한 주제에 투표할 수 있습니다.

@@ -1,7 +1,7 @@
 import SideNavigationGroup from "@/components/nav/side-navigation-group";
 import SideNavigationItem from "@/components/nav/side-navigation-item";
 import { ArrowTrendingUpIcon, HomeIcon } from "@heroicons/react/24/outline";
-import { Speech, Vote } from "lucide-react";
+import { ClipboardList, Speech, Vote } from "lucide-react";
 
 export default function RootLayout({
   children,
@@ -21,6 +21,13 @@ export default function RootLayout({
             href="/popular"
             text="인기"
             icon={<ArrowTrendingUpIcon className="size-6" />}
+          />
+        </SideNavigationGroup>
+        <SideNavigationGroup>
+          <SideNavigationItem
+            href="/posts"
+            text="게시판"
+            icon={<ClipboardList className="size-6" />}
           />
         </SideNavigationGroup>
         <SideNavigationGroup>

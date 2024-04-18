@@ -12,7 +12,7 @@ interface EnterRoomButtonPropsType {
   thisWeekTopicId: number;
 }
 
-export default function EnterRoomButton({
+export default function JoinDebateButton({
   thisWeekTopicId,
 }: EnterRoomButtonPropsType) {
   const { pending } = useFormStatus();
@@ -31,7 +31,7 @@ export default function EnterRoomButton({
     >
       <button
         disabled={pending}
-        className="size-full bg-blue-400 rounded-full relative flex justify-center items-center group"
+        className="size-full bg-emerald-400 rounded-full relative flex justify-center items-center group"
       >
         <span className="group-hover:text-opacity-100 text-opacity-0 text-white text-sm font-jua">
           입장

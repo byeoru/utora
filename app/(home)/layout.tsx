@@ -2,7 +2,7 @@ import LoginButton from "@/components/auth/login-button";
 import NoticeButton from "@/components/nav/notice-button";
 import TopNavigationItem from "@/components/nav/top-navigation-item";
 import { ArrowTrendingUpIcon, HomeIcon } from "@heroicons/react/24/outline";
-import { Speech, Vote } from "lucide-react";
+import { ClipboardList, Speech, Vote } from "lucide-react";
 import Link from "next/link";
 
 export default function RootLayout({
@@ -30,6 +30,10 @@ export default function RootLayout({
           <TopNavigationItem
             href="/popular"
             icon={<ArrowTrendingUpIcon className="size-5" />}
+          />
+          <TopNavigationItem
+            href="/posts"
+            icon={<ClipboardList className="size-5" />}
           />
           <TopNavigationItem
             href="/vote/categories"
