@@ -61,11 +61,15 @@ export async function saveDebateMessage(
 export type GetDebateSupportMessagesType = Prisma.PromiseReturnType<
   typeof getDebateSupportMessages
 >;
-export async function getDebateSupportMessages(debateRoomId: string) {
+export async function getDebateSupportMessages(
+  debateRoomId: string,
+  debateRole: EDebateRole
+) {
   try {
     const messages = await db.debateSupportMessage.findMany({
       where: {
         debate_room_id: debateRoomId,
+        debate_role: debateRole,
       },
       select: {
         id: true,
@@ -112,7 +116,7 @@ export async function saveDebateSupportMessage(
 }
 
 export type GetDebateCommentMessagesType = Prisma.PromiseReturnType<
-  typeof getDebateSupportMessages
+  typeof getDebateCommentMessages
 >;
 export async function getDebateCommentMessages(debateRoomId: string) {
   try {
@@ -186,7 +190,9 @@ export async function getUserProfile() {
   }
 }
 
-export type GetMyDebateRole = Prisma.PromiseReturnType<typeof getMyDebateRole>;
+export type GetMyDebateRoleType = Prisma.PromiseReturnType<
+  typeof getMyDebateRole
+>;
 export async function getMyDebateRole(debateRoomId: string) {
   const session = await getSession();
   try {
@@ -216,35 +222,31 @@ export async function saveMyDebateRole(
 ) {
   const session = await getSession();
   try {
-    const myDebateRole = await db.joinedUserDebateRole.create({
+    await db.joinedUserDebateRole.create({
       data: {
         user_id: session.id,
         debate_room_id: debateRoomId,
         debate_role: debateRole,
         debate_role_kr: debateRoleKr,
       },
-      select: {
-        debate_role: true,
-        debate_role_kr: true,
-      },
     });
-    return myDebateRole;
   } catch (error) {
     console.log(error);
     return notFound();
   }
 }
 
-export type GetDebateRoomTopicInfoType = Prisma.PromiseReturnType<
-  typeof getDebateRoomTopicInfo
+export type GetDebateRoomInfoType = Prisma.PromiseReturnType<
+  typeof getDebateRoomInfo
 >;
-export async function getDebateRoomTopicInfo(debateRoomId: string) {
+export async function getDebateRoomInfo(debateRoomId: string) {
   try {
     const debateRoom = await db.debateRoom.findUnique({
       where: {
         id: debateRoomId,
       },
       select: {
+        created_at: true,
         this_week_topic: {
           select: {
             topic: true,
@@ -253,7 +255,7 @@ export async function getDebateRoomTopicInfo(debateRoomId: string) {
         },
       },
     });
-    return debateRoom?.this_week_topic;
+    return debateRoom;
   } catch (error) {
     console.log(error);
     return notFound();

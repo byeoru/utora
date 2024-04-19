@@ -1,5 +1,6 @@
 "use client";
 
+import { getMyDebateRole } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
 import {
   checkDebateRoom,
   createDebateRoom,
@@ -22,7 +23,13 @@ export default function JoinDebateButton({
     if (!roomId) {
       roomId = await createDebateRoom(thisWeekTopicId);
     }
-    await router.push(`/debate/${roomId}`);
+    const myDebateRole = await getMyDebateRole(roomId);
+    // debate-role check
+    if (!myDebateRole) {
+      router.push(`/debate/${roomId}/debate-role`);
+      return;
+    }
+    router.push(`/debate/${roomId}`);
   };
   return (
     <form
