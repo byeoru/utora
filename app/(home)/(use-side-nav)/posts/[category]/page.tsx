@@ -20,10 +20,14 @@ export default async function PostCategory({
   return (
     <div className="flex flex-col m-auto max-w-screen-lg">
       <div className="flex flex-col p-1 pb-2 gap-1 shadow-sm">
-        <div className="flex items-center gap-2">
+        <div className="flex justify-between items-center gap-2">
           <span className="font-jua text-lg">| 게시판</span>
-          <Link href="/posts/add">
-            <PencilSquareIcon className="size-6 bg-emerald-500 text-white rounded-md p-0.5" />
+          <Link
+            href="/posts/add"
+            className="flex items-center bg-emerald-500 text-white rounded-md px-1 py-0.5 gap-2"
+          >
+            <PencilSquareIcon className="size-6" />
+            <span className="text-sm font-notoKr font-semibold">글쓰기</span>
           </Link>
         </div>
         <div className="flex items-center">
