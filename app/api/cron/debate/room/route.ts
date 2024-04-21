@@ -45,17 +45,32 @@ export async function POST() {
   }
   try {
     await db.thisWeekTopic.createMany({
-      data: [...toFlattenArray(selectedTopics), {}],
+      data: [...toFlattenArray(selectedTopics)],
     });
-    return Response.json({ ok: true });
   } catch (error) {
     try {
       await db.thisWeekTopic.createMany({
         data: [...toFlattenArray(selectedTopics)],
       });
-      return Response.json({ ok: true });
     } catch (error) {
       return Response.error();
     }
+  }
+  try {
+    const thisWeekTopics = await db.thisWeekTopic.findMany({
+      select: {
+        id: true,
+      },
+    });
+    await db.debateRoom.createMany({
+      data: [
+        ...thisWeekTopics.map((topic) => {
+          return { this_week_topic_id: topic.id };
+        }),
+      ],
+    });
+    return Response.json({ ok: true });
+  } catch (error) {
+    return Response.error();
   }
 }

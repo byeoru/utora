@@ -32,7 +32,7 @@ export default function RootLayout({
             icon={<ArrowTrendingUpIcon className="size-5" />}
           />
           <TopNavigationItem
-            href="/posts"
+            href="/posts/general"
             icon={<ClipboardList className="size-5" />}
           />
           <TopNavigationItem

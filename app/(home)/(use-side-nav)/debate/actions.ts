@@ -36,7 +36,7 @@ export async function getThisWeekTopics() {
   }
 }
 
-export async function checkDebateRoom(thisWeekTopicId: number) {
+export async function getDebateRoomId(thisWeekTopicId: number) {
   try {
     const thisWeekTopic = await db.thisWeekTopic.findUnique({
       where: {
@@ -47,27 +47,6 @@ export async function checkDebateRoom(thisWeekTopicId: number) {
       },
     });
     return thisWeekTopic?.debate_room?.id;
-  } catch (error) {
-    console.log(error);
-    return notFound();
-  }
-}
-
-export async function createDebateRoom(thisWeekTopicId: number) {
-  try {
-    const room = await db.debateRoom.create({
-      data: {
-        this_week_topic: {
-          connect: {
-            id: thisWeekTopicId,
-          },
-        },
-      },
-      select: {
-        id: true,
-      },
-    });
-    return room.id;
   } catch (error) {
     console.log(error);
     return notFound();

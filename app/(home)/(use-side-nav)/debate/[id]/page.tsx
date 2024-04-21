@@ -1,4 +1,3 @@
-import DebateChatList from "@/components/debate/room/debate-chat-list";
 import {
   getDebateCommentMessages,
   getDebateMessages,
@@ -7,10 +6,11 @@ import {
   getMyDebateRole,
   getUserProfile,
 } from "./actions";
-import SupportChatList from "@/components/debate/room/support-chat-list";
 import { notFound } from "next/navigation";
-import CommentChatList from "@/components/debate/room/comment-chat-list";
 import crypto from "crypto";
+import DebateChatList from "@/components/debate/room/debate-chat-list";
+import CommentChatList from "@/components/debate/room/comment-chat-list";
+import SupportChatList from "@/components/debate/room/support-chat-list";
 
 export default async function DebateRoom({
   params,
@@ -30,7 +30,7 @@ export default async function DebateRoom({
     // 나중에 코드 개선할 것
     return notFound();
   }
-  switch (myDebateRole?.debate_role) {
+  switch (myDebateRole.debate_role) {
     case "Audience":
       subChatNameKr = "댓글창";
       subChannelName = "comment";
@@ -76,10 +76,6 @@ export default async function DebateRoom({
       "sha512"
     )
     .toString("base64");
-
-  console.log(
-    `${myDebateRole.debate_role_kr}, created_at: ${debateRoomInfo.created_at}, params.id: ${params.id}, debate channel: ${hashDebateChannelName}`
-  );
   return (
     <div className="w-full lg:h-full pb-5 lg:p-2 flex flex-col lg:flex-row gap-5 max-w-screen-2xl">
       <DebateChatList

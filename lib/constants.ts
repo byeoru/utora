@@ -1,3 +1,5 @@
+import { EPostCategory } from "@prisma/client";
+
 // email
 export const REQUIRED_ERROR_EMAIL = "이메일을 입력하세요.";
 export const DESCRIPTION_EMAIL = "반드시 사용 가능한 이메일을 입력하세요.";
@@ -43,6 +45,7 @@ export const MIN_LENGTH_POST_NAME_ERROR =
 export const MIN_LENGTH_POST_CONTENT = 10;
 export const MIN_LENGTH_POST_CONTENT_ERROR =
   "본문은 최소 10글자 이상이어야 합니다.";
+export const SELECT_POST_CATEGORY = "게시판 카테고리를 선택해주세요.";
 
 // comment
 export const MIN_LENGTH_COMMENT = 1;
@@ -125,6 +128,11 @@ export const categories: ObjectType = {
       "과거의 교훈과 현대 사회에 대한 인사이트를 제공하며, 역사와 인류학의 풍부한 지식을 나눕니다.",
     icon: null,
   },
+};
+
+export const postCategories: ObjectType = {
+  general: { title: "자유" },
+  ...categories,
 };
 
 // debate room

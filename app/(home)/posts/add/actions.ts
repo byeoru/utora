@@ -20,6 +20,7 @@ export async function post(formData: FormData) {
   const validation = postSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
+    postCategory: formData.get("postCategory"),
   });
 
   if (!validation.success) {
@@ -31,6 +32,7 @@ export async function post(formData: FormData) {
       data: {
         title: validation.data.title,
         content: validation.data.content,
+        category: "culture_arts",
         user: {
           connect: {
             id: session.id,

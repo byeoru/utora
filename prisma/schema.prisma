@@ -9,6 +9,33 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum EDebateCategory {
+  politics_society
+  economy_finance
+  culture_arts
+  science_technology
+  sports_entertainment
+  environment_sustainability
+  education_scholarship
+  health_well_being
+  religion_philosophy
+  history_anthropology
+}
+
+enum EPostCategory {
+  general
+  politics_society
+  economy_finance
+  culture_arts
+  science_technology
+  sports_entertainment
+  environment_sustainability
+  education_scholarship
+  health_well_being
+  religion_philosophy
+  history_anthropology
+}
+
 model Admin {
   id Int @id @default(autoincrement())
   email String? @unique
@@ -32,11 +59,9 @@ model User {
 
   posts Post[]
   post_comments PostComment[]
-  post_likes PostLike[]
-  post_dislikes PostDislike[]
+  post_reactions PostReaction[]
   proposed_topics ProposedTopic[]
-  proposed_topic_likes ProposedTopicLike[]
-  proposed_topic_dislikes ProposedTopicDislike[]
+  proposed_topic_reactions ProposedTopicReaction[]
   this_week_topics ThisWeekTopic[]
   debate_messages DebateMessage[]
   debate_support_messages DebateSupportMessage[]
@@ -65,17 +90,20 @@ model Post {
   like_count Int @default(0)
   dislike_count Int @default(0)
   views Int @default(0)
+  category EPostCategory
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+
   user_id Int
 
   @@index([user_id])
 
   comments PostComment[]
+  post_reactions PostReaction[]
 }
 
 model PostComment {
@@ -95,41 +123,26 @@ model PostComment {
   @@index([post_id])
 }
 
-model PostLike {
+enum Reaction {
+  like
+  dislike
+}
+
+model PostReaction {
+  reaction Reaction
+  
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  
+  post Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
+
   user_id Int
   post_id Int
 
   @@id(name: "id", [user_id, post_id])
-}
 
-model PostDislike {
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  
-  user_id Int
-  post_id Int
-
-  @@id(name: "id", [user_id, post_id])
-}
-
-enum EDebateCategory {
-  politics_society
-  economy_finance
-  culture_arts
-  science_technology
-  sports_entertainment
-  environment_sustainability
-  education_scholarship
-  health_well_being
-  religion_philosophy
-  history_anthropology
+  @@index([post_id])
 }
 
 model ProposedTopic {
@@ -149,26 +162,12 @@ model ProposedTopic {
 
   @@index([user_id])
 
-  proposed_topic_likes ProposedTopicLike[]
-  proposed_topic_dislikes ProposedTopicDislike[]
+  proposed_topic_reactions ProposedTopicReaction[]
 }
 
-model ProposedTopicLike {
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+model ProposedTopicReaction {
+  reaction Reaction
 
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  proposed_topic ProposedTopic @relation(fields: [proposed_topic_id], references: [id], onDelete: Cascade)
-  
-  user_id Int
-  proposed_topic_id Int
-
-  @@id(name: "id", [user_id, proposed_topic_id])
-
-  @@index([proposed_topic_id])
-}
-
-model ProposedTopicDislike {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

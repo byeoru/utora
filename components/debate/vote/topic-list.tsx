@@ -54,8 +54,16 @@ export default function TopicList({
             createdAt={topic.created_at}
             likeCount={topic.like_count}
             dislikeCount={topic.dislike_count}
-            isLiked={topic.proposed_topic_likes.length > 0}
-            isDisliked={topic.proposed_topic_dislikes.length > 0}
+            isLiked={
+              topic.proposed_topic_reactions.filter(
+                (reaction) => reaction.reaction === "like"
+              ).length > 0
+            }
+            isDisliked={
+              topic.proposed_topic_reactions.filter(
+                (reaction) => reaction.reaction === "dislike"
+              ).length > 0
+            }
           />
         ))}
       </ul>

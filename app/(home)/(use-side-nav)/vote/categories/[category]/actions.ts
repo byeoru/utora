@@ -27,23 +27,15 @@ export async function getTopics(
         id: true,
         topic: true,
         propose_reason: true,
-        created_at: true,
         like_count: true,
         dislike_count: true,
-        proposed_topic_likes: {
+        created_at: true,
+        proposed_topic_reactions: {
           where: {
             user_id: session.id,
           },
           select: {
-            user_id: true,
-          },
-        },
-        proposed_topic_dislikes: {
-          where: {
-            user_id: session.id,
-          },
-          select: {
-            user_id: true,
+            reaction: true,
           },
         },
         user: {
@@ -63,10 +55,11 @@ export async function getTopics(
 export async function likeTopic(topicId: number) {
   const session = await getSession();
   try {
-    await db.proposedTopicLike.create({
+    await db.proposedTopicReaction.create({
       data: {
         user_id: session.id,
         proposed_topic_id: topicId,
+        reaction: "like",
       },
     });
     await db.proposedTopic.update({
@@ -85,7 +78,7 @@ export async function likeTopic(topicId: number) {
 export async function cancelLikeTopic(topicId: number) {
   const session = await getSession();
   try {
-    await db.proposedTopicLike.delete({
+    await db.proposedTopicReaction.delete({
       where: {
         id: {
           user_id: session.id,
@@ -109,10 +102,11 @@ export async function cancelLikeTopic(topicId: number) {
 export async function dislikeTopic(topicId: number) {
   const session = await getSession();
   try {
-    await db.proposedTopicDislike.create({
+    await db.proposedTopicReaction.create({
       data: {
         user_id: session.id,
         proposed_topic_id: topicId,
+        reaction: "dislike",
       },
     });
     await db.proposedTopic.update({
@@ -131,7 +125,7 @@ export async function dislikeTopic(topicId: number) {
 export async function cancelDislikeTopic(topicId: number) {
   const session = await getSession();
   try {
-    await db.proposedTopicDislike.delete({
+    await db.proposedTopicReaction.delete({
       where: {
         id: {
           user_id: session.id,

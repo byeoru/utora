@@ -1,10 +1,7 @@
 "use client";
 
 import { getMyDebateRole } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
-import {
-  checkDebateRoom,
-  createDebateRoom,
-} from "@/app/(home)/(use-side-nav)/debate/actions";
+import { getDebateRoomId } from "@/app/(home)/(use-side-nav)/debate/actions";
 import { ArrowRightCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
@@ -19,10 +16,12 @@ export default function JoinDebateButton({
   const { pending } = useFormStatus();
   const router = useRouter();
   const enterDebateRoom = async () => {
-    let roomId = await checkDebateRoom(thisWeekTopicId);
+    let roomId = await getDebateRoomId(thisWeekTopicId);
     if (!roomId) {
-      roomId = await createDebateRoom(thisWeekTopicId);
+      alert("토론방을 찾을 수 없습니다.");
+      return;
     }
+    // login 하지 않았을 경우 login page로 redirect
     const myDebateRole = await getMyDebateRole(roomId);
     // debate-role check
     if (!myDebateRole) {

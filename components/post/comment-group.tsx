@@ -1,12 +1,5 @@
 "use client";
 
-import {
-  CommentsType,
-  SaveCommentType,
-  deleteComment,
-  getComments,
-  saveComment,
-} from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
 import { useFormState } from "react-dom";
 import Button from "../button";
 import { useEffect, useRef, useState } from "react";
@@ -17,6 +10,13 @@ import {
   FETCH_COMMENTS_ERROR,
   FETCH_COMMENTS_SIZE,
 } from "@/lib/constants";
+import {
+  CommentsType,
+  SaveCommentType,
+  deleteComment,
+  getComments,
+  saveComment,
+} from "@/app/(home)/(use-side-nav)/posts/[category]/[id]/actions";
 
 interface CommentGroupPropsType {
   commentsCount: number;
@@ -90,7 +90,7 @@ export default function CommentGroup({
           ref={textareaRef}
           name="comment"
           id="comment"
-          className="w-full font-notoKr text-sm resize-none h-24 rounded-md overflow-hidden border-none focus:ring-0"
+          className="w-full font-notoKr text-sm resize-none h-24 rounded-md overflow-hidden border-none focus:ring-0 bg-slate-200"
         />
         {state?.formErrors ? (
           <span className="text-red-600 text-sm">
@@ -98,7 +98,7 @@ export default function CommentGroup({
           </span>
         ) : null}
         <div className="w-full sm:w-32 self-end">
-          <Button>
+          <Button className="w-full rounded-md">
             <span className="text-white font-jua">작성완료</span>
           </Button>
         </div>

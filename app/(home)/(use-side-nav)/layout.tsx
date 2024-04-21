@@ -25,7 +25,7 @@ export default function RootLayout({
         </SideNavigationGroup>
         <SideNavigationGroup>
           <SideNavigationItem
-            href="/posts"
+            href="/posts/general"
             text="게시판"
             icon={<ClipboardList className="size-6" />}
           />

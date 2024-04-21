@@ -57,8 +57,16 @@ export default async function VoteCategory({
                     likeCount={topic.like_count}
                     dislikeCount={topic.dislike_count}
                     nickname={topic.user?.nickname}
-                    isLiked={topic.proposed_topic_likes.length > 0}
-                    isDisliked={topic.proposed_topic_dislikes.length > 0}
+                    isLiked={
+                      topic.proposed_topic_reactions.filter(
+                        (reaction) => reaction.reaction === "like"
+                      ).length > 0
+                    }
+                    isDisliked={
+                      topic.proposed_topic_reactions.filter(
+                        (reaction) => reaction.reaction === "dislike"
+                      ).length > 0
+                    }
                   />
                 );
               })}

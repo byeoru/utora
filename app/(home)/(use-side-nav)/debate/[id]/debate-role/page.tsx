@@ -19,15 +19,15 @@ import {
   PROPONENT_SUPPORTER_TEXT,
   PROPONENT_TEXT,
 } from "@/lib/constants";
-import { GetMyDebateRoleType, saveMyDebateRole } from "../actions";
-import { useState } from "react";
+import { GetMyDebateRoleType, getMyDebateRole } from "../actions";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { saveMyDebateRole } from "./actions";
 
 export default function SetDebateRole({ params }: { params: { id: string } }) {
   const [myRoleState, setMyRoleState] = useState<GetMyDebateRoleType>(null);
   const { pending } = useFormStatus();
-  const router = useRouter();
   const saveMyRole = async () => {
     if (!myRoleState) {
       alert("참여 포지션 선택하세요.");
@@ -38,8 +38,17 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
       myRoleState.debate_role,
       myRoleState.debate_role_kr
     );
-    router.replace(`/debate/${params.id}`);
+    redirect(`/debate/${params.id}`);
   };
+  const myDebateRoleCheck = async () => {
+    const myDebateRole = await getMyDebateRole(params.id);
+    if (myDebateRole) {
+      redirect(`/debate/${params.id}`);
+    }
+  };
+  useEffect(() => {
+    myDebateRoleCheck();
+  });
   return (
     <div className="w-full flex flex-col lg:gap-10 justify-center items-center p-2 max-w-screen-xl m-auto ">
       <div className="w-full flex flex-col lg:flex-row gap-10 py-5">
