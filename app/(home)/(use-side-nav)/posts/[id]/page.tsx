@@ -35,7 +35,7 @@ export default async function PostDetail({
         </h1>
       </div>
       <div className="max-w-screen-lg m-auto flex md:gap-2">
-        <div className="w-full flex flex-col gap-3 ">
+        <div className="w-full flex flex-col gap-1">
           <div className="flex flex-col gap-10 p-5">
             <div className="flex flex-col gap-2">
               <h2 className="text-xl font-notoKr">{post.title}</h2>

@@ -16,7 +16,7 @@ import {
   deleteComment,
   getComments,
   saveComment,
-} from "@/app/(home)/(use-side-nav)/posts/[category]/[id]/actions";
+} from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
 
 interface CommentGroupPropsType {
   commentsCount: number;
@@ -84,7 +84,7 @@ export default function CommentGroup({
   };
 
   return (
-    <div className="w-full flex flex-col gap-10 p-5 text-slate-500">
+    <div className="w-full flex flex-col gap-6 p-5 text-slate-500">
       <form action={action} className="flex flex-col gap-3">
         <textarea
           ref={textareaRef}

@@ -1,9 +1,10 @@
 "use server";
 
 import db from "@/lib/db";
-import { EPostCategory } from "@prisma/client";
+import { EPostCategory, Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 
+export type GetPostsType = Prisma.PromiseReturnType<typeof getPosts>;
 export async function getPosts(category: EPostCategory) {
   try {
     const posts = await db.post.findMany({
