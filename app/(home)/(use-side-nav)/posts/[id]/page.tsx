@@ -29,7 +29,7 @@ export default async function PostDetail({
   return (
     <>
       <div className="w-full px-2 py-1 border-b-2 border-slate-200 bg-primary shadow-md block">
-        <h1 className="font-doHyeon mx-auto text-2xl max-w-screen-lg">
+        <h1 className="font-jua mx-auto text-lg sm:text-2xl max-w-screen-lg">
           {`${categories[post.category].title} 게시판`}
         </h1>
       </div>

@@ -45,7 +45,7 @@ export default function PostCategory() {
             {Object.keys(postCategories).map((category, index) => (
               <button
                 onClick={() => setCategoryState(category as EPostCategory)}
-                className={`flex justify-center items-center px-2 py-1 shadow-md rounded-md text-sm font-notoKr font-bold ${
+                className={`flex justify-center items-center px-2 py-1 shadow-sm rounded-md text-sm font-notoKr font-bold ${
                   categoryState === category
                     ? "text-white bg-emerald-500"
                     : "text-black"
@@ -63,35 +63,37 @@ export default function PostCategory() {
           <Link
             key={post.id}
             href={`/posts/${post.id}`}
-            className="w-full font-notoKr border-b p-3 flex gap-2"
+            className="w-full border-b p-3 flex gap-2"
           >
             <div className="flex flex-1 flex-col gap-1 font-notoKr">
-              <h2 className="text-sm font-semibold">{post.title}</h2>
-              <span className="text-xs px-2">
-                | 작성자: {post.user.nickname}
-              </span>
-            </div>
-            <div className="flex flex-col items-end text-xs font-doHyeon gap-1">
-              <div className="flex gap-1 text-slate-500">
-                <EyeIcon className="size-4" />
-                <span>{post.views}</span>
+              <h2 className="w-full text-sm font-semibold text-ellipsis overflow-hidden break-words line-clamp-1">
+                The longest word in any of the major English language
+                dictionaries is pneumonoultramicroscopicsilicovolcanoconiosis, a
+                word that refers to a lung disease contracted from the
+                inhalation of very fine silica particles, specifically from a
+                volcano; medically, it is the same as silicosis.
+              </h2>
+              <div className="flex gap-5 items-center text-xs font-jua text-slate-500">
+                <span className="px-1">| 작성자: {post.user.nickname}</span>
+                <div className="flex items-center gap-1 text-slate-500">
+                  <EyeIcon className="size-4" />
+                  <span>{post.views}</span>
+                </div>
+                <span className="">{formatToTimeAgo(post.created_at)}</span>
               </div>
-              <span className="text-slate-500">
-                {formatToTimeAgo(post.created_at)}
-              </span>
-              <div className="flex gap-2">
-                <div className="flex items-center gap-1">
-                  <ChevronUp className="size-4 text-red-400" />
-                  <span className="text-xs text-slate-500">
-                    {post.like_count}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <ChevronDown className="size-4 text-blue-400" />
-                  <span className="text-xs text-slate-500">
-                    {post.dislike_count}
-                  </span>
-                </div>
+            </div>
+            <div className="flex flex-col justify-between font-jua">
+              <div className="flex items-center gap-1">
+                <ChevronUp className="size-4 text-red-400" />
+                <span className="text-xs text-slate-500">
+                  {post.like_count}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <ChevronDown className="size-4 text-blue-400" />
+                <span className="text-xs text-slate-500">
+                  {post.dislike_count}
+                </span>
               </div>
             </div>
           </Link>
