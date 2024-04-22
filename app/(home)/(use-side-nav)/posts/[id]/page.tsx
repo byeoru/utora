@@ -12,13 +12,12 @@ import { EyeIcon } from "@heroicons/react/24/outline";
 import LikeDislikeGroup from "@/components/post/like-dislike-group";
 import CommentGroup from "@/components/post/comment-group";
 import getSession from "@/lib/session";
-import { EPostCategory } from "@prisma/client";
 import { categories } from "@/lib/constants";
 
 export default async function PostDetail({
   params,
 }: {
-  params: { category: EPostCategory; id: string };
+  params: { id: string };
 }) {
   const id = Number(params.id);
   if (isNaN(id)) {
@@ -31,7 +30,7 @@ export default async function PostDetail({
     <>
       <div className="w-full px-2 py-1 border-b-2 border-slate-200 bg-primary shadow-md block">
         <h1 className="font-doHyeon mx-auto text-2xl max-w-screen-lg">
-          {`${categories[params.category].title} 게시판`}
+          {`${categories[post.category].title} 게시판`}
         </h1>
       </div>
       <div className="max-w-screen-lg m-auto flex md:gap-2">
