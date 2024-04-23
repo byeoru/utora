@@ -98,10 +98,12 @@ export default function SupportChatList({
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">
         {supportChatRoomName}
       </span>
-      <div className="w-full relative pb-24 flex lg:flex-1 aspect-square bg-slate-100">
+      <div className="w-full relative pb-24 flex lg:flex-1 aspect-square">
         <div className="w-full flex flex-col flex-1 p-3">
           {supportMessages.map((msg) => (
-            <div key={msg.id}>{msg.payload}</div>
+            <div key={msg.id} className="">
+              {msg.payload}
+            </div>
           ))}
         </div>
         <form
@@ -111,7 +113,7 @@ export default function SupportChatList({
           <textarea
             value={sendSupportMessage}
             onChange={onSupportMsgChange}
-            className="w-full h-24  resize-none border-none focus:ring-0"
+            className="w-full h-24 resize-none border-none focus:ring-0"
           />
           <Button className="p-5">
             <Send className="size-5" />

@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import Button from "../../button";
 import DebateInfoBox from "./debate-info-box";
+import { formatToTimeAgo } from "@/lib/utils";
 
 interface DebateChatListPropsType {
   supabasePublicKey: string;
@@ -92,18 +93,73 @@ export default function DebateChatList({
       channel.current?.unsubscribe();
     };
   }, [debateRoomId, supabasePublicKey, channelName]);
+  const isAvailableExtentMessage = (
+    prevIndex: number,
+    currentIndex: number
+  ) => {
+    return (
+      currentIndex > 0 &&
+      debateMessages[prevIndex].user_id ===
+        debateMessages[currentIndex].user_id &&
+      Math.abs(
+        debateMessages[currentIndex].created_at.getTime() -
+          debateMessages[prevIndex].created_at.getTime()
+      ) < 60000
+    );
+  };
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full lg:h-full flex flex-col gap-2">
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">토론방</span>
       <div
-        className={`w-full flex lg:flex-1 relative aspect-square bg-slate-100 shadow-md ${
+        className={`w-full flex-1 flex overflow-y-auto relative shadow-md ${
           debateRole === "Proponent" || debateRole === "Opponent" ? "pb-24" : ""
         }`}
       >
-        <div className="w-full p-3 flex flex-col flex-1">
-          {debateMessages.map((msg) => (
-            <div key={msg.id}>{msg.payload}</div>
-          ))}
+        <div className="w-full flex-1 p-3 flex flex-col gap-2 overflow-y-auto">
+          {debateMessages.map((msg, index) =>
+            debateRole === msg.debate_role ? (
+              <div
+                key={msg.id}
+                className="flex flex-col self-end p-1 ml-24 gap-1"
+              >
+                {isAvailableExtentMessage(index - 1, index) ? null : (
+                  <span className="px-2 py-1 flex justify-end font-jua text-xs gap-3 rounded-sm">
+                    <span className="text-primary">{debateRoleKr}</span>
+                    <span className="text-slate-600">
+                      발언자: {msg.user?.nickname}
+                    </span>
+                    <span className="text-slate-500">
+                      {formatToTimeAgo(msg.created_at)}
+                    </span>
+                  </span>
+                )}
+                <span className="flex justify-end">
+                  <span className="text-xs py-2 px-3 shadow-md rounded-md font-notoKr font-semibold">
+                    {msg.payload}
+                  </span>
+                </span>
+              </div>
+            ) : (
+              <div key={msg.id} className="flex flex-col p-1 mr-24 gap-1">
+                {isAvailableExtentMessage(index - 1, index) ? null : (
+                  <span className="px-2 py-1 flex font-jua text-xs gap-3 rounded-sm">
+                    <span className="text-primary">{debateRoleKr}</span>
+                    <span className="text-slate-600">
+                      발언자: {msg.user?.nickname}
+                    </span>
+                    <span className="text-slate-500">
+                      {formatToTimeAgo(msg.created_at)}
+                    </span>
+                  </span>
+                )}
+                <span className="flex">
+                  <span className="text-xs py-2 px-3 shadow-md rounded-md font-notoKr font-semibold">
+                    {msg.payload}
+                  </span>
+                </span>
+              </div>
+            )
+          )}
         </div>
         {debateRole === "Proponent" || debateRole === "Opponent" ? (
           <form

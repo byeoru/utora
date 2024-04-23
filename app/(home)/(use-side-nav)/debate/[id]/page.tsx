@@ -90,7 +90,6 @@ export default async function DebateRoom({
         proposeReason={debateRoomInfo.this_week_topic.propose_reason}
         channelName={hashDebateChannelName}
       />
-
       {myDebateRole.debate_role === "Audience" ? (
         <CommentChatList
           supabasePublicKey={supabasePublicKey}
