@@ -19,6 +19,7 @@ export async function getDebateMessages(debateRoomId: string) {
         payload: true,
         created_at: true,
         debate_role: true,
+        debate_role_kr: true,
         user_id: true,
         user: {
           select: {
@@ -40,7 +41,8 @@ export async function getDebateMessages(debateRoomId: string) {
 export async function saveDebateMessage(
   debateRoomId: string,
   message: string,
-  debateRole: EDebateRole
+  debateRole: EDebateRole,
+  debateRoleKr: string
 ) {
   const session = await getSession();
   try {
@@ -50,6 +52,7 @@ export async function saveDebateMessage(
         user_id: session.id,
         debate_room_id: debateRoomId,
         debate_role: debateRole,
+        debate_role_kr: debateRoleKr,
       },
     });
   } catch (error) {

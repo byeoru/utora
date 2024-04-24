@@ -50,7 +50,12 @@ export default function DebateChatList({
   const onDebateMsgSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setSendDebateMessage("");
-    await saveDebateMessage(debateRoomId, sendDebateMessage, debateRole);
+    await saveDebateMessage(
+      debateRoomId,
+      sendDebateMessage,
+      debateRole,
+      debateRoleKr
+    );
     await channel.current?.send({
       type: "broadcast",
       event: "message",
@@ -60,6 +65,7 @@ export default function DebateChatList({
         room: "debate",
         created_at: new Date(),
         debate_role: debateRole,
+        debateRoleKr: debateRoleKr,
         user_id: userId,
         user: {
           nickname,
@@ -73,6 +79,7 @@ export default function DebateChatList({
         payload: sendDebateMessage,
         created_at: new Date(),
         debate_role: debateRole,
+        debate_role_kr: debateRoleKr,
         user_id: userId,
         user: {
           nickname,
@@ -93,20 +100,6 @@ export default function DebateChatList({
       channel.current?.unsubscribe();
     };
   }, [debateRoomId, supabasePublicKey, channelName]);
-  const isAvailableExtentMessage = (
-    prevIndex: number,
-    currentIndex: number
-  ) => {
-    return (
-      currentIndex > 0 &&
-      debateMessages[prevIndex].user_id ===
-        debateMessages[currentIndex].user_id &&
-      Math.abs(
-        debateMessages[currentIndex].created_at.getTime() -
-          debateMessages[prevIndex].created_at.getTime()
-      ) < 60000
-    );
-  };
   return (
     <div className="w-full lg:h-full flex flex-col gap-2">
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">토론방</span>
@@ -115,45 +108,37 @@ export default function DebateChatList({
           debateRole === "Proponent" || debateRole === "Opponent" ? "pb-24" : ""
         }`}
       >
-        <div className="w-full flex-1 p-3 flex flex-col gap-2 overflow-y-auto">
-          {debateMessages.map((msg, index) =>
+        <div className="w-full h-[30rem] lg:h-full p-3 flex flex-col gap-2 overflow-y-auto">
+          {debateMessages.map((msg) =>
             debateRole === msg.debate_role ? (
               <div
                 key={msg.id}
                 className="flex flex-col self-end p-1 ml-24 gap-1"
               >
-                {isAvailableExtentMessage(index - 1, index) ? null : (
-                  <span className="px-2 py-1 flex justify-end font-jua text-xs gap-3 rounded-sm">
-                    <span className="text-primary">{debateRoleKr}</span>
-                    <span className="text-slate-600">
-                      발언자: {msg.user?.nickname}
-                    </span>
-                    <span className="text-slate-500">
-                      {formatToTimeAgo(msg.created_at)}
-                    </span>
+                <span className="py-1 flex justify-end font-jua text-xs gap-2 rounded-sm">
+                  <span className="text-primary">{msg.debate_role_kr}</span>
+                  <span className="text-slate-600">{msg.user?.nickname}</span>
+                  <span className="text-slate-500">
+                    {formatToTimeAgo(msg.created_at)}
                   </span>
-                )}
+                </span>
                 <span className="flex justify-end">
-                  <span className="text-xs py-2 px-3 shadow-md rounded-md font-notoKr font-semibold">
+                  <span className="text-xs py-2 px-3 bg-white ring-1 ring-slate-300 shadow-md rounded-md font-notoKr font-semibold">
                     {msg.payload}
                   </span>
                 </span>
               </div>
             ) : (
               <div key={msg.id} className="flex flex-col p-1 mr-24 gap-1">
-                {isAvailableExtentMessage(index - 1, index) ? null : (
-                  <span className="px-2 py-1 flex font-jua text-xs gap-3 rounded-sm">
-                    <span className="text-primary">{debateRoleKr}</span>
-                    <span className="text-slate-600">
-                      발언자: {msg.user?.nickname}
-                    </span>
-                    <span className="text-slate-500">
-                      {formatToTimeAgo(msg.created_at)}
-                    </span>
+                <span className="py-1 flex font-jua text-xs gap-2 rounded-sm">
+                  <span className="text-primary">{msg.debate_role_kr}</span>
+                  <span className="text-slate-600">{msg.user?.nickname}</span>
+                  <span className="text-slate-500">
+                    {formatToTimeAgo(msg.created_at)}
                   </span>
-                )}
+                </span>
                 <span className="flex">
-                  <span className="text-xs py-2 px-3 shadow-md rounded-md font-notoKr font-semibold">
+                  <span className="text-xs py-2 px-3 bg-white ring-1 ring-slate-300 shadow-md rounded-md font-notoKr font-semibold">
                     {msg.payload}
                   </span>
                 </span>
