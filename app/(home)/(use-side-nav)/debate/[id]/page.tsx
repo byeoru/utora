@@ -18,10 +18,10 @@ export default async function DebateRoom({
   params: { id: string };
 }) {
   const myDebateRole = await getMyDebateRole(params.id);
-  const supabasePublicKey = process.env.SUPABASE_PUBLIC_KEY!;
   const initialDebateMessages = await getDebateMessages(params.id);
   const myProfile = await getUserProfile();
   const debateRoomInfo = await getDebateRoomInfo(params.id);
+  const supabasePublicKey = process.env.SUPABASE_PUBLIC_KEY!;
   let initialSubMessages;
   let subChatNameKr;
   let subChannelName;
@@ -42,6 +42,7 @@ export default async function DebateRoom({
       subChannelName = "support-proponent";
       initialSubMessages = await getDebateSupportMessages(
         params.id,
+        "Proponent",
         "ProponentSupporter"
       );
       break;
@@ -51,6 +52,7 @@ export default async function DebateRoom({
       subChannelName = "support-opponent";
       initialSubMessages = await getDebateSupportMessages(
         params.id,
+        "Opponent",
         "OpponentSupporter"
       );
       break;
@@ -94,7 +96,7 @@ export default async function DebateRoom({
         <CommentChatList
           supabasePublicKey={supabasePublicKey}
           commentChatRoomName={subChatNameKr}
-          initiaCommentMessages={initialSubMessages}
+          initialCommentMessages={initialSubMessages}
           debateRoomId={params.id}
           debateRole={myDebateRole.debate_role}
           userId={myProfile.id}
@@ -105,7 +107,7 @@ export default async function DebateRoom({
         <SupportChatList
           supabasePublicKey={supabasePublicKey}
           supportChatRoomName={subChatNameKr}
-          initiaSupportMessages={initialSubMessages}
+          initialSupportMessages={initialSubMessages}
           debateRoomId={params.id}
           debateRole={myDebateRole.debate_role}
           userId={myProfile.id}

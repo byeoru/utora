@@ -1,5 +1,3 @@
-import { EPostCategory } from "@prisma/client";
-
 // email
 export const REQUIRED_ERROR_EMAIL = "이메일을 입력하세요.";
 export const DESCRIPTION_EMAIL = "반드시 사용 가능한 이메일을 입력하세요.";

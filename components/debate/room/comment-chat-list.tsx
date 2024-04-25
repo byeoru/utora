@@ -3,18 +3,18 @@
 import { Send } from "lucide-react";
 import Button from "../../button";
 import { useEffect, useRef, useState } from "react";
-import { RealtimeChannel, createClient } from "@supabase/supabase-js";
+import { RealtimeChannel } from "@supabase/supabase-js";
 import {
   GetDebateCommentMessagesType,
   saveDebateCommentMessage,
 } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
 import { EDebateRole } from "@prisma/client";
-import { SUPABASE_URL } from "@/lib/constants";
+import { Supabase } from "@/lib/supabase";
 
 interface CommentChatListPropsType {
   supabasePublicKey: string;
   commentChatRoomName: string;
-  initiaCommentMessages: GetDebateCommentMessagesType;
+  initialCommentMessages: GetDebateCommentMessagesType;
   debateRoomId: string;
   debateRole: EDebateRole;
   userId: number;
@@ -25,14 +25,16 @@ interface CommentChatListPropsType {
 export default function CommentChatList({
   supabasePublicKey,
   commentChatRoomName,
-  initiaCommentMessages,
+  initialCommentMessages,
   debateRoomId,
   debateRole,
   userId,
   nickname,
   channelName,
 }: CommentChatListPropsType) {
-  const [commentMessages, setCommentMessages] = useState(initiaCommentMessages);
+  const [commentMessages, setCommentMessages] = useState(
+    initialCommentMessages
+  );
   const [sendCommentMessage, setSendCommentMessage] = useState("");
   const channel = useRef<RealtimeChannel>();
   const onCommentMsgChange = (
@@ -81,8 +83,8 @@ export default function CommentChatList({
     ]);
   };
   useEffect(() => {
-    const client = createClient(SUPABASE_URL, supabasePublicKey);
-    channel.current = client.channel(channelName);
+    channel.current =
+      Supabase.getClient(supabasePublicKey).channel(channelName);
     channel.current
       .on("broadcast", { event: "message" }, (payload) => {
         const recievedData = payload.payload;
@@ -92,7 +94,7 @@ export default function CommentChatList({
     return () => {
       channel.current?.unsubscribe();
     };
-  }, [debateRoomId, supabasePublicKey, channelName]);
+  }, [debateRoomId, channelName, supabasePublicKey]);
   return (
     <div className="w-full flex flex-col gap-2">
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">

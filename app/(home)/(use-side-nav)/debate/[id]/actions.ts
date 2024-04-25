@@ -44,6 +44,10 @@ export async function saveDebateMessage(
   debateRole: EDebateRole,
   debateRoleKr: string
 ) {
+  // debator가 아닐 경우
+  if (debateRole !== "Opponent" && debateRole !== "Proponent") {
+    return;
+  }
   const session = await getSession();
   try {
     await db.debateMessage.create({
@@ -66,13 +70,14 @@ export type GetDebateSupportMessagesType = Prisma.PromiseReturnType<
 >;
 export async function getDebateSupportMessages(
   debateRoomId: string,
-  debateRole: EDebateRole
+  debatorRole: EDebateRole,
+  supporterRole: EDebateRole
 ) {
   try {
     const messages = await db.debateSupportMessage.findMany({
       where: {
         debate_room_id: debateRoomId,
-        debate_role: debateRole,
+        OR: [{ debate_role: debatorRole }, { debate_role: supporterRole }],
       },
       select: {
         id: true,
