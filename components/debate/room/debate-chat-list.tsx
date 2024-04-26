@@ -13,6 +13,7 @@ import DebateInfoBox from "./debate-info-box";
 import LeftSideDebateBubble from "./left-side-debate-bubble";
 import RightSideDebateBubble from "./right-side-debate-bubble";
 import { Supabase } from "@/lib/supabase";
+import useStateWithCallback from "use-state-with-callback";
 
 interface DebateChatListPropsType {
   supabasePublicKey: string;
@@ -39,9 +40,17 @@ export default function DebateChatList({
   initialDebateMessages,
   channelName,
 }: DebateChatListPropsType) {
-  const [debateMessages, setDebateMessages] = useState(initialDebateMessages);
+  const [debateMessages, setDebateMessages] = useStateWithCallback(
+    initialDebateMessages,
+    () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }
+  );
   const [sendDebateMessage, setSendDebateMessage] = useState("");
   const channel = useRef<RealtimeChannel>();
+  const scrollRef = useRef<HTMLDivElement>(null);
   const onDebateMsgChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const {
       target: { value },
@@ -114,7 +123,7 @@ export default function DebateChatList({
     return () => {
       channel.current?.unsubscribe();
     };
-  }, [debateRoomId, channelName, supabasePublicKey]);
+  }, [debateRoomId, channelName, supabasePublicKey, setDebateMessages]);
   return (
     <div className="w-full lg:h-full flex flex-col gap-2">
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">토론방</span>
@@ -123,7 +132,10 @@ export default function DebateChatList({
           debateRole === "Proponent" || debateRole === "Opponent" ? "pb-24" : ""
         }`}
       >
-        <div className="w-full h-[30rem] border lg:h-full p-3 flex flex-col gap-2 overflow-y-auto">
+        <div
+          ref={scrollRef}
+          className="w-full h-[30rem] border lg:h-full p-3 flex flex-col gap-2 overflow-y-auto"
+        >
           {debateMessages.map((msg) =>
             isRightSide(debateRole, msg.debate_role) ? (
               <RightSideDebateBubble

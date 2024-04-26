@@ -46,6 +46,7 @@
     "react-dom": "18",
     "react-responsive-masonry": "^2.2.0",
     "tailwind-scrollbar-hide": "^1.1.7",
+    "use-state-with-callback": "^3.0.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {

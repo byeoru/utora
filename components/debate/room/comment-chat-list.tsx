@@ -12,6 +12,7 @@ import { EDebateRole } from "@prisma/client";
 import { Supabase } from "@/lib/supabase";
 import RightSideCommentBubble from "./right-side-comment-bubble";
 import LeftSideCommentBubble from "./left-side-comment-bubble";
+import useStateWithCallback from "use-state-with-callback";
 
 interface CommentChatListPropsType {
   supabasePublicKey: string;
@@ -34,11 +35,17 @@ export default function CommentChatList({
   nickname,
   channelName,
 }: CommentChatListPropsType) {
-  const [commentMessages, setCommentMessages] = useState(
-    initialCommentMessages
+  const [commentMessages, setCommentMessages] = useStateWithCallback(
+    initialCommentMessages,
+    () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }
   );
   const [sendCommentMessage, setSendCommentMessage] = useState("");
   const channel = useRef<RealtimeChannel>();
+  const scrollRef = useRef<HTMLDivElement>(null);
   const onCommentMsgChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -98,14 +105,17 @@ export default function CommentChatList({
     return () => {
       channel.current?.unsubscribe();
     };
-  }, [debateRoomId, channelName, supabasePublicKey]);
+  }, [debateRoomId, channelName, supabasePublicKey, setCommentMessages]);
   return (
     <div className="w-full flex flex-col gap-2">
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">
         {commentChatRoomName}
       </span>
       <div className="w-full relative pb-24 flex lg:flex-1 overflow-y-auto">
-        <div className="w-full h-[30rem] border lg:h-full overflow-y-auto flex flex-col flex-1 p-3">
+        <div
+          ref={scrollRef}
+          className="w-full h-[30rem] border lg:h-full overflow-y-auto flex flex-col flex-1 p-3"
+        >
           {commentMessages.map((msg) =>
             isRightSide(userId, msg.user_id) ? (
               <RightSideCommentBubble

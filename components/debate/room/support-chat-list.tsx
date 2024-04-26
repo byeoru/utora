@@ -12,6 +12,7 @@ import { EDebateRole } from "@prisma/client";
 import RightSideSupportBubble from "./right-side-support-bubble";
 import LeftSideSupportBubble from "./left-side-support-bubble";
 import { Supabase } from "@/lib/supabase";
+import useStateWithCallback from "use-state-with-callback";
 
 interface SupportChatListPropsType {
   supabasePublicKey: string;
@@ -34,11 +35,17 @@ export default function SupportChatList({
   nickname,
   channelName,
 }: SupportChatListPropsType) {
-  const [supportMessages, setSupportMessages] = useState(
-    initialSupportMessages
+  const [supportMessages, setSupportMessages] = useStateWithCallback(
+    initialSupportMessages,
+    () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }
   );
   const [sendSupportMessage, setSendSupportMessage] = useState("");
   const channel = useRef<RealtimeChannel>();
+  const scrollRef = useRef<HTMLDivElement>(null);
   const onSupportMsgChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -96,14 +103,17 @@ export default function SupportChatList({
     return () => {
       channel.current?.unsubscribe();
     };
-  }, [debateRoomId, channelName, supabasePublicKey]);
+  }, [debateRoomId, channelName, supabasePublicKey, setSupportMessages]);
   return (
     <div className="w-full lg:h-full flex flex-col gap-2">
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">
         {supportChatRoomName}
       </span>
       <div className="w-full relative pb-24 flex lg:flex-1 overflow-y-auto">
-        <div className="w-full h-[30rem] border lg:h-full overflow-y-auto flex flex-col flex-1 p-3">
+        <div
+          ref={scrollRef}
+          className="w-full h-[30rem] border lg:h-full overflow-y-auto flex flex-col flex-1 p-3"
+        >
           {supportMessages.map((msg) =>
             userId === msg.user_id ? (
               <RightSideSupportBubble
