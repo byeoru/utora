@@ -96,6 +96,7 @@ export default function DebateChatList({
         else return false;
       case "Opponent":
       case "OpponentSupporter":
+      case "Audience":
         if (bubbleRole === "Opponent") return true;
         else return false;
     }

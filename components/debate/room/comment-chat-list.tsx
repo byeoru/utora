@@ -10,6 +10,8 @@ import {
 } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
 import { EDebateRole } from "@prisma/client";
 import { Supabase } from "@/lib/supabase";
+import RightSideCommentBubble from "./right-side-comment-bubble";
+import LeftSideCommentBubble from "./left-side-comment-bubble";
 
 interface CommentChatListPropsType {
   supabasePublicKey: string;
@@ -82,6 +84,8 @@ export default function CommentChatList({
       },
     ]);
   };
+  const isRightSide = (userId: number, msgUserId: number | null) =>
+    userId === msgUserId;
   useEffect(() => {
     channel.current =
       Supabase.getClient(supabasePublicKey).channel(channelName);
@@ -100,20 +104,34 @@ export default function CommentChatList({
       <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">
         {commentChatRoomName}
       </span>
-      <div className="w-full relative pb-24 flex lg:flex-1 aspect-square bg-slate-100">
-        <div className="w-full flex flex-col flex-1 p-3">
-          {commentMessages.map((msg) => (
-            <div key={msg.id}>{msg.payload}</div>
-          ))}
+      <div className="w-full relative pb-24 flex lg:flex-1 overflow-y-auto">
+        <div className="w-full h-[30rem] border lg:h-full overflow-y-auto flex flex-col flex-1 p-3">
+          {commentMessages.map((msg) =>
+            isRightSide(userId, msg.user_id) ? (
+              <RightSideCommentBubble
+                key={msg.id}
+                nickname={msg.user?.nickname}
+                createdAt={msg.created_at}
+                payload={msg.payload}
+              />
+            ) : (
+              <LeftSideCommentBubble
+                key={msg.id}
+                nickname={msg.user?.nickname}
+                createdAt={msg.created_at}
+                payload={msg.payload}
+              />
+            )
+          )}
         </div>
         <form
           onSubmit={onCommentMsgSubmit}
-          className="w-full flex gap-1 absolute bottom-0 left-0 shadow-md"
+          className="w-full flex gap-1 border absolute bottom-0 left-0 shadow-md"
         >
           <textarea
             value={sendCommentMessage}
             onChange={onCommentMsgChange}
-            className="w-full h-24  resize-none border-none focus:ring-0"
+            className="w-full h-24 resize-none border-none focus:ring-0"
           />
           <Button className="p-5">
             <Send className="size-5" />
