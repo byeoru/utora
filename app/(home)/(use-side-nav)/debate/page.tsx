@@ -14,7 +14,7 @@ export default async function Debate() {
         <h1 className="font-doHyeon text-base lg:text-xl p-2 md:p-5">
           | 이번주 토론
         </h1>
-        <ul className="w-full flex flex-col gap-10 p-2 md:p-5 bg-slate-100">
+        <ul className="w-full flex flex-col gap-10 p-2 md:p-5">
           {Object.keys(categories).map((category, index) => {
             return (
               <li key={index} className="w-full flex flex-col gap-3">
@@ -37,7 +37,7 @@ export default async function Debate() {
                         key={topic.id}
                         className="w-full flex lg:flex-col gap-2"
                       >
-                        <div className="w-full bg-white shadow-md rounded-lg p-3 flex flex-col aspect-auto gap-3">
+                        <div className="w-full bg-white shadow-md border rounded-lg p-3 flex flex-col aspect-auto gap-3">
                           <span className="font-notoKr font-semibold text-xs lg:text-sm">
                             {topic.topic}
                           </span>
