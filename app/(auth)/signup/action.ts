@@ -13,6 +13,10 @@ export const signUp = async (_: any, formData: FormData) => {
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
     nickname: formData.get("nickname"),
+    passSelectForm: formData.get("passSelectForm") ?? false,
+    gender: formData.get("gender"),
+    ageGroup:
+      formData.get("ageGroup") === "none" ? null : formData.get("ageGroup"),
   });
   if (!validation.success) {
     return validation.error.flatten();
@@ -27,6 +31,8 @@ export const signUp = async (_: any, formData: FormData) => {
       email: validation.data.email,
       password: hashedPassword,
       nickname: validation.data.nickname,
+      gender: validation.data.gender,
+      age_group: validation.data.ageGroup,
     },
     select: {
       id: true,

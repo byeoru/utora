@@ -16,11 +16,14 @@ import {
   MIN_LENGTH_PWD_ERROR,
   PWD_REGEX,
   PWD_REGEX_ERROR,
+  REQUIRED_AGEGROUP,
   REQUIRED_ERROR_EMAIL,
   REQUIRED_ERROR_NICKNAME,
   REQUIRED_ERROR_PWD,
+  REQUIRED_GENDER,
 } from "@/lib/constants";
 import db from "@/lib/db";
+import { EAgeGroups, EGender } from "@prisma/client";
 import { z } from "zod";
 
 const checkConfirmPassword = ({
@@ -30,6 +33,32 @@ const checkConfirmPassword = ({
   password: string;
   confirmPassword: string;
 }) => password === confirmPassword;
+
+const checkGender = ({
+  passSelectForm,
+  gender,
+}: {
+  passSelectForm: boolean;
+  gender: EGender | null;
+}) => {
+  if (!passSelectForm && !gender) {
+    return false;
+  }
+  return true;
+};
+
+const checkAgeGroup = ({
+  passSelectForm,
+  ageGroup,
+}: {
+  passSelectForm: boolean;
+  ageGroup: EAgeGroups | null;
+}) => {
+  if (!passSelectForm && !ageGroup) {
+    return false;
+  }
+  return true;
+};
 
 const isAvailableEmail = async (email: string) => {
   const user = await db.user.findUnique({
@@ -86,8 +115,19 @@ export const signupSchema = z
       .min(MIN_LENGTH_NICKNAME, LENGTH_NICKNAME_ERROR)
       .max(MAX_LENGTH_NICKNAME, LENGTH_NICKNAME_ERROR)
       .refine(isAvailableNickname, DUPLICATE_ERROR_NICKNAME),
+    gender: z.nativeEnum(EGender).nullable(),
+    ageGroup: z.nativeEnum(EAgeGroups).nullable(),
+    passSelectForm: z.boolean(),
   })
   .refine(checkConfirmPassword, {
     message: CONFIRM_PASSWORD_ERROR,
     path: ["confirmPassword"],
+  })
+  .refine(checkGender, {
+    message: REQUIRED_GENDER,
+    path: ["gender"],
+  })
+  .refine(checkAgeGroup, {
+    message: REQUIRED_AGEGROUP,
+    path: ["ageGroup"],
   });

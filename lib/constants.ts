@@ -62,11 +62,21 @@ export const MIN_LENGTH_TOPIC_PROPOSE_REASON = 10;
 export const MIN_LENGTH_TOPIC_PROPOSE_REASON_ERROR =
   "주제 제시 이유는 최소 10글자 이상이어야 합니다.";
 
-export interface ObjectType {
+// gender
+export const REQUIRED_GENDER = "성별을 선택하세요.";
+
+// ageGroup
+export const REQUIRED_AGEGROUP = "나이를 선택하세요.";
+
+export interface CategoriesType {
   [key: string]: { [key: string]: string | any };
 }
 
-export const categories: ObjectType = {
+interface ObjectType {
+  [key: string]: string;
+}
+
+export const categories: CategoriesType = {
   politics_society: {
     title: "정치 및 사회 문제",
     description:
@@ -128,9 +138,17 @@ export const categories: ObjectType = {
   },
 };
 
-export const postCategories: ObjectType = {
+export const postCategories: CategoriesType = {
   general: { title: "자유" },
   ...categories,
+};
+
+export const ageGroups: ObjectType = {
+  teens: "10대",
+  twenties: "20대",
+  thirties: "30대",
+  forties: "40대",
+  fifty_and_over: "50대 이상",
 };
 
 // debate room

@@ -36,6 +36,19 @@ enum EPostCategory {
   history_anthropology
 }
 
+enum EGender {
+  male 
+  female
+}
+
+enum EAgeGroups {
+  teens
+  twenties
+  thirties
+  forties
+  fifty_and_over
+}
+
 model Admin {
   id Int @id @default(autoincrement())
   email String? @unique
@@ -53,6 +66,8 @@ model User {
   email String? @unique
   password String?
   nickname String @unique
+  gender EGender?
+  age_group EAgeGroups?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

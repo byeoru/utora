@@ -34,7 +34,7 @@ export default function PostAdd() {
           className="w-full rounded-md mb-2 border-none ring-1 focus:ring-slate-500 ring-slate-500 focus:outline-none font-notoKr"
         />
         <select name="postCategory" className="mb-2 rounded-md">
-          <option key={"default"} value="none">
+          <option key="default" value="none">
             카테고리를 선택하세요
           </option>
           {Object.keys(postCategories).map((category, index) => (
