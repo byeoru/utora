@@ -12,7 +12,7 @@ const getSelectedTopics = async () => {
       db.proposedTopic.findMany({
         where: {
           category: category as EDebateCategory,
-          like_count: {
+          vote_count: {
             gt: 0,
           },
         },
@@ -20,13 +20,12 @@ const getSelectedTopics = async () => {
           topic: true,
           propose_reason: true,
           category: true,
-          like_count: true,
-          dislike_count: true,
+          vote_count: true,
           user_id: true,
         },
         take: 3,
         orderBy: {
-          like_count: "desc",
+          vote_count: "desc",
         },
       })
     )

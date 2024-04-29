@@ -52,18 +52,7 @@ export default function TopicList({
             nickname={topic.user?.nickname}
             proposeReason={topic.propose_reason}
             createdAt={topic.created_at}
-            likeCount={topic.like_count}
-            dislikeCount={topic.dislike_count}
-            isLiked={
-              topic.proposed_topic_reactions.filter(
-                (reaction) => reaction.reaction === "like"
-              ).length > 0
-            }
-            isDisliked={
-              topic.proposed_topic_reactions.filter(
-                (reaction) => reaction.reaction === "dislike"
-              ).length > 0
-            }
+            isVoted={topic.proposed_topic_ballets.length > 0}
           />
         ))}
       </ul>

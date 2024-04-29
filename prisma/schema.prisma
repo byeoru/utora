@@ -76,7 +76,7 @@ model User {
   post_comments PostComment[]
   post_reactions PostReaction[]
   proposed_topics ProposedTopic[]
-  proposed_topic_reactions ProposedTopicReaction[]
+  proposed_topic_ballets ProposedTopicBallet[]
   this_week_topics ThisWeekTopic[]
   debate_messages DebateMessage[]
   debate_support_messages DebateSupportMessage[]
@@ -165,8 +165,7 @@ model ProposedTopic {
   topic String
   propose_reason String
   category EDebateCategory
-  like_count Int @default(0)
-  dislike_count Int @default(0)
+  vote_count Int @default(0)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -177,12 +176,13 @@ model ProposedTopic {
 
   @@index([user_id])
 
-  proposed_topic_reactions ProposedTopicReaction[]
+  proposed_topic_ballets ProposedTopicBallet[]
 }
 
-model ProposedTopicReaction {
-  reaction Reaction
-
+model ProposedTopicBallet {
+  gender EGender
+  ageGroup EAgeGroups
+  
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -190,11 +190,13 @@ model ProposedTopicReaction {
   proposed_topic ProposedTopic @relation(fields: [proposed_topic_id], references: [id], onDelete: Cascade)
   
   user_id Int
+  user_id_copy Int
   proposed_topic_id Int
 
-  @@id(name: "id", [user_id, proposed_topic_id])
+  @@id(name: "id", [user_id_copy, proposed_topic_id])
 
   @@index([proposed_topic_id])
+  @@index([user_id])
 }
 
 model ThisWeekTopic {
@@ -202,8 +204,7 @@ model ThisWeekTopic {
   topic String
   propose_reason String
   category EDebateCategory
-  like_count Int
-  dislike_count Int
+  vote_count Int
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

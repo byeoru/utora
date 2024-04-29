@@ -1,82 +1,177 @@
-import {
-  cancelDislikeTopic,
-  cancelLikeTopic,
-  dislikeTopic,
-  likeTopic,
-} from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
-import LikeDislikeGroup from "@/components/post/like-dislike-group";
+"use client";
+
+import Divider from "@/components/divider";
 import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
-import { BookmarkMinus, BookmarkPlus } from "lucide-react";
+import { EAgeGroups, EGender } from "@prisma/client";
+import {
+  Chart,
+  ArcElement,
+  Tooltip,
+  Legend,
+  SubTitle,
+  ChartOptions,
+} from "chart.js";
+import { Vote } from "lucide-react";
+import { Doughnut } from "react-chartjs-2";
 
 interface TopRankTopicItemPropsType {
   ranking: number;
-  topicId: number;
   topic: string;
   proposeReason: string;
   createdAt: Date;
-  likeCount: number;
-  dislikeCount: number;
+  voteCount: number;
   nickname?: string;
-  isLiked: boolean;
-  isDisliked: boolean;
+  ballets: {
+    gender: EGender;
+    ageGroup: EAgeGroups;
+  }[];
 }
 
 export default function TopRankTopicItem({
   ranking,
-  topicId,
   topic,
   proposeReason,
   createdAt,
-  likeCount,
-  dislikeCount,
+  voteCount,
   nickname,
-  isLiked,
-  isDisliked,
+  ballets,
 }: TopRankTopicItemPropsType) {
+  const ageGroupObj = {
+    teens: 0,
+    twenties: 0,
+    thirties: 0,
+    forties: 0,
+    fifty_and_over: 0,
+  };
+  const genderObj = {
+    male: 0,
+    female: 0,
+  };
+  ballets.forEach((ballet) => {
+    ageGroupObj[ballet.ageGroup]++;
+    genderObj[ballet.gender]++;
+  });
+  Chart.register(ArcElement, Legend, SubTitle, Tooltip);
+  const ageGroupData = {
+    labels: ["10대", "20대", "30대", "40대", "50대 이상"],
+    datasets: [
+      {
+        data: [
+          ageGroupObj.teens,
+          ageGroupObj.twenties,
+          ageGroupObj.thirties,
+          ageGroupObj.forties,
+          ageGroupObj.fifty_and_over,
+        ],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+    text: "연령층",
+  };
+  const ageGroupOptions: ChartOptions<"doughnut"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+
+    plugins: {
+      legend: {
+        position: "right",
+        labels: {
+          boxWidth: 10,
+          boxHeight: 10,
+        },
+      },
+      // tooltip: {
+      //   callbacks: {
+      //     label: function (context: {
+      //       dataIndex: string;
+      //       formattedValue: string;
+      //     }): string {
+      //       return `${context.formattedValue}%`;
+      //     },
+      //   },
+      // },
+    },
+  };
+  const genderData = {
+    labels: ["남", "여"],
+    datasets: [
+      {
+        data: [genderObj.male, genderObj.female],
+        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
+        borderWidth: 1,
+      },
+    ],
+    text: "성별",
+  };
+  const genderOptions: ChartOptions<"doughnut"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "right",
+        labels: {
+          boxWidth: 10,
+          boxHeight: 10,
+        },
+      },
+      // tooltip: {
+      //   callbacks: {
+      //     label: function (context: {
+      //       dataIndex: string;
+      //       formattedValue: string;
+      //     }): string {
+      //       return `${context.formattedValue}%`;
+      //     },
+      //   },
+      // },
+    },
+  };
   return (
-    <li className="flex flex-col relative justify-between bg-slate-50 rounded-xl lg:aspect-square p-2 sm:p-4 break-word shadow-md">
-      <span className="font-jua absolute right-2 top-1 opacity-50 text-sm sm:text-base">
-        {ranking} 위
-      </span>
-      <div className="flex flex-col gap-1">
-        <span className="font-jua text-base sm:text-lg break-all mr-7">
-          {topic}
-        </span>
-        <div className="flex justify-between items-center text-sm sm:text-base">
-          <span className="font-jua text-slate-500">
-            | 주제 발의자:{" "}
-            <span className="text-primary">
-              {nickname ?? DELETED_ACCOUNT_NICKNAME}
-            </span>
-          </span>
-          {isLiked ? (
-            <BookmarkPlus className="size-4 sm:size-5 text-red-600" />
-          ) : isDisliked ? (
-            <BookmarkMinus className="size-4 sm:size-5 text-blue-600" />
-          ) : (
-            ""
-          )}
+    <li className="p-2 sm:p-4 flex flex-col gap-5 rounded-md shadow-md border">
+      <div className="flex flex-col gap-2 px-3">
+        <div className="text-ellipsis line-clamp-2 break-words">
+          <span className="font-notoKr font-semibold text-md">{topic}</span>
         </div>
-        <span className="font-notoKr text-xs lg:text-sm opacity-50 self-end">
+        <div className="text-ellipsis line-clamp-5 break-words">
+          <span className="font-notoKr text-sm text-slate-500">
+            {proposeReason}
+          </span>
+        </div>
+      </div>
+      <Divider />
+      <div className="flex flex-col px-3">
+        <span className="font-jua text-sm">
+          발의자: {nickname ?? DELETED_ACCOUNT_NICKNAME}
+        </span>
+        <span className="font-doHyeon text-sm text-slate-400">
           {formatToTimeAgo(createdAt)}
         </span>
-        <p className="font-notoKr opacity-70 text-xs sm:text-sm text-ellipsis overflow-hidden line-clamp-6 lg:line-clamp-4">
-          {proposeReason}
-        </p>
       </div>
-      <div className="flex self-end">
-        <LikeDislikeGroup
-          isLiked={isLiked}
-          isDisliked={isDisliked}
-          likeCount={likeCount}
-          dislikeCount={dislikeCount}
-          postId={topicId}
-          onLikeClick={likeTopic}
-          onCancelLikeClick={cancelLikeTopic}
-          onDislikeClick={dislikeTopic}
-          onCancelDislikeClick={cancelDislikeTopic}
-        />
+      <Divider />
+      <div className="flex flex-col gap-1">
+        <div className="flex">
+          <div className="w-1/2 md:w-min p-1">
+            <Doughnut options={ageGroupOptions} data={ageGroupData} />
+          </div>
+          <div className="w-1/2 md:w-min p-1">
+            <Doughnut options={genderOptions} data={genderData} />
+          </div>
+        </div>
+        <div className="flex items-center gap-2 font-jua text-sm">
+          <span className="flex items-center gap-1">
+            <Vote className="size-5" />
+            <span>투표수:</span>
+          </span>
+          <span>{voteCount}</span>
+        </div>
       </div>
     </li>
   );

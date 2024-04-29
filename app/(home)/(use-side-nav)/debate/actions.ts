@@ -12,8 +12,7 @@ export async function getThisWeekTopics() {
       select: {
         id: true,
         topic: true,
-        like_count: true,
-        dislike_count: true,
+        vote_count: true,
         category: true,
         user: {
           select: {

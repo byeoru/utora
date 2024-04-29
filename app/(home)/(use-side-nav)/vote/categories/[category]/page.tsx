@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTopics } from "./actions";
+import { getTopics, getTopicsTopRank } from "./actions";
 import { EDebateCategory } from "@prisma/client";
 import TopRankTopicItem from "@/components/debate/vote/top-rank-topic-item";
 import Divider from "@/components/divider";
@@ -7,6 +7,9 @@ import TopicList from "@/components/debate/vote/topic-list";
 import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
 import { categories } from "@/lib/constants";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
+import TopRankTopicSwiper from "@/components/debate/vote/top-rank-topic-swiper";
 
 export default async function VoteCategory({
   params,
@@ -14,12 +17,12 @@ export default async function VoteCategory({
   params: { category: string };
 }) {
   if (!(params.category in categories)) {
-    console.log("error1");
     return notFound();
   }
 
+  const topTopics = await getTopicsTopRank(params.category as EDebateCategory);
   const topics = await getTopics(params.category as EDebateCategory, "popular");
-  const loopCount = Math.min(topics.length, 3);
+
   return (
     <div className="w-full flex flex-col m-auto">
       <div className="w-full shadow-md p-5 lg:p-12 bg-slate-50 gap-2 flex flex-col justify-center items-center">
@@ -41,36 +44,7 @@ export default async function VoteCategory({
       <div className="w-full max-w-screen-lg p-2 md:p-5 flex flex-col gap-10 m-auto">
         {topics.length > 0 ? (
           <>
-            <ul className="w-full m-auto grid lg:grid-cols-3 grid-cols-1 lg:gap-4 gap-2">
-              {topics.slice(0, loopCount).map((topic, index) => {
-                if (topic.like_count < 1) {
-                  return;
-                }
-                return (
-                  <TopRankTopicItem
-                    key={topic.id}
-                    ranking={index + 1}
-                    topicId={topic.id}
-                    topic={topic.topic}
-                    proposeReason={topic.propose_reason}
-                    createdAt={topic.created_at}
-                    likeCount={topic.like_count}
-                    dislikeCount={topic.dislike_count}
-                    nickname={topic.user?.nickname}
-                    isLiked={
-                      topic.proposed_topic_reactions.filter(
-                        (reaction) => reaction.reaction === "like"
-                      ).length > 0
-                    }
-                    isDisliked={
-                      topic.proposed_topic_reactions.filter(
-                        (reaction) => reaction.reaction === "dislike"
-                      ).length > 0
-                    }
-                  />
-                );
-              })}
-            </ul>
+            <TopRankTopicSwiper topTopics={topTopics} />
             <Divider />
             <TopicList
               category={params.category as EDebateCategory}

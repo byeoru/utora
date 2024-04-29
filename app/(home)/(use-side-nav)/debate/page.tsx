@@ -1,7 +1,7 @@
 import JoinDebateButton from "@/components/debate/join-debate-button";
 import { getThisWeekTopics } from "./actions";
 import { DELETED_ACCOUNT_NICKNAME, categories } from "@/lib/constants";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { Vote } from "lucide-react";
 
 export default async function Debate() {
   const thisWeekTopics = await getThisWeekTopics();
@@ -52,19 +52,11 @@ export default async function Debate() {
                           </div>
                           <div className="flex  justify-between font-doHyeon">
                             <JoinDebateButton thisWeekTopicId={topic.id} />
-                            <div className="flex gap-3">
-                              <div className="flex items-center gap-1">
-                                <ChevronUp className="size-4 text-red-400" />
-                                <span className="text-xs text-slate-500">
-                                  {topic.like_count}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <ChevronDown className="size-4 text-blue-400" />
-                                <span className="text-xs text-slate-500">
-                                  {topic.dislike_count}
-                                </span>
-                              </div>
+                            <div className="flex items-center gap-1">
+                              <Vote className="size-4 text-emerald-500" />
+                              <span className="text-xs text-slate-500">
+                                {topic.vote_count}
+                              </span>
                             </div>
                           </div>
                         </div>
