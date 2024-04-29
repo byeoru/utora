@@ -11,6 +11,7 @@ const publicOnlyUrls: Routes = {
   "/signup": true,
   "/popular": true,
   "/vote/categories": true,
+  "/posts": true,
   "/debate": true,
   "/api/cron/debate/room": true,
 };
