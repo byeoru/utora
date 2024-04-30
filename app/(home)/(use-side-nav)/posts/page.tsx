@@ -2,17 +2,16 @@
 
 import { postCategories } from "@/lib/constants";
 import { EPostCategory } from "@prisma/client";
-import {
-  ChevronDown,
-  ChevronUp,
-  EyeIcon,
-  SquareChevronRight,
-} from "lucide-react";
+import { EyeIcon, SquareChevronRight } from "lucide-react";
 import Link from "next/link";
 import { GetPostsType, getPosts } from "./actions";
 import { formatToTimeAgo } from "@/lib/utils";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import {
+  HandThumbDownIcon,
+  HandThumbUpIcon,
+} from "@heroicons/react/24/outline";
 
 export default function PostCategory() {
   const [categoryState, setCategoryState] = useState<EPostCategory>("general");
@@ -79,14 +78,14 @@ export default function PostCategory() {
               </div>
             </div>
             <div className="flex flex-col justify-between font-jua">
-              <div className="flex items-center gap-1">
-                <ChevronUp className="size-4 text-red-400" />
+              <div className="w-10 flex justify-between items-center gap-1">
+                <HandThumbUpIcon className="size-4 text-red-400" />
                 <span className="text-xs text-slate-500">
                   {post.like_count}
                 </span>
               </div>
-              <div className="flex items-center gap-1">
-                <ChevronDown className="size-4 text-blue-400" />
+              <div className="w-10 flex justify-between items-center gap-1">
+                <HandThumbDownIcon className="size-4 text-blue-400" />
                 <span className="text-xs text-slate-500">
                   {post.dislike_count}
                 </span>

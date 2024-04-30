@@ -2,13 +2,14 @@
 
 import { useFormState } from "react-dom";
 import Button from "../button";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import CommentItem from "./comment-item";
 import {
   COMMENT_SAVE_ERROR,
   DELETE_COMPLETE,
   FETCH_COMMENTS_ERROR,
   FETCH_COMMENTS_SIZE,
+  MAX_LENGTH_MY_COMMENT,
 } from "@/lib/constants";
 import {
   CommentsType,
@@ -46,6 +47,8 @@ export default function CommentGroup({
     return saveResult;
   };
   const [state, action] = useFormState(onSubmit, null);
+  const [myCommentState, setMyCommentState] = useState<string>("");
+  const [commentLengthState, setCommentLengthState] = useState<number>(0);
   const [commentsState, setCommentsState] = useState<CommentsType[]>([]);
   const [commentsCountState, setCommentsCountState] =
     useState<number>(commentsCount);
@@ -59,7 +62,14 @@ export default function CommentGroup({
       }
     })();
   }, [commentsCountState, postId]);
-
+  const commentChange = (evnet: ChangeEvent<HTMLTextAreaElement>) => {
+    const comment = evnet.target.value;
+    if (comment.length > MAX_LENGTH_MY_COMMENT) {
+      return;
+    }
+    setMyCommentState(comment);
+    setCommentLengthState(comment.length);
+  };
   const onCommentDelete = async (id: number) => {
     const result = await deleteComment(id);
     if (result) {
@@ -79,7 +89,6 @@ export default function CommentGroup({
       alert(FETCH_COMMENTS_ERROR);
       return;
     }
-
     setCommentsState(comments);
   };
 
@@ -88,6 +97,8 @@ export default function CommentGroup({
       <form action={action} className="flex flex-col gap-3">
         <textarea
           ref={textareaRef}
+          onChange={commentChange}
+          value={myCommentState}
           name="comment"
           id="comment"
           className="w-full font-notoKr text-sm resize-none h-24 rounded-md overflow-hidden border-none focus:ring-0 bg-slate-200"
@@ -97,6 +108,9 @@ export default function CommentGroup({
             {state.formErrors.toString()}
           </span>
         ) : null}
+        <span className="text-xs self-end font-jua">
+          {commentLengthState} / {MAX_LENGTH_MY_COMMENT}
+        </span>
         <div className="w-full sm:w-32 self-end">
           <Button className="w-full rounded-md">
             <span className="text-white font-jua">작성완료</span>
