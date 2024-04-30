@@ -35,7 +35,6 @@ export async function createTopic(formData: FormData) {
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       // Prisma가 인식하는 특정 오류 코드에 대한 처리
-      console.log(error);
       if (error.code === "P2025") {
         // User table과 connect에 실패한 경우
         session.destroy();

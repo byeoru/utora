@@ -37,9 +37,7 @@ export default function CommentGroup({
       alert(COMMENT_SAVE_ERROR);
       return;
     }
-    if (textareaRef.current) {
-      textareaRef.current.value = "";
-    }
+    setMyCommentState("");
     if (saveResult.comment) {
       setCommentsState((prev) => [saveResult.comment, ...prev]);
       setCommentsCountState((prev) => prev + 1);
