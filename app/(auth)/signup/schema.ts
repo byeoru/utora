@@ -14,6 +14,7 @@ import {
   MIN_LENGTH_NICKNAME,
   MIN_LENGTH_PWD,
   MIN_LENGTH_PWD_ERROR,
+  NOT_AVAILABLE_CHARACTOR_NICKNAME,
   PWD_REGEX,
   PWD_REGEX_ERROR,
   REQUIRED_AGEGROUP,
@@ -72,7 +73,16 @@ const isAvailableEmail = async (email: string) => {
   return user === null;
 };
 
-const isAvailableNickname = async (nickname: string) => {
+const isAvailableNickname = async (nickname: string, ctx: z.RefinementCtx) => {
+  if (nickname[0] === "@") {
+    ctx.addIssue({
+      code: "custom",
+      message: NOT_AVAILABLE_CHARACTOR_NICKNAME,
+      path: ["nickname"],
+      fatal: true,
+    });
+    return z.NEVER;
+  }
   const user = await db.user.findUnique({
     where: {
       nickname,
@@ -81,7 +91,15 @@ const isAvailableNickname = async (nickname: string) => {
       id: true,
     },
   });
-  return user === null;
+  if (user) {
+    ctx.addIssue({
+      code: "custom",
+      message: DUPLICATE_ERROR_NICKNAME,
+      path: ["nickname"],
+      fatal: true,
+    });
+    return z.NEVER;
+  }
 };
 
 export const signupSchema = z
@@ -91,6 +109,7 @@ export const signupSchema = z
         required_error: REQUIRED_ERROR_EMAIL,
         description: DESCRIPTION_EMAIL,
       })
+      .trim()
       .email(INVALID_TYPE_ERROR_EMAIL)
       .max(MAX_LENGTH_EMAIL, MAX_LENGTH_EMAIL_ERROR)
       .refine(isAvailableEmail, {
@@ -102,6 +121,7 @@ export const signupSchema = z
         required_error: REQUIRED_ERROR_PWD,
         description: DESCRIPTION_PWD,
       })
+      .trim()
       .min(MIN_LENGTH_PWD, MIN_LENGTH_PWD_ERROR)
       .max(MAX_LENGTH_PWD, MAX_LENGTH_PWD_ERROR)
       .regex(PWD_REGEX, PWD_REGEX_ERROR),
@@ -112,9 +132,10 @@ export const signupSchema = z
       .string({
         required_error: REQUIRED_ERROR_NICKNAME,
       })
+      .trim()
       .min(MIN_LENGTH_NICKNAME, LENGTH_NICKNAME_ERROR)
       .max(MAX_LENGTH_NICKNAME, LENGTH_NICKNAME_ERROR)
-      .refine(isAvailableNickname, DUPLICATE_ERROR_NICKNAME),
+      .superRefine(isAvailableNickname),
     gender: z.nativeEnum(EGender).nullable(),
     ageGroup: z.nativeEnum(EAgeGroups).nullable(),
     passSelectForm: z.boolean(),

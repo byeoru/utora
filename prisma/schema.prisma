@@ -186,10 +186,10 @@ model ProposedTopicBallet {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
   proposed_topic ProposedTopic @relation(fields: [proposed_topic_id], references: [id], onDelete: Cascade)
   
-  user_id Int
+  user_id Int?
   user_id_copy Int
   proposed_topic_id Int
 
