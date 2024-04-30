@@ -51,7 +51,7 @@ export default async function PostDetail({
             </div>
             <Divider />
             <div
-              className="prose dark:prose-invert prose-sm sm:prose-base"
+              className="prose prose-sm sm:prose-base"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>

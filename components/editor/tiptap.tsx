@@ -27,7 +27,7 @@ const Tiptap = ({ onChange, content }: TiptapPropsType) => {
     editorProps: {
       attributes: {
         class:
-          "prose h-96 dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none overflow-y-auto",
+          "prose h-96 prose-sm sm:prose-base m-5 focus:outline-none overflow-y-auto",
       },
     },
     onUpdate: ({ editor }) => {
