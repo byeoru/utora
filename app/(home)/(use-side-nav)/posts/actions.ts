@@ -24,6 +24,9 @@ export async function getPosts(category: EPostCategory) {
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
     return posts;
   } catch (error) {

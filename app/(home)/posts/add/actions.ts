@@ -3,7 +3,8 @@
 import db from "@/lib/db";
 import { postSchema } from "./schema";
 import getSession from "@/lib/session";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function post(formData: FormData) {
   const session = await getSession();
@@ -20,7 +21,10 @@ export async function post(formData: FormData) {
   const validation = postSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
-    postCategory: formData.get("postCategory"),
+    postCategory:
+      formData.get("postCategory") === "none"
+        ? null
+        : formData.get("postCategory"),
   });
 
   if (!validation.success) {
@@ -32,7 +36,7 @@ export async function post(formData: FormData) {
       data: {
         title: validation.data.title,
         content: validation.data.content,
-        category: "culture_arts",
+        category: validation.data.postCategory!,
         user: {
           connect: {
             id: session.id,
@@ -43,8 +47,19 @@ export async function post(formData: FormData) {
         id: true,
       },
     });
-    redirect(`/posts/${post.id}`);
+    return { post, fieldErrors: null };
   } catch (error) {
-    return notFound();
+    if (error instanceof PrismaClientKnownRequestError) {
+      // Prisma가 인식하는 특정 오류 코드에 대한 처리
+      console.log(error);
+      if (error.code === "P2025") {
+        // User table과 connect에 실패한 경우
+        session.destroy();
+        return notFound();
+      }
+    } else {
+      // Prisma가 알 수 없는 다른 종류의 오류 처리
+      console.error("Unknown Prisma Error:", error);
+    }
   }
 }

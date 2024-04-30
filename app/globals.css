@@ -17,7 +17,7 @@
   }
 }
 
-.ProseMirror > * + * {
+/* .ProseMirror > * + * {
   margin-top: 0.75em;
 }
 
@@ -92,4 +92,4 @@
 .ProseMirror hr {
   width: 100%;
   border: 1px solid #c6c6c6;
-}
+} */

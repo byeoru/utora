@@ -67,11 +67,7 @@ export default function PostCategory() {
           >
             <div className="flex flex-1 flex-col gap-1 font-notoKr">
               <h2 className="w-full text-sm font-semibold text-ellipsis overflow-hidden break-words line-clamp-1">
-                The longest word in any of the major English language
-                dictionaries is pneumonoultramicroscopicsilicovolcanoconiosis, a
-                word that refers to a lung disease contracted from the
-                inhalation of very fine silica particles, specifically from a
-                volcano; medically, it is the same as silicosis.
+                {post.title}
               </h2>
               <div className="flex gap-5 items-center text-xs font-jua text-slate-500">
                 <span className="px-1">| 작성자: {post.user.nickname}</span>

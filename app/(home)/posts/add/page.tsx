@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { post } from "./actions";
 import { postCategories } from "@/lib/constants";
+import { redirect } from "next/navigation";
 
 export default function PostAdd() {
   const [content, setContent] = useState<string>("");
@@ -19,8 +20,10 @@ export default function PostAdd() {
     if (result?.fieldErrors) {
       const message = `${result.fieldErrors.title ?? ""}\n${
         result.fieldErrors.content ?? ""
-      }\n${result.fieldErrors.postCategory}`;
+      }\n${result.fieldErrors.postCategory ?? ""}`;
       alert(message);
+    } else {
+      redirect(`/posts/${result?.post?.id}`);
     }
   };
   return (

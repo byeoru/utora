@@ -12,7 +12,7 @@ import { EyeIcon } from "@heroicons/react/24/outline";
 import LikeDislikeGroup from "@/components/post/like-dislike-group";
 import CommentGroup from "@/components/post/comment-group";
 import getSession from "@/lib/session";
-import { categories } from "@/lib/constants";
+import { postCategories } from "@/lib/constants";
 
 export default async function PostDetail({
   params,
@@ -30,7 +30,7 @@ export default async function PostDetail({
     <>
       <div className="w-full px-2 py-1 border-b-2 border-slate-200 bg-primary shadow-md block">
         <h1 className="font-jua mx-auto text-lg sm:text-2xl max-w-screen-lg">
-          {`${categories[post.category].title} 게시판`}
+          {`${postCategories[post.category].title} 게시판`}
         </h1>
       </div>
       <div className="max-w-screen-lg m-auto flex md:gap-2">
@@ -50,7 +50,10 @@ export default async function PostDetail({
               </div>
             </div>
             <Divider />
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div
+              className="prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
           </div>
           <div className="flex flex-col p-5 gap-3">
             <Divider />
