@@ -149,14 +149,16 @@ model PostReaction {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
   post Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
 
-  user_id Int
+  user_id Int?
+  user_id_copy Int
   post_id Int
 
-  @@id(name: "id", [user_id, post_id])
+  @@id(name: "id", [user_id_copy, post_id])
 
+  @@index([user_id])
   @@index([post_id])
 }
 

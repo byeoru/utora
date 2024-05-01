@@ -9,6 +9,7 @@ import { comment } from "./schema";
 
 export type GetPostType = Prisma.PromiseReturnType<typeof getPost>;
 export async function getPost(postId: number) {
+  const session = await getSession();
   try {
     const post = await db.post.update({
       where: {
@@ -20,7 +21,11 @@ export async function getPost(postId: number) {
         },
       },
       include: {
-        post_reactions: true,
+        post_reactions: {
+          where: {
+            user_id_copy: session.id,
+          },
+        },
         user: {
           select: {
             nickname: true,
@@ -46,6 +51,7 @@ export async function likePost(postId: number) {
     await db.postReaction.create({
       data: {
         user_id: session.id,
+        user_id_copy: session.id,
         post_id: postId,
         reaction: "like",
       },
@@ -72,7 +78,7 @@ export async function cancelLikePost(postId: number) {
     await db.postReaction.delete({
       where: {
         id: {
-          user_id: session.id,
+          user_id_copy: session.id,
           post_id: postId,
         },
       },
@@ -97,6 +103,7 @@ export async function dislikePost(postId: number) {
     await db.postReaction.create({
       data: {
         user_id: session.id,
+        user_id_copy: session.id,
         post_id: postId,
         reaction: "dislike",
       },
@@ -123,7 +130,7 @@ export async function cancelDislikePost(postId: number) {
     await db.postReaction.delete({
       where: {
         id: {
-          user_id: session.id,
+          user_id_copy: session.id,
           post_id: postId,
         },
       },
