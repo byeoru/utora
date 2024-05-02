@@ -20,7 +20,8 @@ const setCron = async () => {
   const result = await client.schedules.create({
     destination: "https://utora.vercel.app/api/cron",
     method: "POST",
-    cron: "* * * * *",
+    // 매주 월요일마다 실행
+    cron: "0 9 * * 1",
     headers: {
       "Content-Type": "application/json",
       "Utora-Apikey": process.env.UTORA_API_KEY!,
