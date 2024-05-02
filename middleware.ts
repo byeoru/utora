@@ -13,7 +13,7 @@ const publicOnlyUrls: Routes = {
   "/vote/categories": true,
   "/posts": true,
   "/debate": true,
-  "/api/cron/debate/room": true,
+  "/api/cron": true,
 };
 
 export async function middleware(request: NextRequest) {

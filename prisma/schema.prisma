@@ -330,3 +330,8 @@ model SelectedDebateMessage {
 
   @@index([debate_room_id])
 }
+
+model Schedule {
+  id String @id
+  name String @unique
+}

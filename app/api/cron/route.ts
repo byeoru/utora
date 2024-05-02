@@ -2,6 +2,8 @@ import { categories } from "@/lib/constants";
 import db from "@/lib/db";
 import { toFlattenArray } from "@/lib/utils";
 import { EDebateCategory, Prisma } from "@prisma/client";
+import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 
 export type GetSelectedTopicsType = Prisma.PromiseReturnType<
   typeof getSelectedTopics
@@ -32,16 +34,27 @@ const getSelectedTopics = async () => {
   );
 };
 
-export async function POST() {
+export async function POST(req: NextRequest) {
+  // upstash를 통한 요청만 허가
+  const apiKey = req.headers.get("utora-apikey");
+  if (apiKey !== process.env.UTORA_API_KEY!) {
+    return Response.json({
+      success: false,
+      error: "허가되지 않은 요청입니다.",
+    });
+  }
+
   let selectedTopics: GetSelectedTopicsType | null = null;
+  // 최상위 3개 topic fetch
   try {
     selectedTopics = await getSelectedTopics();
   } catch (error) {
     selectedTopics = await getSelectedTopics();
     if (!selectedTopics) {
-      return Response.error();
+      return Response.json({ success: false, error });
     }
   }
+  // 최상위 3개의 topic으로 thisWeekTopic 생성
   try {
     await db.thisWeekTopic.createMany({
       data: [...toFlattenArray(selectedTopics)],
@@ -52,9 +65,10 @@ export async function POST() {
         data: [...toFlattenArray(selectedTopics)],
       });
     } catch (error) {
-      return Response.error();
+      return Response.json({ success: false, error });
     }
   }
+  // debate room 생성
   try {
     const thisWeekTopics = await db.thisWeekTopic.findMany({
       select: {
@@ -68,8 +82,18 @@ export async function POST() {
         }),
       ],
     });
-    return Response.json({ ok: true });
   } catch (error) {
-    return Response.error();
+    return Response.json({ success: false, error });
+  }
+  // proposed topic 모두 삭제
+  try {
+    await db.proposedTopic.deleteMany();
+    return Response.json({ success: true });
+  } catch (error) {
+    try {
+      await db.proposedTopic.deleteMany();
+    } catch (error) {
+      return Response.json({ success: false, error });
+    }
   }
 }
