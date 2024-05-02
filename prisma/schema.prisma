@@ -81,6 +81,9 @@ model User {
   debate_messages DebateMessage[]
   debate_support_messages DebateSupportMessage[]
   debate_comments DebateComment[]
+  debate_message_archives DebateMessageArchive[]
+  debate_support_message_archives DebateSupportMessageArchive[]
+  debate_archives DebateArchive[]
 }
 
 model Notice {
@@ -334,4 +337,59 @@ model SelectedDebateMessage {
 model Schedule {
   id String @id
   name String @unique
+}
+
+model DebateArchive {
+  id Int @id @default(autoincrement())
+  title String
+  propose_reason String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  proposer User? @relation(fields: [proposer_id], references: [id], onDelete: SetNull)
+
+  debate_message_archives DebateMessageArchive[]
+  debate_support_message_archives DebateSupportMessageArchive[]
+
+  proposer_id Int?
+
+  @@index([proposer_id])
+}
+
+model DebateMessageArchive {
+  id Int @id @default(autoincrement())
+  payload String
+  debate_role EDebateRole
+  debate_role_kr String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  debate_archive DebateArchive @relation(fields: [debate_archive_id], references: [id], onDelete: Cascade)
+  proposer User? @relation(fields: [proposer_id], references: [id], onDelete: SetNull)
+
+  debate_archive_id Int
+  proposer_id Int?
+
+  @@index([debate_archive_id])
+  @@index([proposer_id])
+}
+
+model DebateSupportMessageArchive {
+  id Int @id @default(autoincrement())
+  payload String
+  debate_role EDebateRole
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  debate_archive DebateArchive @relation(fields: [debate_archive_id], references: [id], onDelete: Cascade)
+  proposer User? @relation(fields: [proposer_id], references: [id], onDelete: SetNull)
+
+  debate_archive_id Int
+  proposer_id Int?
+
+  @@index([debate_archive_id])
+  @@index([proposer_id])
 }

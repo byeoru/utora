@@ -2,7 +2,6 @@ import { categories } from "@/lib/constants";
 import db from "@/lib/db";
 import { toFlattenArray } from "@/lib/utils";
 import { EDebateCategory, Prisma } from "@prisma/client";
-import { NextApiRequest } from "next";
 import { NextRequest } from "next/server";
 
 export type GetSelectedTopicsType = Prisma.PromiseReturnType<
@@ -38,10 +37,13 @@ export async function POST(req: NextRequest) {
   // upstash를 통한 요청만 허가
   const apiKey = req.headers.get("utora-apikey");
   if (apiKey !== process.env.UTORA_API_KEY!) {
-    return Response.json({
-      success: false,
-      error: "허가되지 않은 요청입니다.",
-    });
+    return Response.json(
+      {
+        success: false,
+        error: "허가되지 않은 요청입니다.",
+      },
+      { status: 401 }
+    );
   }
 
   let selectedTopics: GetSelectedTopicsType | null = null;
