@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Jua, Do_Hyeon, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
+import Head from "next/head";
 
 const jua = Jua({
   subsets: ["latin"],
@@ -36,6 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <body
         className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable} w-full`}
       >
