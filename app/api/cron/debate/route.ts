@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     selectedTopics = await getSelectedTopics();
     if (!selectedTopics) {
-      return Response.json({ success: false, error });
+      return Response.json({ success: false, error }, { status: 500 });
     }
   }
   // 최상위 3개의 topic으로 thisWeekTopic 생성
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
         data: [...toFlattenArray(selectedTopics)],
       });
     } catch (error) {
-      return Response.json({ success: false, error });
+      return Response.json({ success: false, error }, { status: 500 });
     }
   }
   // debate room 생성
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       ],
     });
   } catch (error) {
-    return Response.json({ success: false, error });
+    return Response.json({ success: false, error }, { status: 500 });
   }
   // proposed topic 모두 삭제
   try {
