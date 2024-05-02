@@ -99,7 +99,7 @@ export default function CommentGroup({
           value={myCommentState}
           name="comment"
           id="comment"
-          className="w-full font-notoKr text-sm resize-none h-24 rounded-md overflow-hidden border-none focus:ring-0 bg-slate-200"
+          className="w-full font-notoKr text-sm resize-none bg-slate-50 overflow-hidden border-slate-400 border-t-0 border-l-0 border-r-0 border-b-1 focus:ring-0 focus:border-slate-600"
         />
         {state?.formErrors ? (
           <span className="text-red-600 text-sm">
