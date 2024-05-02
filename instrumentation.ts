@@ -17,7 +17,7 @@ const createDebateRoom = async () => {
     },
   });
 
-  if (schedule && (await client.schedules.get(schedule.id))) {
+  if (schedule) {
     return;
   }
 
@@ -47,7 +47,7 @@ const saveToTheArchive = async () => {
     },
   });
 
-  if (schedule && (await client.schedules.get(schedule.id))) {
+  if (schedule) {
     return;
   }
 

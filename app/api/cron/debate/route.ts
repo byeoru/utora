@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
     try {
       await db.proposedTopic.deleteMany();
     } catch (error) {
-      return Response.json({ success: false, error });
+      return Response.json({ success: false, error }, { status: 500 });
     }
   }
 }
