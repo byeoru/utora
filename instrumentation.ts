@@ -3,6 +3,7 @@ import db from "./lib/db";
 
 export function register() {
   createDebateRoom();
+  saveToTheArchive();
 }
 
 const client = new Client({
