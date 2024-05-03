@@ -42,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable} w-full`}
       >
