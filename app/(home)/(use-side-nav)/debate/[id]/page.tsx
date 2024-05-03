@@ -63,7 +63,7 @@ export default async function DebateRoom({
     .pbkdf2Sync(
       `${debateRoomInfo.created_at}-debate-${params.id}-UtOrA`,
       salt,
-      10000,
+      1000,
       64,
       "sha512"
     )
@@ -73,7 +73,7 @@ export default async function DebateRoom({
     .pbkdf2Sync(
       `uToRa-${params.id}-${subChannelName}-${debateRoomInfo.created_at}`,
       salt,
-      10000,
+      1000,
       64,
       "sha512"
     )
@@ -91,6 +91,7 @@ export default async function DebateRoom({
         topicTitle={debateRoomInfo.this_week_topic.topic}
         proposeReason={debateRoomInfo.this_week_topic.propose_reason}
         channelName={hashDebateChannelName}
+        status={debateRoomInfo.status}
       />
       {myDebateRole.debate_role === "Audience" ? (
         <CommentChatList

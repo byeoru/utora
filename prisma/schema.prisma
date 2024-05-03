@@ -49,6 +49,12 @@ enum EAgeGroups {
   fifty_and_over
 }
 
+enum EDebateStatus {
+  in_debate
+  under_evaluation
+  end
+}
+
 model Admin {
   id Int @id @default(autoincrement())
   email String? @unique
@@ -225,6 +231,7 @@ model ThisWeekTopic {
 
 model DebateRoom {
   id String @id @default(cuid())
+  status EDebateStatus
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

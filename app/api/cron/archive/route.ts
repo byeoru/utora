@@ -72,6 +72,10 @@ const getSupportMessages = async (debate_room_id: string, index: number) => {
 
 const BATCH_SIZE = 50;
 
+/**
+ *
+ * (토론방, debate messages, support messages) archive 생성
+ */
 export async function POST(req: NextRequest) {
   // upstash를 통한 요청만 허가
   const apiKey = req.headers.get("utora-apikey");

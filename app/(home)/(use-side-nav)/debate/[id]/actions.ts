@@ -237,6 +237,7 @@ export async function getDebateRoomInfo(debateRoomId: string) {
         id: debateRoomId,
       },
       select: {
+        status: true,
         created_at: true,
         this_week_topic: {
           select: {

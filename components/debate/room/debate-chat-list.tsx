@@ -4,7 +4,7 @@ import {
   GetDebateMessagesType,
   saveDebateMessage,
 } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
-import { EDebateRole } from "@prisma/client";
+import { EDebateRole, EDebateStatus } from "@prisma/client";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
@@ -26,6 +26,7 @@ interface DebateChatListPropsType {
   proposeReason: string;
   initialDebateMessages: GetDebateMessagesType;
   channelName: string;
+  status: EDebateStatus;
 }
 
 export default function DebateChatList({
@@ -39,6 +40,7 @@ export default function DebateChatList({
   proposeReason,
   initialDebateMessages,
   channelName,
+  status,
 }: DebateChatListPropsType) {
   const [debateMessages, setDebateMessages] = useStateWithCallback(
     initialDebateMessages,

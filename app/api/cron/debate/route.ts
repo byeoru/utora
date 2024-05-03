@@ -1,7 +1,7 @@
 import { categories } from "@/lib/constants";
 import db from "@/lib/db";
 import { toFlattenArray } from "@/lib/utils";
-import { EDebateCategory, Prisma } from "@prisma/client";
+import { EDebateCategory, EDebateStatus, Prisma } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export type GetSelectedTopicsType = Prisma.PromiseReturnType<
@@ -33,6 +33,10 @@ const getSelectedTopics = async () => {
   );
 };
 
+/**
+ *
+ * this week topic, 토론방 생성, proposed topic 모두 삭제
+ */
 export async function POST(req: NextRequest) {
   // upstash를 통한 요청만 허가
   const apiKey = req.headers.get("utora-apikey");
@@ -80,7 +84,10 @@ export async function POST(req: NextRequest) {
     await db.debateRoom.createMany({
       data: [
         ...thisWeekTopics.map((topic) => {
-          return { this_week_topic_id: topic.id };
+          return {
+            this_week_topic_id: topic.id,
+            status: EDebateStatus.in_debate,
+          };
         }),
       ],
     });
@@ -97,5 +104,30 @@ export async function POST(req: NextRequest) {
     } catch (error) {
       return Response.json({ success: false, error }, { status: 500 });
     }
+  }
+}
+
+/**
+ *
+ * this week topic, 토론방(메시지 포함) 모두 삭제
+ */
+export async function DELETE(req: NextRequest) {
+  // upstash를 통한 요청만 허가
+  const apiKey = req.headers.get("utora-apikey");
+  if (apiKey !== process.env.UTORA_API_KEY!) {
+    return Response.json(
+      {
+        success: false,
+        error: "허가되지 않은 요청입니다.",
+      },
+      { status: 401 }
+    );
+  }
+
+  try {
+    await db.thisWeekTopic.deleteMany();
+    return Response.json({ success: true });
+  } catch (error) {
+    return Response.json({ success: false, error }, { status: 500 });
   }
 }
