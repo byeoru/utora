@@ -36,12 +36,20 @@ enum EPostCategory {
   history_anthropology
 }
 
+enum EDebateRole {
+  Proponent
+  Opponent
+  ProponentSupporter
+  OpponentSupporter
+  Audience
+}
+
 enum EGender {
   male 
   female
 }
 
-enum EAgeGroups {
+enum EAgeGroup {
   teens
   twenties
   thirties
@@ -53,6 +61,11 @@ enum EDebateStatus {
   in_debate
   under_evaluation
   end
+}
+
+enum EEvaluation {
+  proponent
+  opponent
 }
 
 model Admin {
@@ -73,7 +86,7 @@ model User {
   password String?
   nickname String @unique
   gender EGender?
-  age_group EAgeGroups?
+  age_group EAgeGroup?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -90,6 +103,7 @@ model User {
   debate_message_archives DebateMessageArchive[]
   debate_support_message_archives DebateSupportMessageArchive[]
   debate_archives DebateArchive[]
+  debate_evaluation_ballets DebateEvaluationBallet[]
 }
 
 model Notice {
@@ -192,7 +206,7 @@ model ProposedTopic {
 
 model ProposedTopicBallet {
   gender EGender
-  ageGroup EAgeGroups
+  ageGroup EAgeGroup
   
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -243,16 +257,8 @@ model DebateRoom {
   debate_messages DebateMessage[]
   debate_support_messages DebateSupportMessage[]
   debate_comments DebateComment[]
-  selected_debate_messages SelectedDebateMessage[]
   joined_user_debate_roles JoinedUserDebateRole[]
-}
-
-enum EDebateRole {
-  Proponent
-  Opponent
-  ProponentSupporter
-  OpponentSupporter
-  Audience
+  debate_evaluation_ballets DebateEvaluationBallet[]
 }
 
 model JoinedUserDebateRole {
@@ -327,23 +333,29 @@ model DebateComment {
   @@index([user_id])
 }
 
-model SelectedDebateMessage {
-  id Int @id @default(autoincrement())
-  payload String
+model Schedule {
+  id String @id
+  name String @unique
+}
+
+model DebateEvaluationBallet {
+  gender EGender
+  age_group EAgeGroup
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
   debate_room DebateRoom @relation(fields: [debate_room_id], references: [id], onDelete: Cascade)
 
+  user_id Int?
+  user_id_copy Int
   debate_room_id String
 
+  @@index([user_id])
   @@index([debate_room_id])
-}
 
-model Schedule {
-  id String @id
-  name String @unique
+  @@id(name: "id", [user_id_copy, debate_room_id])
 }
 
 model DebateArchive {
@@ -358,6 +370,7 @@ model DebateArchive {
 
   debate_message_archives DebateMessageArchive[]
   debate_support_message_archives DebateSupportMessageArchive[]
+  debate_evaluation_statistics_archives DebateEvaluationStatisticsArchive[]
 
   proposer_id Int?
 
@@ -399,4 +412,31 @@ model DebateSupportMessageArchive {
 
   @@index([debate_archive_id])
   @@index([proposer_id])
+}
+
+model DebateEvaluationStatisticsArchive {
+  id Int @id @default(autoincrement())
+  proponent_male_count Int
+  proponent_female_count Int
+  proponent_teens Int
+  proponent_twenties Int
+  proponent_thirties Int
+  proponent_forties Int
+  proponent_fifty_and_over Int
+  opponent_male_count Int
+  opponent_female_count Int
+  opponent_teens Int
+  opponent_twenties Int
+  opponent_thirties Int
+  opponent_forties Int
+  opponent_fifty_and_over Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  debate_archive DebateArchive @relation(fields: [debate_archive_id], references: [id], onDelete: Cascade)
+  
+  debate_archive_id Int
+
+  @@index([debate_archive_id])
 }

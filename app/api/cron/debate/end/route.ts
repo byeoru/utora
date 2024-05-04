@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 
 /**
  *
- * 토론 전 과정 종료
+ * 토론 전 과정 종료, 토론 통계 집계
  */
 export async function PUT(req: NextRequest) {
   // upstash를 통한 요청만 허가
@@ -25,6 +25,7 @@ export async function PUT(req: NextRequest) {
         status: "end",
       },
     });
+
     return Response.json({ success: true });
   } catch (error) {
     return Response.json({ success: false, error }, { status: 500 });

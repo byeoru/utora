@@ -24,7 +24,7 @@ import {
   REQUIRED_GENDER,
 } from "@/lib/constants";
 import db from "@/lib/db";
-import { EAgeGroups, EGender } from "@prisma/client";
+import { EAgeGroup, EGender } from "@prisma/client";
 import { z } from "zod";
 
 const checkConfirmPassword = ({
@@ -53,7 +53,7 @@ const checkAgeGroup = ({
   ageGroup,
 }: {
   passSelectForm: boolean;
-  ageGroup: EAgeGroups | null;
+  ageGroup: EAgeGroup | null;
 }) => {
   if (!passSelectForm && !ageGroup) {
     return false;
@@ -137,7 +137,7 @@ export const signupSchema = z
       .max(MAX_LENGTH_NICKNAME, LENGTH_NICKNAME_ERROR)
       .superRefine(isAvailableNickname),
     gender: z.nativeEnum(EGender).nullable(),
-    ageGroup: z.nativeEnum(EAgeGroups).nullable(),
+    ageGroup: z.nativeEnum(EAgeGroup).nullable(),
     passSelectForm: z.boolean(),
   })
   .refine(checkConfirmPassword, {

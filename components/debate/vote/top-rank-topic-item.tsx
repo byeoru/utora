@@ -3,7 +3,7 @@
 import Divider from "@/components/divider";
 import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
-import { EAgeGroups, EGender } from "@prisma/client";
+import { EAgeGroup, EGender } from "@prisma/client";
 import {
   Chart,
   ArcElement,
@@ -24,7 +24,7 @@ interface TopRankTopicItemPropsType {
   nickname?: string;
   ballets: {
     gender: EGender;
-    ageGroup: EAgeGroups;
+    ageGroup: EAgeGroup;
   }[];
 }
 
