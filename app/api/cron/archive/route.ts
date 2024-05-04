@@ -74,7 +74,7 @@ const BATCH_SIZE = 50;
 
 /**
  *
- * (토론방, debate messages, support messages) archive 생성
+ * (토론방, debate messages, support messages) archive 생성, 평가 통계 집계
  */
 export async function POST(req: NextRequest) {
   // upstash를 통한 요청만 허가
@@ -90,9 +90,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const DebateRooms = await getAllDebateRoomInfos();
+    const debateRooms = await getAllDebateRoomInfos();
 
-    DebateRooms.forEach(async (debateRoomInfo) => {
+    debateRooms.forEach(async (debateRoomInfo) => {
       // debate room => archive
       const debateArchive = await createArchive(
         debateRoomInfo.this_week_topic.topic,
@@ -145,6 +145,16 @@ export async function POST(req: NextRequest) {
           }),
         });
       }
+
+      // statistics archive table connect
+      await db.debateEvaluationStatisticsArchive.update({
+        where: {
+          debate_room_id: debateRoomInfo.id,
+        },
+        data: {
+          debate_archive_id: debateArchive.id,
+        },
+      });
     });
     return Response.json({ success: true });
   } catch (error) {

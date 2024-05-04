@@ -124,6 +124,7 @@ export async function DELETE(req: NextRequest) {
     );
   }
 
+  // Delete all this week topics (with debate room)
   try {
     await db.thisWeekTopic.deleteMany();
     return Response.json({ success: true });

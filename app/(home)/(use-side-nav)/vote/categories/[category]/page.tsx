@@ -1,14 +1,11 @@
 import { notFound } from "next/navigation";
 import { getTopics, getTopicsTopRank } from "./actions";
 import { EDebateCategory } from "@prisma/client";
-import TopRankTopicItem from "@/components/debate/vote/top-rank-topic-item";
 import Divider from "@/components/divider";
 import TopicList from "@/components/debate/vote/topic-list";
 import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
 import { categories } from "@/lib/constants";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from "swiper";
 import TopRankTopicSwiper from "@/components/debate/vote/top-rank-topic-swiper";
 
 export default async function VoteCategory({

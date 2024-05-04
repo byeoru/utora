@@ -259,6 +259,7 @@ model DebateRoom {
   debate_comments DebateComment[]
   joined_user_debate_roles JoinedUserDebateRole[]
   debate_evaluation_ballets DebateEvaluationBallet[]
+  debate_evaluation_statistics_archive DebateEvaluationStatisticsArchive?
 }
 
 model JoinedUserDebateRole {
@@ -341,6 +342,7 @@ model Schedule {
 model DebateEvaluationBallet {
   gender EGender
   age_group EAgeGroup
+  evaluation EEvaluation
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -416,15 +418,15 @@ model DebateSupportMessageArchive {
 
 model DebateEvaluationStatisticsArchive {
   id Int @id @default(autoincrement())
-  proponent_male_count Int
-  proponent_female_count Int
+  proponent_male Int
+  proponent_female Int
   proponent_teens Int
   proponent_twenties Int
   proponent_thirties Int
   proponent_forties Int
   proponent_fifty_and_over Int
-  opponent_male_count Int
-  opponent_female_count Int
+  opponent_male Int
+  opponent_female Int
   opponent_teens Int
   opponent_twenties Int
   opponent_thirties Int
@@ -434,9 +436,11 @@ model DebateEvaluationStatisticsArchive {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  debate_archive DebateArchive @relation(fields: [debate_archive_id], references: [id], onDelete: Cascade)
+  debate_room DebateRoom? @relation(fields: [debate_room_id], references: [id], onDelete: SetNull)
+  debate_archive DebateArchive? @relation(fields: [debate_archive_id], references: [id], onDelete: Cascade)
   
-  debate_archive_id Int
+  debate_room_id String? @unique
+  debate_archive_id Int?
 
   @@index([debate_archive_id])
 }
