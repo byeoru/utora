@@ -12,16 +12,29 @@ import {
   HandThumbDownIcon,
   HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function PostCategory() {
-  const [categoryState, setCategoryState] = useState<EPostCategory>("general");
+export default function Posts({
+  searchParams,
+}: {
+  searchParams: { category: EPostCategory };
+}) {
+  const initCategory: EPostCategory = searchParams.category ?? "general";
+  const [categoryState, setCategoryState] =
+    useState<EPostCategory>(initCategory);
   const [postsState, setPostsState] = useState<GetPostsType>();
+  const { replace } = useRouter();
+  const pathname = usePathname();
   const fetchPosts = async (category: EPostCategory) => {
+    const newQuery = new URLSearchParams();
+    newQuery.set("category", categoryState.toString());
+    replace(`${pathname}?${newQuery}`);
     const posts = await getPosts(category);
     setPostsState(posts);
   };
   useEffect(() => {
     fetchPosts(categoryState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryState]);
   return (
     <div className="flex flex-col m-auto max-w-screen-lg">
