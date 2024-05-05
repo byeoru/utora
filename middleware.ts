@@ -14,6 +14,8 @@ const publicOnlyUrls: Routes = {
   "/posts": true,
   "/debate": true,
   "/api/cron/debate": true,
+  "/api/cron/debate/evaluate": true,
+  "/api/cron/debate/end": true,
   "/api/cron/archive": true,
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Component, Fan, Flower } from "lucide-react";
-import { EDebateRole } from "@prisma/client";
+import { EDebateRole, EDebateStatus } from "@prisma/client";
 import {
   AUDIENCE_KR,
   AUDIENCE_TEXT,
@@ -19,14 +19,15 @@ import {
   PROPONENT_SUPPORTER_TEXT,
   PROPONENT_TEXT,
 } from "@/lib/constants";
-import { GetMyDebateRoleType, getMyDebateRole } from "../actions";
+import { GetMyDebateRoleType } from "../actions";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { redirect } from "next/navigation";
-import { saveMyDebateRole } from "./actions";
+import { getMyRoleWithRoomStatus, saveMyDebateRole } from "./actions";
 
 export default function SetDebateRole({ params }: { params: { id: string } }) {
   const [myRoleState, setMyRoleState] = useState<GetMyDebateRoleType>(null);
+  const [debateStatus, setDebateStatus] = useState<EDebateStatus | null>(null);
   const { pending } = useFormStatus();
   const saveMyRole = async () => {
     if (!myRoleState) {
@@ -40,24 +41,47 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
     );
     redirect(`/debate/${params.id}`);
   };
-  const myDebateRoleCheck = async () => {
-    const myDebateRole = await getMyDebateRole(params.id);
-    if (myDebateRole) {
-      redirect(`/debate/${params.id}`);
+  const myInfoCheck = async () => {
+    const myInfo = await getMyRoleWithRoomStatus(params.id);
+    if (!myInfo) {
+      alert("토론방이 존재하지 않습니다.");
+      return;
+    }
+    if (myInfo.joined_user_debate_roles.length > 0) {
+      return redirect(`/debate/${params.id}`);
+    }
+    setDebateStatus(myInfo.status);
+  };
+  const getStatusDescription = () => {
+    switch (debateStatus) {
+      case "in_debate":
+        return "토론이 진행 중입니다.";
+      case "under_evaluation":
+        return "토론 평가 중에는 관중으로만 새롭게 입장이 가능합니다.";
+      case "end":
+        return "토론이 종료되었습니다.";
     }
   };
   useEffect(() => {
-    myDebateRoleCheck();
+    myInfoCheck();
   });
   return (
     <div className="w-full flex flex-col lg:gap-10 justify-center items-center p-2 max-w-screen-xl m-auto ">
+      <span className="w-full text-center py-1 rounded-md font-notoKr font-bold">
+        {getStatusDescription()}
+      </span>
       <div className="w-full flex flex-col lg:flex-row gap-10 py-5">
         <div className="flex flex-col gap-5 items-center bg-slate-50 rounded-md">
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             {PROPONENT_SIDE_KR}
           </h2>
-          <div className="w-full lg:h-full grid grid-cols-2 gap-3 ">
+          <div
+            className={`w-full lg:h-full grid grid-cols-2 gap-3 ${
+              debateStatus !== "in_debate" ? "opacity-30" : ""
+            }`}
+          >
             <button
+              disabled={debateStatus !== "in_debate"}
               onClick={() =>
                 setMyRoleState({
                   debate_role: "Proponent",
@@ -87,6 +111,7 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
               </div>
             </button>
             <button
+              disabled={debateStatus !== "in_debate"}
               onClick={() =>
                 setMyRoleState({
                   debate_role: "ProponentSupporter",
@@ -123,8 +148,13 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
           <h2 className="w-full py-2 font-notoKr font-bold lg:text-lg bg-violet-300 text-center rounded-md">
             {OPPONENT_SIDE_KR}
           </h2>
-          <div className="w-full lg:h-full grid grid-cols-2 gap-3">
+          <div
+            className={`w-full lg:h-full grid grid-cols-2 gap-3 ${
+              debateStatus !== "in_debate" ? "opacity-30" : ""
+            }`}
+          >
             <button
+              disabled={debateStatus !== "in_debate"}
               onClick={() =>
                 setMyRoleState({
                   debate_role: "Opponent",
@@ -156,6 +186,7 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
               </div>
             </button>
             <button
+              disabled={debateStatus !== "in_debate"}
               onClick={() =>
                 setMyRoleState({
                   debate_role: "OpponentSupporter",
@@ -194,6 +225,7 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
           </h2>
           <div className="w-full lg:h-full grid grid-cols-1 gap-3">
             <button
+              disabled={debateStatus === "end"}
               onClick={() =>
                 setMyRoleState({
                   debate_role: "Audience",

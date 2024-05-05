@@ -50,7 +50,7 @@ export default async function Debate() {
                               </span>
                             </span>
                           </div>
-                          <div className="flex  justify-between font-doHyeon">
+                          <div className="flex justify-between font-doHyeon">
                             <JoinDebateButton thisWeekTopicId={topic.id} />
                             <div className="flex items-center gap-1">
                               <Vote className="size-4 text-emerald-500" />

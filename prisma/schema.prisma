@@ -104,6 +104,7 @@ model User {
   debate_support_message_archives DebateSupportMessageArchive[]
   debate_archives DebateArchive[]
   debate_evaluation_ballets DebateEvaluationBallet[]
+  joined_user_debate_role JoinedUserDebateRole[]
 }
 
 model Notice {
@@ -269,6 +270,7 @@ model JoinedUserDebateRole {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   debate_room DebateRoom @relation(fields: [debate_room_id], references: [id], onDelete: Cascade)
 
   user_id Int

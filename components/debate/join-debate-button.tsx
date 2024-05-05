@@ -32,7 +32,7 @@ export default function JoinDebateButton({
   };
   return (
     <form
-      className="w-6 h-6 hover:w-1/3 transition-all disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300"
+      className="size-7 hover:w-1/3 transition-all disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-300"
       action={enterDebateRoom}
     >
       <button
@@ -42,7 +42,7 @@ export default function JoinDebateButton({
         <span className="group-hover:text-opacity-100 text-opacity-0 text-white text-sm font-jua">
           입장
         </span>
-        <ArrowRightCircle className="size-6 absolute top-0 right-0 text-white" />
+        <ArrowRightCircle className="size-7 absolute top-0 right-0 text-white" />
       </button>
     </form>
   );

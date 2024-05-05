@@ -158,15 +158,15 @@ export const ageGroups: ObjectType = {
 export const SUPABASE_URL = "https://toxakqydxmsmomvwkqsh.supabase.co";
 
 // debateRoleKr
-export const PROPONENT_KR = "찬성측 토론자";
-export const PROPONENT_SUPPORTER_KR = "찬성측 토론 서포터";
-export const OPPONENT_KR = "반대측 토론자";
-export const OPPONENT_SUPPORTER_KR = "반대측 토론 서포터";
+export const PROPONENT_KR = "찬성 측 토론자";
+export const PROPONENT_SUPPORTER_KR = "찬성 측 토론 서포터";
+export const OPPONENT_KR = "반대 측 토론자";
+export const OPPONENT_SUPPORTER_KR = "반대 측 토론 서포터";
 export const AUDIENCE_KR = "관중";
 
 // debateRoleGroupKr
-export const PROPONENT_SIDE_KR = "찬성측";
-export const OPPONENT_SIDE_KR = "반대측";
+export const PROPONENT_SIDE_KR = "찬성 측";
+export const OPPONENT_SIDE_KR = "반대 측";
 export const DEBATER_KR = "토론자";
 export const DEBATE_SUPPORTER_KR = "토론 서포터";
 export const NEUTRALITY_KR = "중립";
@@ -177,28 +177,28 @@ export const PROPONENT_TEXT = `토론자는 주제나 문제에 적극적으로 
 관점을 존중하고, 상대편의 주장을 분석하며 대응합니다. 필요한
 정보와 근거를 제시하여 자신의 주장을 뒷받침하고, 반박에 대처할
 준비를 갖춥니다. 이러한 노력과 역량은 토론의 질을 향상시키고
-결과를 형성하는 데 중요한 역할을 합니다. 찬성측 서포터들과
-함께 협력하여 찬성측이 승리할 수 있도록 노력합니다.`;
-export const PROPONENT_SUPPORTER_TEXT = `찬성측이 승리할 수 있게 토론자를 서포트하는 집단입니다.
+결과를 형성하는 데 중요한 역할을 합니다. 찬성 측 서포터들과
+함께 협력하여 찬성 측이 승리할 수 있도록 노력합니다.`;
+export const PROPONENT_SUPPORTER_TEXT = `찬성 측이 승리할 수 있게 토론자를 서포트하는 집단입니다.
 토론자의 의견을 강화하고, 그들이 자신의 주장을 명확하게
 전달할 수 있도록 돕습니다. 서포터들은 주장을 뒷받침하고 필요한
 정보나 근거를 제공하여 토론자가 효과적으로 논리를 전개할 수
 있도록 돕습니다. 또한 토론자의 자신감을 높이고, 대응 전략을
-개발하는 데도 기여합니다. 이 모든 것들은 찬성측의 입장을
+개발하는 데도 기여합니다. 이 모든 것들은 찬성 측의 입장을
 강화하고, 토론에서 승리할 수 있도록 돕는 중요한 역할을 합니다.`;
 export const OPPONENT_TEXT = `토론자는 주제나 문제에 적극적으로 참여하여 자신의 견해를
 분명하게 표현하고, 논리적인 주장을 전개합니다. 서로 다른
 관점을 존중하고, 상대편의 주장을 분석하며 대응합니다. 필요한
 정보와 근거를 제시하여 자신의 주장을 뒷받침하고, 반박에 대처할
 준비를 갖춥니다. 이러한 노력과 역량은 토론의 질을 향상시키고
-결과를 형성하는 데 중요한 역할을 합니다. 반대측 서포터들과
-함께 협력하여 반대측이 승리할 수 있도록 노력합니다.`;
-export const OPPONENT_SUPPORTER_TEXT = `반대측이 승리할 수 있게 토론자를 서포트하는 집단입니다.
+결과를 형성하는 데 중요한 역할을 합니다. 반대 측 서포터들과
+함께 협력하여 반대 측이 승리할 수 있도록 노력합니다.`;
+export const OPPONENT_SUPPORTER_TEXT = `반대 측이 승리할 수 있게 토론자를 서포트하는 집단입니다.
 토론자의 의견을 강화하고, 그들이 자신의 주장을 명확하게
 전달할 수 있도록 돕습니다. 서포터들은 주장을 뒷받침하고 필요한
 정보나 근거를 제공하여 토론자가 효과적으로 논리를 전개할 수
 있도록 돕습니다. 또한 토론자의 자신감을 높이고, 대응 전략을
-개발하는 데도 기여합니다. 이 모든 것들은 반대측의 입장을
+개발하는 데도 기여합니다. 이 모든 것들은 반대 측의 입장을
 강화하고, 토론에서 승리할 수 있도록 돕는 중요한 역할을 합니다.`;
 export const AUDIENCE_TEXT = `관중은 토론 과정을 관찰하고 참여하는 중립적인 집단으로, 다양한
 관점과 의견을 가지고 있습니다. 그들은 토론자들의 주장을 듣고

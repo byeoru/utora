@@ -2,7 +2,7 @@
 
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { EDebateRole, Prisma } from "@prisma/client";
+import { EDebateRole, EEvaluation, Prisma } from "@prisma/client";
 import { notFound, redirect } from "next/navigation";
 
 export type GetDebateMessagesType = Prisma.PromiseReturnType<
@@ -231,6 +231,7 @@ export type GetDebateRoomInfoType = Prisma.PromiseReturnType<
   typeof getDebateRoomInfo
 >;
 export async function getDebateRoomInfo(debateRoomId: string) {
+  const session = await getSession();
   try {
     const debateRoom = await db.debateRoom.findUnique({
       where: {
@@ -245,9 +246,97 @@ export async function getDebateRoomInfo(debateRoomId: string) {
             propose_reason: true,
           },
         },
+        debate_evaluation_ballets: {
+          where: {
+            user_id_copy: session.id,
+            debate_room_id: debateRoomId,
+          },
+          select: {
+            evaluation: true,
+          },
+        },
       },
     });
     return debateRoom;
+  } catch (error) {
+    console.log(error);
+    return notFound();
+  }
+}
+
+export async function evaluateDebate(
+  debateRoomId: string,
+  evaluationBallet: EEvaluation
+) {
+  try {
+    const session = await getSession();
+    const debateRoom = await db.debateRoom.findUnique({
+      where: {
+        id: debateRoomId,
+      },
+      select: {
+        id: true,
+        status: true,
+        joined_user_debate_roles: {
+          where: {
+            user_id: session.id,
+          },
+          select: {
+            debate_role: true,
+            user: {
+              select: {
+                age_group: true,
+                gender: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    // 현재 평가 상태인지 check
+    if (debateRoom?.status !== "under_evaluation") {
+      return {
+        evaluation: null,
+        error: "현재는 토론 평가 중이 아닙니다.",
+      };
+    }
+    // user가 관중인지 check
+    if (
+      debateRoom.joined_user_debate_roles.length <= 0 ||
+      debateRoom.joined_user_debate_roles[0].debate_role !== "Audience"
+    ) {
+      return {
+        evaluation: null,
+        error: "토론 평가는 관중만 참여 가능합니다.",
+      };
+    }
+    // 성별, 나이가 null인지 체크
+    if (
+      !debateRoom.joined_user_debate_roles[0].user.gender ||
+      !debateRoom.joined_user_debate_roles[0].user.age_group
+    ) {
+      return {
+        evaluation: null,
+        error: "성별 또는 나이가 설정되어 있지 않습니다.",
+      };
+    }
+    const result = await db.debateEvaluationBallet.create({
+      data: {
+        user_id: session.id,
+        user_id_copy: session.id,
+        debate_room_id: debateRoom.id,
+        gender: debateRoom.joined_user_debate_roles[0].user.gender,
+        age_group: debateRoom.joined_user_debate_roles[0].user.age_group,
+        evaluation: evaluationBallet,
+      },
+      select: {
+        evaluation: true,
+      },
+    });
+    return {
+      evaluation: result.evaluation,
+      error: null,
+    };
   } catch (error) {
     console.log(error);
     return notFound();

@@ -112,6 +112,16 @@ export default function DebateChatList({
         else return false;
     }
   };
+  const getRoomStatus = () => {
+    switch (status) {
+      case "in_debate":
+        return "토론 진행 중";
+      case "under_evaluation":
+        return "토론 평가 중";
+      case "end":
+        return "종료";
+    }
+  };
   useEffect(() => {
     channel.current =
       Supabase.getClient(supabasePublicKey).channel(channelName);
@@ -128,7 +138,10 @@ export default function DebateChatList({
   }, [debateRoomId, channelName, supabasePublicKey, setDebateMessages]);
   return (
     <div className="w-full lg:h-full flex flex-col gap-2">
-      <span className="w-full px-3 py-1 font-doHyeon bg-slate-100">토론방</span>
+      <span className="w-full flex justify-between px-3 py-1 font-doHyeon bg-slate-100">
+        <span>토론방</span>
+        <span className="text-primary">{getRoomStatus()}</span>
+      </span>
       <div
         className={`w-full flex-1 flex overflow-y-auto relative shadow-md ${
           debateRole === "Proponent" || debateRole === "Opponent" ? "pb-24" : ""

@@ -11,6 +11,7 @@ import crypto from "crypto";
 import DebateChatList from "@/components/debate/room/debate-chat-list";
 import CommentChatList from "@/components/debate/room/comment-chat-list";
 import SupportChatList from "@/components/debate/room/support-chat-list";
+import EvaluationBallet from "@/components/debate/room/evaluation-ballet";
 
 export default async function DebateRoom({
   params,
@@ -25,37 +26,45 @@ export default async function DebateRoom({
   let initialSubMessages;
   let subChatNameKr;
   let subChannelName;
+  let evaluationHistory = null;
 
   if (!myDebateRole || !debateRoomInfo || !myProfile) {
     // 나중에 코드 개선할 것
     return notFound();
   }
-  switch (myDebateRole.debate_role) {
-    case "Audience":
-      subChatNameKr = "댓글창";
-      subChannelName = "comment";
-      initialSubMessages = await getDebateCommentMessages(params.id);
-      break;
-    case "Proponent":
-    case "ProponentSupporter":
-      subChatNameKr = "찬성측 회의실";
-      subChannelName = "support-proponent";
-      initialSubMessages = await getDebateSupportMessages(
-        params.id,
-        "Proponent",
-        "ProponentSupporter"
-      );
-      break;
-    case "Opponent":
-    case "OpponentSupporter":
-      subChatNameKr = "반대측 회의실";
-      subChannelName = "support-opponent";
-      initialSubMessages = await getDebateSupportMessages(
-        params.id,
-        "Opponent",
-        "OpponentSupporter"
-      );
-      break;
+  if (debateRoomInfo.status === "in_debate") {
+    switch (myDebateRole.debate_role) {
+      case "Audience":
+        subChatNameKr = "댓글창";
+        subChannelName = "comment";
+        initialSubMessages = await getDebateCommentMessages(params.id);
+        break;
+      case "Proponent":
+      case "ProponentSupporter":
+        subChatNameKr = "찬성 측 회의실";
+        subChannelName = "support-proponent";
+        initialSubMessages = await getDebateSupportMessages(
+          params.id,
+          "Proponent",
+          "ProponentSupporter"
+        );
+        break;
+      case "Opponent":
+      case "OpponentSupporter":
+        subChatNameKr = "반대 측 회의실";
+        subChannelName = "support-opponent";
+        initialSubMessages = await getDebateSupportMessages(
+          params.id,
+          "Opponent",
+          "OpponentSupporter"
+        );
+        break;
+    }
+  } else if (
+    debateRoomInfo.status === "under_evaluation" &&
+    debateRoomInfo.debate_evaluation_ballets.length > 0
+  ) {
+    evaluationHistory = debateRoomInfo.debate_evaluation_ballets[0].evaluation;
   }
 
   const salt = Buffer.from("utora-debate").toString("base64");
@@ -93,27 +102,34 @@ export default async function DebateRoom({
         channelName={hashDebateChannelName}
         status={debateRoomInfo.status}
       />
-      {myDebateRole.debate_role === "Audience" ? (
-        <CommentChatList
-          supabasePublicKey={supabasePublicKey}
-          commentChatRoomName={subChatNameKr}
-          initialCommentMessages={initialSubMessages}
-          debateRoomId={params.id}
-          debateRole={myDebateRole.debate_role}
-          userId={myProfile.id}
-          nickname={myProfile.nickname}
-          channelName={hashSubChannelName}
-        />
+      {debateRoomInfo.status === "in_debate" ? (
+        myDebateRole.debate_role === "Audience" ? (
+          <CommentChatList
+            supabasePublicKey={supabasePublicKey}
+            commentChatRoomName={subChatNameKr!}
+            initialCommentMessages={initialSubMessages!}
+            debateRoomId={params.id}
+            debateRole={myDebateRole.debate_role}
+            userId={myProfile.id}
+            nickname={myProfile.nickname}
+            channelName={hashSubChannelName}
+          />
+        ) : (
+          <SupportChatList
+            supabasePublicKey={supabasePublicKey}
+            supportChatRoomName={subChatNameKr!}
+            initialSupportMessages={initialSubMessages!}
+            debateRoomId={params.id}
+            debateRole={myDebateRole.debate_role}
+            userId={myProfile.id}
+            nickname={myProfile.nickname}
+            channelName={hashSubChannelName}
+          />
+        )
       ) : (
-        <SupportChatList
-          supabasePublicKey={supabasePublicKey}
-          supportChatRoomName={subChatNameKr}
-          initialSupportMessages={initialSubMessages}
+        <EvaluationBallet
           debateRoomId={params.id}
-          debateRole={myDebateRole.debate_role}
-          userId={myProfile.id}
-          nickname={myProfile.nickname}
-          channelName={hashSubChannelName}
+          evaluationHistory={evaluationHistory}
         />
       )}
     </div>

@@ -28,7 +28,9 @@ export default function TopicItem({
   return (
     <li className="flex flex-col relative justify-between border-b p-2 sm:p-4 break-word">
       <div className="flex flex-col gap-1">
-        <span className="font-jua text-base break-all mr-7">{topic}</span>
+        <span className="font-notoKr font-semibold text-base break-all mr-7">
+          {topic}
+        </span>
         <div className="flex justify-between items-center">
           <span className="font-jua text-slate-500 text-sm">
             | 발의자: {nickname ?? DELETED_ACCOUNT_NICKNAME}
@@ -40,7 +42,7 @@ export default function TopicItem({
         <span className="font-notoKr text-xs lg:text-sm opacity-50 self-end">
           {formatToTimeAgo(createdAt)}
         </span>
-        <p className="font-notoKr opacity-70 text-xs text-ellipsis overflow-hidden line-clamp-6 lg:line-clamp-4">
+        <p className="font-notoKr text-slate-500 font-semibold opacity-70 text-xs text-ellipsis overflow-hidden line-clamp-6 lg:line-clamp-4">
           {proposeReason}
         </p>
       </div>
