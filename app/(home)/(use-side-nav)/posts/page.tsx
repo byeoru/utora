@@ -37,7 +37,7 @@ export default function Posts({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryState]);
   return (
-    <div className="flex flex-col m-auto max-w-screen-lg">
+    <div className="h-full flex flex-col m-auto max-w-screen-lg">
       <div className="flex flex-col p-1 pb-2 gap-1 shadow-sm">
         <div className="flex justify-between items-center gap-2">
           <span className="font-jua text-lg">| 게시판</span>
@@ -70,7 +70,7 @@ export default function Posts({
           </div>
         </div>
       </div>
-      <ul className="flex flex-col p-2">
+      <ul className="flex flex-col p-2 overflow-y-auto">
         {postsState?.map((post) => (
           <Link
             key={post.id}
