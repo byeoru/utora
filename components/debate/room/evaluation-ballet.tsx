@@ -24,11 +24,18 @@ export default function EvaluationBallet({
       alert("찬성 또는 반대를 선택하세요.");
       return;
     }
+    const isConfirmed = confirm(
+      "투표 완료 시 재투표는 불가합니다. 그대로 제출하시겠습니까?"
+    );
+    if (!isConfirmed) {
+      return;
+    }
     const result = await evaluateDebate(debateRoomId, evaluationState);
     if (result.error) {
       alert(result.error);
       return;
     }
+
     setEvaluationHistoryState(result.evaluation);
   };
   const getEvaluationHistoryKr = () => {
