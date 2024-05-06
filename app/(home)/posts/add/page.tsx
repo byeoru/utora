@@ -28,7 +28,9 @@ export default function PostAdd() {
   };
   return (
     <div className="w-full mx-auto max-w-screen-md p-2 sm:mt-8 lg:mt-12">
-      <h1 className="font-jua text-2xl text-primary">게시판 글쓰기</h1>
+      <h1 className="font-jua text-lg sm:text-2xl text-primary">
+        게시판 글쓰기
+      </h1>
       <form className="flex flex-col" action={onSubmit}>
         <input
           name="title"
@@ -54,7 +56,7 @@ export default function PostAdd() {
           className="mt-2 p-2 bg-primary text-white rounded-md"
           disabled={pending}
         >
-          작성완료
+          작성 완료
         </button>
       </form>
     </div>

@@ -42,6 +42,7 @@ export default function LikeDislikeGroup({
   useEffect(() => {
     setLikeState({ isLiked, likeCount });
     setDislikeState({ isDisliked, dislikeCount });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [likeCount, dislikeCount]);
   const onLikeClickEvent = async () => {
     if (likeState.isLiked) {

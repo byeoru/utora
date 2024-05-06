@@ -7,6 +7,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
+import { useEffect } from "react";
 
 interface TiptapPropsType {
   onChange: Function;
@@ -18,6 +19,7 @@ const Tiptap = ({ onChange, content }: TiptapPropsType) => {
     onChange(newContent);
   };
   const editor = useEditor({
+    content,
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       Highlight,
@@ -34,7 +36,6 @@ const Tiptap = ({ onChange, content }: TiptapPropsType) => {
       handleChange(editor.getHTML());
     },
   });
-
   return (
     <>
       <Toolbar editor={editor} />

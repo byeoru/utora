@@ -69,9 +69,12 @@ export default function CommentGroup({
     setCommentLengthState(comment.length);
   };
   const onCommentDelete = async (id: number) => {
+    const isConfirmed = confirm("정말 삭제하시겠습니까?");
+    if (!isConfirmed) {
+      return;
+    }
     const result = await deleteComment(id);
     if (result) {
-      alert(DELETE_COMPLETE);
       setCommentsCountState((prev) => prev - 1);
     }
   };
@@ -99,7 +102,7 @@ export default function CommentGroup({
           value={myCommentState}
           name="comment"
           id="comment"
-          className="w-full font-notoKr text-sm resize-none bg-slate-50 overflow-hidden border-slate-400 border-t-0 border-l-0 border-r-0 border-b-1 focus:ring-0 focus:border-slate-600"
+          className="w-full h-16 font-notoKr rounded-t-md text-sm resize-none bg-slate-50 overflow-hidden border-slate-400 border-t-0 border-l-0 border-r-0 border-b-1 focus:ring-0 focus:border-slate-600"
         />
         {state?.formErrors ? (
           <span className="text-red-600 text-sm">
@@ -111,11 +114,11 @@ export default function CommentGroup({
         </span>
         <div className="w-full sm:w-32 self-end">
           <Button className="w-full rounded-md">
-            <span className="text-white font-jua">작성완료</span>
+            <span className="text-white font-jua">작성 완료</span>
           </Button>
         </div>
       </form>
-      <span className="font-jua text-lg">{`댓글 수: ${commentsCountState}`}</span>
+      <span className="font-jua text-base sm:text-lg">{`댓글 수: ${commentsCountState}`}</span>
       <div className="w-full flex flex-col font-notoKr">
         {commentsState.map((comment) => (
           <CommentItem

@@ -44,6 +44,18 @@ export async function getPost(postId: number) {
   }
 }
 
+export async function deletePost(postId: number) {
+  const session = await getSession();
+  try {
+    await db.post.delete({
+      where: {
+        id: postId,
+        user_id: session.id,
+      },
+    });
+  } catch (error) {}
+}
+
 export type LikePostType = Prisma.PromiseReturnType<typeof likePost>;
 export async function likePost(postId: number) {
   const session = await getSession();

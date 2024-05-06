@@ -13,6 +13,8 @@ import LikeDislikeGroup from "@/components/post/like-dislike-group";
 import CommentGroup from "@/components/post/comment-group";
 import getSession from "@/lib/session";
 import { postCategories } from "@/lib/constants";
+import Link from "next/link";
+import DeletePostButton from "@/components/post/delete-post-button";
 
 export default async function PostDetail({
   params,
@@ -29,13 +31,13 @@ export default async function PostDetail({
   return (
     <>
       <div className="w-full px-2 py-1 border-b-2 border-slate-200 bg-primary shadow-md block">
-        <h1 className="font-jua mx-auto text-lg sm:text-2xl max-w-screen-lg">
+        <h1 className="font-jua mx-auto text-lg sm:text-xl max-w-screen-lg">
           {`${postCategories[post.category].title} 게시판`}
         </h1>
       </div>
       <div className="max-w-screen-lg m-auto flex md:gap-2">
         <div className="w-full flex flex-col gap-1">
-          <div className="flex flex-col gap-10 p-5">
+          <div className="flex flex-col gap-7 p-5">
             <div className="flex flex-col gap-2">
               <h2 className="text-xl font-notoKr">{post.title}</h2>
               <div className="text-sm flex gap-5 text-gray-500">
@@ -48,6 +50,17 @@ export default async function PostDetail({
                   <span>{post.views}</span>
                 </span>
               </div>
+              {session.id === post.user_id ? (
+                <div className="self-end flex gap-2 text-sm">
+                  <Link
+                    href={`/posts/${params.id}/edit`}
+                    className="text-red-500"
+                  >
+                    수정
+                  </Link>
+                  <DeletePostButton postId={id} />
+                </div>
+              ) : null}
             </div>
             <Divider />
             <div

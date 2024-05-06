@@ -27,7 +27,7 @@ export default function Posts({
   const pathname = usePathname();
   const fetchPosts = async (category: EPostCategory) => {
     const newQuery = new URLSearchParams();
-    newQuery.set("category", categoryState.toString());
+    newQuery.set("category", categoryState);
     replace(`${pathname}?${newQuery}`);
     const posts = await getPosts(category);
     setPostsState(posts);
@@ -74,7 +74,7 @@ export default function Posts({
         {postsState?.map((post) => (
           <Link
             key={post.id}
-            href={`/posts/${post.id}`}
+            href={`/posts/${post.id}?category=${categoryState}`}
             className="w-full border-b p-3 flex gap-2"
           >
             <div className="flex flex-1 flex-col gap-1 font-notoKr">

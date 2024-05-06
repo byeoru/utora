@@ -28,6 +28,11 @@ export default async function DebateRoom({
   let subChannelName;
   let evaluationHistory = null;
 
+  const id = Number(params.id);
+  if (isNaN(id)) {
+    return notFound();
+  }
+
   if (!myDebateRole || !debateRoomInfo || !myProfile) {
     // 나중에 코드 개선할 것
     return notFound();
