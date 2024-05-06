@@ -66,7 +66,7 @@ export async function PUT(req: NextRequest) {
     });
     const statisticsObj: StatisticsType = {};
 
-    debateRooms.forEach(async (debateRoom) => {
+    for (const debateRoom of debateRooms) {
       const loopCount = Math.ceil(
         debateRoom._count.debate_evaluation_ballets / BATCH_SIZE
       );
@@ -107,16 +107,16 @@ export async function PUT(req: NextRequest) {
           skip: index * BATCH_SIZE,
         });
         evaluationBallets.forEach((ballet) => {
-          statisticsObj[debateRoom.id][ballet.evaluation][ballet.gender]++;
-          statisticsObj[debateRoom.id][ballet.evaluation][ballet.age_group]++;
+          ++statisticsObj[debateRoom.id][ballet.evaluation][ballet.gender];
+          ++statisticsObj[debateRoom.id][ballet.evaluation][ballet.age_group];
         });
       }
-    });
-
+    }
     // 통계 archive 생성
     await db.debateEvaluationStatisticsArchive.createMany({
       data: Object.keys(statisticsObj).map((debateRoomId) => {
         return {
+          // debate_room_id: debateRoomId,
           proponent_male: statisticsObj[debateRoomId].proponent.male,
           proponent_female: statisticsObj[debateRoomId].proponent.female,
           proponent_teens: statisticsObj[debateRoomId].proponent.teens,
@@ -137,7 +137,6 @@ export async function PUT(req: NextRequest) {
         };
       }),
     });
-
     return Response.json({ success: true });
   } catch (error) {
     return Response.json({ success: false, error }, { status: 500 });
