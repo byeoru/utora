@@ -11,6 +11,7 @@ import {
 } from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
 
 interface LikeDislikeGroupPropsType {
+  className?: string;
   isLiked: boolean;
   isDisliked: boolean;
   likeCount: number;
@@ -23,6 +24,7 @@ interface LikeDislikeGroupPropsType {
 }
 
 export default function LikeDislikeGroup({
+  className,
   isLiked,
   isDisliked,
   likeCount,
@@ -79,7 +81,7 @@ export default function LikeDislikeGroup({
     }
   };
   return (
-    <div className="flex font-jua">
+    <div className={`flex font-jua ${className}`}>
       <LikeButton
         isLiked={likeState.isLiked}
         isDisliked={dislikeState.isDisliked}

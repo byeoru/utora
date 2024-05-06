@@ -71,6 +71,7 @@ export default async function PostDetail({
           <div className="flex flex-col p-5 gap-3">
             <Divider />
             <LikeDislikeGroup
+              className="self-end"
               isLiked={
                 post.post_reactions.filter(
                   (reaction) => reaction.reaction === "like"
