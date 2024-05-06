@@ -57,7 +57,7 @@ export default function Posts({
             {Object.keys(postCategories).map((category, index) => (
               <button
                 onClick={() => setCategoryState(category as EPostCategory)}
-                className={`flex justify-center items-center px-2 py-1 shadow-sm rounded-md text-sm font-notoKr font-bold ${
+                className={`flex justify-center items-center border px-2 py-1 shadow-sm rounded-md text-sm font-notoKr font-bold ${
                   categoryState === category
                     ? "text-white bg-emerald-500"
                     : "text-black"
