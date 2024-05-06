@@ -6,7 +6,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import CommentItem from "./comment-item";
 import {
   COMMENT_SAVE_ERROR,
-  DELETE_COMPLETE,
   FETCH_COMMENTS_ERROR,
   FETCH_COMMENTS_SIZE,
   MAX_LENGTH_MY_COMMENT,
@@ -18,6 +17,7 @@ import {
   getComments,
   saveComment,
 } from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
+import { Pagination } from "@nextui-org/react";
 
 interface CommentGroupPropsType {
   commentsCount: number;
@@ -46,27 +46,17 @@ export default function CommentGroup({
   };
   const [state, action] = useFormState(onSubmit, null);
   const [myCommentState, setMyCommentState] = useState<string>("");
-  const [commentLengthState, setCommentLengthState] = useState<number>(0);
   const [commentsState, setCommentsState] = useState<CommentsType[]>([]);
   const [commentsCountState, setCommentsCountState] =
     useState<number>(commentsCount);
-  useEffect(() => {
-    (async () => {
-      const comments = await getComments(postId, 0);
-      if (!comments) {
-        alert(FETCH_COMMENTS_ERROR);
-      } else {
-        setCommentsState(comments);
-      }
-    })();
-  }, [commentsCountState, postId]);
+  const [currentCommentPage, setCurrentCommentPage] = useState<number>(1);
+
   const commentChange = (evnet: ChangeEvent<HTMLTextAreaElement>) => {
     const comment = evnet.target.value;
     if (comment.length > MAX_LENGTH_MY_COMMENT) {
       return;
     }
     setMyCommentState(comment);
-    setCommentLengthState(comment.length);
   };
   const onCommentDelete = async (id: number) => {
     const isConfirmed = confirm("정말 삭제하시겠습니까?");
@@ -79,19 +69,23 @@ export default function CommentGroup({
     }
   };
 
-  const pageCountList: number[] = Array.from(
-    { length: Math.ceil(commentsCountState / FETCH_COMMENTS_SIZE) },
-    (_, index) => index
+  const totalCommentPageCount = Math.ceil(
+    commentsCountState / FETCH_COMMENTS_SIZE
   );
 
-  const onPageCountClick = async (pageCount: number) => {
-    const comments = await getComments(postId, pageCount);
+  const fetchComments = async () => {
+    const comments = await getComments(postId, currentCommentPage);
     if (!comments) {
       alert(FETCH_COMMENTS_ERROR);
       return;
     }
     setCommentsState(comments);
   };
+
+  useEffect(() => {
+    fetchComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentCommentPage]);
 
   return (
     <div className="w-full flex flex-col gap-6 p-5 text-slate-500">
@@ -110,7 +104,7 @@ export default function CommentGroup({
           </span>
         ) : null}
         <span className="text-xs self-end font-jua">
-          {commentLengthState} / {MAX_LENGTH_MY_COMMENT}
+          {myCommentState.length} / {MAX_LENGTH_MY_COMMENT}
         </span>
         <div className="w-full sm:w-32 self-end">
           <Button className="w-full rounded-md">
@@ -133,16 +127,19 @@ export default function CommentGroup({
           />
         ))}
       </div>
-      <div className="w-full flex justify-center gap-3">
-        {pageCountList.map((count, index) => (
-          <button
-            key={index}
-            onClick={async () => await onPageCountClick(count)}
-            className="px-2 hover:bg-green-400 transition-colors rounded-md"
-          >
-            {count + 1}
-          </button>
-        ))}
+      <div className="flex justify-center">
+        <Pagination
+          classNames={{ base: "m-1 p-0" }}
+          size="sm"
+          isCompact
+          total={totalCommentPageCount}
+          showControls
+          showShadow
+          initialPage={1}
+          color="success"
+          page={currentCommentPage}
+          onChange={setCurrentCommentPage}
+        />
       </div>
     </div>
   );

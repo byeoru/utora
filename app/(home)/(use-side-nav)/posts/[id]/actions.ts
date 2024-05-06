@@ -207,7 +207,7 @@ export interface CommentsType {
     nickname: string;
   } | null;
 }
-export async function getComments(postId: number, pageCount: number) {
+export async function getComments(postId: number, page: number) {
   try {
     const comments = await db.postComment.findMany({
       where: {
@@ -227,7 +227,7 @@ export async function getComments(postId: number, pageCount: number) {
       orderBy: {
         created_at: "desc",
       },
-      skip: pageCount * FETCH_COMMENTS_SIZE,
+      skip: (page - 1) * FETCH_COMMENTS_SIZE,
       take: FETCH_COMMENTS_SIZE,
     });
     return comments;

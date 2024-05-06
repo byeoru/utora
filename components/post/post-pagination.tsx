@@ -55,7 +55,7 @@ export default function PostPagination({ category }: PostPaginationPropsType) {
           />
         ))}
       </ul>
-      <div className="w-full flex justify-center">
+      <div className="flex justify-center">
         <Pagination
           classNames={{ base: "m-1 p-0" }}
           size="sm"
