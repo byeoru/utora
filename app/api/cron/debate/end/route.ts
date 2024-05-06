@@ -116,7 +116,7 @@ export async function PUT(req: NextRequest) {
     await db.debateEvaluationStatisticsArchive.createMany({
       data: Object.keys(statisticsObj).map((debateRoomId) => {
         return {
-          // debate_room_id: debateRoomId,
+          debate_room_id: debateRoomId,
           proponent_male: statisticsObj[debateRoomId].proponent.male,
           proponent_female: statisticsObj[debateRoomId].proponent.female,
           proponent_teens: statisticsObj[debateRoomId].proponent.teens,
