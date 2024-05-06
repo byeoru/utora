@@ -86,7 +86,7 @@ export default function EvaluationBallet({
         </div>
       ) : (
         <div className="w-full px-3 py-10 bg-slate-100 shadow-md font-notoKr font-semibold text-sm">
-          <span className="text-primary decoration-dotted underline underline-offset-2">
+          <span className="text-utora-primary decoration-dotted underline underline-offset-2">
             {getEvaluationHistoryKr()}
           </span>
           <span>에 투표 완료하였습니다.</span>

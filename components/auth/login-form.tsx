@@ -31,8 +31,9 @@ export default function LoginForm() {
         />
         <Button className="w-full rounded-md">로그인하기</Button>
         <div className="text-xs text-slate-500 text-center">
-          아직 <span className="text-primary">유토라</span>회원이 아니신가요?
-          <Link href="/signup" className="text-primary ml-2">
+          아직 <span className="text-utora-primary">유토라</span>회원이
+          아니신가요?
+          <Link href="/signup" className="text-utora-primary ml-2">
             회원가입
           </Link>
         </div>

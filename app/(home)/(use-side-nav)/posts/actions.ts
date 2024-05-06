@@ -1,11 +1,12 @@
 "use server";
 
+import { POSTS_FETCH_SIZE } from "@/lib/constants";
 import db from "@/lib/db";
 import { EPostCategory, Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 
 export type GetPostsType = Prisma.PromiseReturnType<typeof getPosts>;
-export async function getPosts(category: EPostCategory) {
+export async function getPosts(category: EPostCategory, page: number) {
   try {
     const posts = await db.post.findMany({
       where: {
@@ -27,10 +28,26 @@ export async function getPosts(category: EPostCategory) {
       orderBy: {
         created_at: "desc",
       },
+      take: POSTS_FETCH_SIZE,
+      skip: (page - 1) * POSTS_FETCH_SIZE,
     });
     return posts;
   } catch (error) {
     console.log(error);
+    return notFound();
+  }
+}
+
+export async function getPostsCount(category: EPostCategory) {
+  try {
+    const count = await db.post.count({
+      where: {
+        category,
+      },
+    });
+    return count;
+  } catch (error) {
+    console.error("getPostsCount", error);
     return notFound();
   }
 }

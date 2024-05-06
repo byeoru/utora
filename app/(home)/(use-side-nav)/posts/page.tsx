@@ -2,17 +2,12 @@
 
 import { postCategories } from "@/lib/constants";
 import { EPostCategory } from "@prisma/client";
-import { EyeIcon, SquareChevronRight } from "lucide-react";
+import { SquareChevronRight } from "lucide-react";
 import Link from "next/link";
-import { GetPostsType, getPosts } from "./actions";
-import { formatToTimeAgo } from "@/lib/utils";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
+
+import PostPagination from "@/components/post/post-pagination";
 import { useEffect, useState } from "react";
-import {
-  HandThumbDownIcon,
-  HandThumbUpIcon,
-} from "@heroicons/react/24/outline";
-import { usePathname, useRouter } from "next/navigation";
 
 export default function Posts({
   searchParams,
@@ -22,20 +17,6 @@ export default function Posts({
   const initCategory: EPostCategory = searchParams.category ?? "general";
   const [categoryState, setCategoryState] =
     useState<EPostCategory>(initCategory);
-  const [postsState, setPostsState] = useState<GetPostsType>();
-  const { replace } = useRouter();
-  const pathname = usePathname();
-  const fetchPosts = async (category: EPostCategory) => {
-    const newQuery = new URLSearchParams();
-    newQuery.set("category", categoryState);
-    replace(`${pathname}?${newQuery}`);
-    const posts = await getPosts(category);
-    setPostsState(posts);
-  };
-  useEffect(() => {
-    fetchPosts(categoryState);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryState]);
   return (
     <div className="h-full flex flex-col m-auto max-w-screen-lg">
       <div className="flex flex-col p-1 pb-2 gap-1 shadow-sm">
@@ -70,43 +51,7 @@ export default function Posts({
           </div>
         </div>
       </div>
-      <ul className="flex flex-col p-2 overflow-y-auto">
-        {postsState?.map((post) => (
-          <Link
-            key={post.id}
-            href={`/posts/${post.id}?category=${categoryState}`}
-            className="w-full border-b p-3 flex gap-2"
-          >
-            <div className="flex flex-1 flex-col gap-1 font-notoKr">
-              <h2 className="w-full text-sm font-semibold text-ellipsis overflow-hidden break-words line-clamp-1">
-                {post.title}
-              </h2>
-              <div className="flex gap-5 items-center text-xs font-jua text-slate-500">
-                <span className="px-1">| 작성자: {post.user.nickname}</span>
-                <div className="flex items-center gap-1 text-slate-500">
-                  <EyeIcon className="size-4" />
-                  <span>{post.views}</span>
-                </div>
-                <span className="">{formatToTimeAgo(post.created_at)}</span>
-              </div>
-            </div>
-            <div className="flex flex-col justify-between font-jua">
-              <div className="w-10 flex justify-between items-center gap-1">
-                <HandThumbUpIcon className="size-4 text-red-400" />
-                <span className="text-xs text-slate-500">
-                  {post.like_count}
-                </span>
-              </div>
-              <div className="w-10 flex justify-between items-center gap-1">
-                <HandThumbDownIcon className="size-4 text-blue-400" />
-                <span className="text-xs text-slate-500">
-                  {post.dislike_count}
-                </span>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </ul>
+      <PostPagination category={categoryState} />
     </div>
   );
 }

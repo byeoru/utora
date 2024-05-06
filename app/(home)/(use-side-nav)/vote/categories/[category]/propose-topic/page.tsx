@@ -23,7 +23,7 @@ export default function ProposeTopic({
   const [state, action] = useFormState(onClick, null);
   return (
     <div className="mx-auto max-w-screen-md px-3">
-      <h1 className="font-jua text-lg lg:text-2xl text-primary mb-5 mt-10">
+      <h1 className="font-jua text-lg lg:text-2xl text-utora-primary mb-5 mt-10">
         {`분야: ${categories[params.category].title}`}
       </h1>
       <form action={action} className="flex flex-col gap-3">

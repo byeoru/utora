@@ -39,6 +39,7 @@ export const NOT_AVAILABLE_CHARACTOR_NICKNAME =
 export const FAILED_LOGIN_ERROR = "이메일 또는 비밀번호가 맞지 않습니다.";
 
 // post
+export const POSTS_FETCH_SIZE = 20;
 export const MIN_LENGTH_POST_NAME = 2;
 export const MIN_LENGTH_POST_NAME_ERROR =
   "제목은 최소 2글자 이상이어야 합니다.";

@@ -17,7 +17,7 @@ export default function LeftSideSupportBubble({
   return (
     <div className="flex flex-col p-1 mr-24 gap-1">
       <span className="py-1 flex font-jua text-xs gap-2 rounded-sm">
-        <span className="text-primary">{debateRoleKr}</span>
+        <span className="text-utora-primary">{debateRoleKr}</span>
         <span className="text-slate-600">
           {nickname ?? DELETED_ACCOUNT_NICKNAME}
         </span>

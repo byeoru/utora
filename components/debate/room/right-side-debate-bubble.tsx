@@ -17,7 +17,7 @@ export default function RightSideDebateBubble({
   return (
     <div className="flex flex-col self-end p-1 ml-24 gap-1">
       <span className="py-1 flex justify-end font-jua text-xs gap-2 rounded-sm">
-        <span className="text-primary">{debateRoleKr}</span>
+        <span className="text-utora-primary">{debateRoleKr}</span>
         <span className="text-slate-600">
           {nickname ?? DELETED_ACCOUNT_NICKNAME}
         </span>

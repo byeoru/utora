@@ -30,7 +30,7 @@ export default async function PostDetail({
   const session = await getSession();
   return (
     <>
-      <div className="w-full px-2 py-1 border-b-2 border-slate-200 bg-primary shadow-md block">
+      <div className="w-full px-2 py-1 border-b-2 border-slate-200 bg-utora-primary shadow-md block">
         <h1 className="font-jua mx-auto text-lg sm:text-xl max-w-screen-lg">
           {`${postCategories[post.category].title} 게시판`}
         </h1>

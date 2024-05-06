@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 @layer components {
-  .bg-primary {
+  .bg-utora-primary {
     @apply bg-emerald-400;
   }
-  .text-primary {
+  .text-utora-primary {
     @apply text-violet-600;
   }
   .text-warn {
     @apply text-red-500;
   }
   .underline-primary {
-    @apply no-underline underline-offset-4 hover:underline hover:text-primary transition;
+    @apply no-underline underline-offset-4 hover:underline hover:text-utora-primary transition;
   }
 }

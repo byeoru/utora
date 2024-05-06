@@ -16,7 +16,9 @@ export default function ToolbarItem({
         onClick();
       }}
       className={`${
-        isActive ? "text-primary ring-2 ring-violet-300" : "text-slate-500"
+        isActive
+          ? "text-utora-primary ring-2 ring-violet-300"
+          : "text-slate-500"
       } p-1 rounded-md`}
     >
       {icon}

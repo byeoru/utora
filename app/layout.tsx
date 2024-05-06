@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Jua, Do_Hyeon, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@/components/providers";
 
 const jua = Jua({
   subsets: ["latin"],
@@ -46,7 +47,7 @@ export default function RootLayout({
       <body
         className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable} w-full`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

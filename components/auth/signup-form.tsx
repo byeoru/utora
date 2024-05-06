@@ -142,7 +142,7 @@ export default function SignupForm() {
         </div>
         <Button className="w-full rounded-md">가입하기</Button>
         <div className="text-xs text-slate-500 text-center">
-          이미 <span className="text-primary">유토라 </span>
+          이미 <span className="text-utora-primary">유토라 </span>
           <span className="mr-2">회원이신가요?</span>
           <BackSpan text="로그인" />
         </div>

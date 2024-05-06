@@ -45,7 +45,7 @@ export default function EditPost({ postId, oldPost }: EditPostPropsType) {
   }, [oldPost, router]);
   return (
     <div className="w-full mx-auto max-w-screen-md p-2 sm:mt-8 lg:mt-12">
-      <h1 className="font-jua text-lg sm:text-2xl text-primary">
+      <h1 className="font-jua text-lg sm:text-2xl text-utora-primary">
         게시글 수정하기
       </h1>
       <form className="flex flex-col" action={onSubmit}>

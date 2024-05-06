@@ -26,7 +26,7 @@ export default async function VoteCategory({
         <div className="w-full flex flex-col justify-center items-center max-w-screen-lg m-auto">
           <span className="font-doHyeon flex gap-3 items-center">
             {categories[params.category].icon}
-            <span className="text-2xl md:text-3xl lg:text-4xl text-primary">{`${
+            <span className="text-2xl md:text-3xl lg:text-4xl text-utora-primary">{`${
               categories[params.category].title
             } `}</span>
             <span className="text-md md:text-lg lg:text-xl self-end">

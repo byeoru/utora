@@ -140,7 +140,7 @@ export default function DebateChatList({
     <div className="w-full lg:h-full flex flex-col gap-2">
       <span className="w-full flex justify-between px-3 py-1 font-doHyeon bg-slate-100">
         <span>토론방</span>
-        <span className="text-primary">{getRoomStatus()}</span>
+        <span className="text-utora-primary">{getRoomStatus()}</span>
       </span>
       <div
         className={`w-full flex-1 flex overflow-y-auto relative shadow-md ${

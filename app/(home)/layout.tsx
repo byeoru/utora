@@ -16,8 +16,10 @@ export default function RootLayout({
         <div className="w-full h-8 lg:h-12 px-5 text-lg flex justify-between items-center ">
           <div className="lg:w-44 h-full flex items-center lg:text-3xl">
             <Link href="/">
-              <span className="text-primary font-jua">유토라</span>
-              <span className="text-xs font-doHyeon text-primary">.Alpha</span>
+              <span className="text-utora-primary font-jua">유토라</span>
+              <span className="text-xs font-doHyeon text-utora-primary">
+                .Alpha
+              </span>
             </Link>
           </div>
           <div className="h-full flex items-center gap-5 text-sm font-doHyeon">

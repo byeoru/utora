@@ -17,7 +17,7 @@ export default function Button({
   return (
     <button
       disabled={pending || pendingOr}
-      className={`bg-primary py-3 disabled:cursor-not-allowed transition-all disabled:bg-neutral-400 disabled:text-neutral-300 ${className}`}
+      className={`bg-utora-primary py-3 disabled:cursor-not-allowed transition-all disabled:bg-neutral-400 disabled:text-neutral-300 ${className}`}
     >
       {children}
     </button>
