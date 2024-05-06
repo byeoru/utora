@@ -25,6 +25,7 @@ export default function PostPagination({ category }: PostPaginationPropsType) {
   const fetchPosts = async (category: EPostCategory, page: number) => {
     const newQuery = new URLSearchParams();
     newQuery.set("category", category);
+    newQuery.set("page", currentPage.toString());
     replace(`${pathname}?${newQuery}`);
     const posts = await getPosts(category, page);
     setPostsState(posts);
@@ -55,20 +56,22 @@ export default function PostPagination({ category }: PostPaginationPropsType) {
           />
         ))}
       </ul>
-      <div className="flex justify-center">
-        <Pagination
-          classNames={{ base: "m-1 p-0" }}
-          size="sm"
-          isCompact
-          total={totalPagesCount}
-          showControls
-          showShadow
-          initialPage={1}
-          color="success"
-          page={currentPage}
-          onChange={setCurrentPage}
-        />
-      </div>
+      {totalPagesCount > 0 ? (
+        <div className="flex justify-center">
+          <Pagination
+            classNames={{ base: "m-1 p-0" }}
+            size="sm"
+            isCompact
+            total={totalPagesCount}
+            showControls
+            showShadow
+            initialPage={1}
+            color="success"
+            page={currentPage}
+            onChange={setCurrentPage}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

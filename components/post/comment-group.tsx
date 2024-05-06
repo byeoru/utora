@@ -7,7 +7,7 @@ import CommentItem from "./comment-item";
 import {
   COMMENT_SAVE_ERROR,
   FETCH_COMMENTS_ERROR,
-  FETCH_COMMENTS_SIZE,
+  COMMENTS_FETCH_SIZE,
   MAX_LENGTH_MY_COMMENT,
 } from "@/lib/constants";
 import {
@@ -70,7 +70,7 @@ export default function CommentGroup({
   };
 
   const totalCommentPageCount = Math.ceil(
-    commentsCountState / FETCH_COMMENTS_SIZE
+    commentsCountState / COMMENTS_FETCH_SIZE
   );
 
   const fetchComments = async () => {
@@ -127,20 +127,22 @@ export default function CommentGroup({
           />
         ))}
       </div>
-      <div className="flex justify-center">
-        <Pagination
-          classNames={{ base: "m-1 p-0" }}
-          size="sm"
-          isCompact
-          total={totalCommentPageCount}
-          showControls
-          showShadow
-          initialPage={1}
-          color="success"
-          page={currentCommentPage}
-          onChange={setCurrentCommentPage}
-        />
-      </div>
+      {totalCommentPageCount > 0 ? (
+        <div className="flex justify-center">
+          <Pagination
+            classNames={{ base: "m-1 p-0" }}
+            size="sm"
+            isCompact
+            total={totalCommentPageCount}
+            showControls
+            showShadow
+            initialPage={1}
+            color="success"
+            page={currentCommentPage}
+            onChange={setCurrentCommentPage}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

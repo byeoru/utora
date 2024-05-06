@@ -3,9 +3,9 @@
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { Prisma } from "@prisma/client";
-import { FETCH_COMMENTS_SIZE } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import { comment } from "./schema";
+import { COMMENTS_FETCH_SIZE } from "@/lib/constants";
 
 export type GetPostType = Prisma.PromiseReturnType<typeof getPost>;
 export async function getPost(postId: number) {
@@ -227,8 +227,8 @@ export async function getComments(postId: number, page: number) {
       orderBy: {
         created_at: "desc",
       },
-      skip: (page - 1) * FETCH_COMMENTS_SIZE,
-      take: FETCH_COMMENTS_SIZE,
+      skip: (page - 1) * COMMENTS_FETCH_SIZE,
+      take: COMMENTS_FETCH_SIZE,
     });
     return comments;
   } catch (error) {

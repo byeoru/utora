@@ -39,7 +39,7 @@ export const NOT_AVAILABLE_CHARACTOR_NICKNAME =
 export const FAILED_LOGIN_ERROR = "이메일 또는 비밀번호가 맞지 않습니다.";
 
 // post
-export const POSTS_FETCH_SIZE = 20;
+export const POSTS_FETCH_SIZE = 2;
 export const MIN_LENGTH_POST_NAME = 2;
 export const MIN_LENGTH_POST_NAME_ERROR =
   "제목은 최소 2글자 이상이어야 합니다.";
@@ -51,7 +51,7 @@ export const SELECT_POST_CATEGORY = "게시판 카테고리를 선택해주세�
 // comment
 export const MIN_LENGTH_COMMENT = 1;
 export const MIN_LENGTH_COMMENT_ERROR = "댓글을 입력하세요.";
-export const FETCH_COMMENTS_SIZE = 20;
+export const COMMENTS_FETCH_SIZE = 20;
 export const FETCH_COMMENTS_ERROR = "댓글을 불러오는데 실패하였습니다.";
 export const COMMENT_SAVE_ERROR = "댓글 작성에 실패하였습니다.";
 export const MAX_LENGTH_MY_COMMENT = 200;
