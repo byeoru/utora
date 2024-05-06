@@ -14,11 +14,16 @@ import { POSTS_FETCH_SIZE } from "@/lib/constants";
 
 interface PostPaginationPropsType {
   category: EPostCategory;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }
 
-export default function PostPagination({ category }: PostPaginationPropsType) {
+export default function PostPagination({
+  category,
+  currentPage,
+  onPageChange,
+}: PostPaginationPropsType) {
   const [postsState, setPostsState] = useState<GetPostsType>();
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPagesCount, setTotalPagesCount] = useState<number>(1);
   const { replace } = useRouter();
   const pathname = usePathname();
@@ -53,6 +58,7 @@ export default function PostPagination({ category }: PostPaginationPropsType) {
             likeCount={post.like_count}
             dislikeCount={post.dislike_count}
             createdAt={post.created_at}
+            currentPage={currentPage}
           />
         ))}
       </ul>
@@ -68,7 +74,7 @@ export default function PostPagination({ category }: PostPaginationPropsType) {
             initialPage={1}
             color="success"
             page={currentPage}
-            onChange={setCurrentPage}
+            onChange={onPageChange}
           />
         </div>
       ) : null}

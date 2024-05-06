@@ -12,11 +12,13 @@ import { useState } from "react";
 export default function Posts({
   searchParams,
 }: {
-  searchParams: { category: EPostCategory };
+  searchParams: { category: EPostCategory; page: number };
 }) {
   const initCategory: EPostCategory = searchParams.category ?? "general";
+  const initPage: number = searchParams.page ?? 1;
   const [categoryState, setCategoryState] =
     useState<EPostCategory>(initCategory);
+  const [currentPageState, setCurrentPageState] = useState<number>(initPage);
   return (
     <div className="h-full flex flex-col m-auto max-w-screen-lg">
       <div className="flex flex-col p-1 pb-2 gap-1 shadow-sm">
@@ -51,7 +53,11 @@ export default function Posts({
           </div>
         </div>
       </div>
-      <PostPagination category={categoryState} />
+      <PostPagination
+        category={categoryState}
+        currentPage={currentPageState}
+        onPageChange={setCurrentPageState}
+      />
     </div>
   );
 }

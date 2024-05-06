@@ -16,6 +16,7 @@ interface PostItemPropsType {
   likeCount: number;
   dislikeCount: number;
   createdAt: Date;
+  currentPage: number;
 }
 
 export default function PostItem({
@@ -27,11 +28,15 @@ export default function PostItem({
   likeCount,
   dislikeCount,
   createdAt,
+  currentPage,
 }: PostItemPropsType) {
+  const newQuery = new URLSearchParams();
+  newQuery.set("category", category);
+  newQuery.set("page", currentPage.toString());
   return (
     <Link
       key={postId}
-      href={`/posts/${postId}?category=${category}`}
+      href={`/posts/${postId}?${newQuery}`}
       className="w-full border-b p-3 flex gap-2"
     >
       <div className="flex flex-1 flex-col gap-1 font-notoKr">
