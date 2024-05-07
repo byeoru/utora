@@ -1,10 +1,11 @@
 "use client";
 
 import { GetTopicsType } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
-import OrderByGroup, { OrderByKeyType } from "@/components/order-by-group";
+import { OrderByKeyType } from "@/components/order-by-group";
 import { EDebateCategory } from "@prisma/client";
 import { useState } from "react";
 import TopicItem from "./topic-item";
+import TopicOrderByGroup from "@/components/order-by-group";
 
 interface TopicListPropsType {
   category: EDebateCategory;
@@ -39,7 +40,7 @@ export default function TopicList({
   };
   return (
     <div className="w-full flex flex-col gap-2">
-      <OrderByGroup
+      <TopicOrderByGroup
         onPopularClick={onPopularClickEvent}
         onLatestClick={onLatestClickEvent}
       />

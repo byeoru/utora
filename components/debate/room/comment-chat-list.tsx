@@ -102,6 +102,9 @@ export default function CommentChatList({
         setCommentMessages((prevMsgs) => [...prevMsgs, recievedData]);
       })
       .subscribe();
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
     return () => {
       channel.current?.unsubscribe();
     };

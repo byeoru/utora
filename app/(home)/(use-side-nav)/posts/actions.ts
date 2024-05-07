@@ -4,10 +4,28 @@ import { POSTS_FETCH_SIZE } from "@/lib/constants";
 import db from "@/lib/db";
 import { EPostCategory, Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
+import { PostOrderByType } from "./page";
 
 export type GetPostsType = Prisma.PromiseReturnType<typeof getPosts>;
-export async function getPosts(category: EPostCategory, page: number) {
+export async function getPosts(
+  category: EPostCategory,
+  page: number,
+  orderBy: PostOrderByType
+) {
   try {
+    let orderByObj = {};
+    switch (orderBy) {
+      case "latest":
+        orderByObj = { created_at: "desc" };
+        break;
+      case "popular":
+        orderByObj = { like_count: "desc" };
+        break;
+      case "views":
+        orderByObj = { views: "desc" };
+        break;
+    }
+
     const posts = await db.post.findMany({
       where: {
         category: category,
@@ -25,9 +43,7 @@ export async function getPosts(category: EPostCategory, page: number) {
           },
         },
       },
-      orderBy: {
-        created_at: "desc",
-      },
+      orderBy: orderByObj,
       take: POSTS_FETCH_SIZE,
       skip: (page - 1) * POSTS_FETCH_SIZE,
     });

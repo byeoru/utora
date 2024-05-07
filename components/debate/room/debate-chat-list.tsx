@@ -131,7 +131,9 @@ export default function DebateChatList({
         setDebateMessages((prevMsgs) => [...prevMsgs, recievedData]);
       })
       .subscribe();
-
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
     return () => {
       channel.current?.unsubscribe();
     };

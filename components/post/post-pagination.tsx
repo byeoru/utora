@@ -7,43 +7,41 @@ import {
   getPosts,
   getPostsCount,
 } from "@/app/(home)/(use-side-nav)/posts/actions";
-import { EPostCategory } from "@prisma/client";
-import { usePathname, useRouter } from "next/navigation";
 import { Pagination } from "@nextui-org/react";
 import { POSTS_FETCH_SIZE } from "@/lib/constants";
+import { PostStateType } from "@/app/(home)/(use-side-nav)/posts/page";
 
 interface PostPaginationPropsType {
-  category: EPostCategory;
-  currentPage: number;
+  state: PostStateType;
   onPageChange: (page: number) => void;
 }
 
 export default function PostPagination({
-  category,
-  currentPage,
+  state,
   onPageChange,
 }: PostPaginationPropsType) {
   const [postsState, setPostsState] = useState<GetPostsType>();
-  const [totalPagesCount, setTotalPagesCount] = useState<number>(1);
-  const { replace } = useRouter();
-  const pathname = usePathname();
-  const fetchPosts = async (category: EPostCategory, page: number) => {
-    const newQuery = new URLSearchParams();
-    newQuery.set("category", category);
-    newQuery.set("page", currentPage.toString());
-    replace(`${pathname}?${newQuery}`);
-    const posts = await getPosts(category, page);
+  const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
+  const fetchPosts = async () => {
+    const posts = await getPosts(
+      state.categoryState,
+      state.pageState,
+      state.orderByState
+    );
     setPostsState(posts);
   };
   const getTotalPostsCount = async () => {
-    const count = await getPostsCount(category);
+    const count = await getPostsCount(state.categoryState);
     setTotalPagesCount(Math.ceil(count / POSTS_FETCH_SIZE));
   };
   useEffect(() => {
-    fetchPosts(category, currentPage);
+    fetchPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+  useEffect(() => {
     getTotalPostsCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, currentPage]);
+  }, [state.categoryState]);
   return (
     <div className="flex flex-col">
       <ul className="flex flex-col p-2">
@@ -54,11 +52,11 @@ export default function PostPagination({
             title={post.title}
             nickname={post.user.nickname}
             views={post.views}
-            category={category}
+            category={state.categoryState}
             likeCount={post.like_count}
             dislikeCount={post.dislike_count}
             createdAt={post.created_at}
-            currentPage={currentPage}
+            currentPage={state.pageState}
           />
         ))}
       </ul>
@@ -73,7 +71,7 @@ export default function PostPagination({
             showShadow
             initialPage={1}
             color="success"
-            page={currentPage}
+            page={state.pageState}
             onChange={onPageChange}
           />
         </div>
