@@ -76,10 +76,7 @@ export default function EvaluationBallet({
             </button>
           </div>
           <form action={onEvaluateClick} className="w-full flex flex-col gap-1">
-            <Button
-              pendingOr={!evaluationState}
-              className="p-5 mx-2 rounded-md"
-            >
+            <Button disabled={!evaluationState} className="p-5 mx-2 rounded-md">
               <span className="font-jua">제출</span>
             </Button>
           </form>
