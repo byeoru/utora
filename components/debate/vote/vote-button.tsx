@@ -2,49 +2,44 @@
 
 import { useEffect, useState } from "react";
 import { Vote } from "lucide-react";
-import {
-  CancelVoteTopicType,
-  VoteTopicType,
-} from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
+import { VoteTopicType } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
 
 interface VoteButtonPropsType {
   isVoted: boolean;
   topicId: number;
   onVoteClick: (postId: number) => Promise<VoteTopicType>;
-  onCancelVoteClick: (postId: number) => Promise<CancelVoteTopicType>;
 }
 
 export default function VoteButton({
   isVoted,
   topicId,
   onVoteClick,
-  onCancelVoteClick,
 }: VoteButtonPropsType) {
   const [voteState, setVoteState] = useState(isVoted);
   useEffect(() => {
     setVoteState(voteState);
   }, [voteState]);
   const onVoteClickEvent = async () => {
-    if (voteState) {
-      // 투표 취소
-      setVoteState(false);
-      await onCancelVoteClick(topicId);
-    } else {
-      // 투표
-      setVoteState(true);
-      await onVoteClick(topicId);
+    const isConfirmed = confirm(
+      "한 번 투표 시 취소가 불가능합니다 투표하시겠습니까?"
+    );
+    if (!isConfirmed) {
+      return;
     }
+    await onVoteClick(topicId);
+    setVoteState(true);
   };
   return (
     <div className="flex font-jua">
       <button
+        disabled={voteState}
         onClick={onVoteClickEvent}
         className="flex items-center gap-2 text-sm"
       >
         {voteState ? (
-          <span className="text-red-500">투표 취소</span>
+          <span className="text-red-500">투표 완료</span>
         ) : (
-          <span>투표</span>
+          <span className="text-black">투표</span>
         )}
         <Vote
           className={`size-5 ${voteState ? "text-red-500" : "text-black"}`}

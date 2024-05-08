@@ -5,10 +5,10 @@ import {
   getTopics,
 } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
 import { EDebateCategory } from "@prisma/client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import TopicItem from "./topic-item";
 import { Pagination } from "@nextui-org/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface TopicPaginationPropsType {
   userId: number;
@@ -37,26 +37,27 @@ export default function TopicPagination({
   const [topicState, setTopicState] = useState(initialList);
   const [pageState, setPageState] = useState<number>(page);
   const [orderByState, setOrderByState] = useState<TopicOrderByType>(orderBy);
-  const pathname = usePathname();
   const query = useSearchParams();
-  const { replace } = useRouter();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const onOrderByChange = async (orderBy: TopicOrderByType) => {
     const newQuery = new URLSearchParams(query);
     newQuery.set("page", "1");
     newQuery.set("orderby", orderBy);
-    replace(`${pathname}?${newQuery}`);
+    window.history.pushState(null, "", `?${newQuery}`);
     setPageState(1);
     setOrderByState(orderBy);
     const topic = await getTopics(1, category, orderBy);
-    setTopicState([]);
     setTopicState(topic);
   };
 
   const onPageChange = async (page: number) => {
     const newQuery = new URLSearchParams(query);
     newQuery.set("page", page.toString());
-    replace(`${pathname}?${newQuery}`);
+    window.history.pushState(null, "", `?${newQuery}`);
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
     setPageState(page);
     const topics = await getTopics(page, category, orderByState);
     setTopicState(topics);
@@ -64,7 +65,10 @@ export default function TopicPagination({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <div className="w-full px-10 py-2 bg-slate-500 flex gap-5 justify-center items-center rounded-md font-jua text-sm">
+      <div
+        ref={scrollRef}
+        className="w-full px-10 py-2 bg-slate-500 flex gap-5 justify-center items-center rounded-md font-jua text-sm"
+      >
         <button
           disabled={orderByState === "popular"}
           onClick={() => onOrderByChange("popular")}

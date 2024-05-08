@@ -64,7 +64,6 @@ export default function TopicItem({
             isVoted={isVoted}
             topicId={topicId}
             onVoteClick={voteTopic}
-            onCancelVoteClick={cancelVoteTopic}
           />
         )}
       </div>

@@ -50,6 +50,7 @@ export default function CommentGroup({
   const [commentsCountState, setCommentsCountState] =
     useState<number>(commentsCount);
   const [currentCommentPage, setCurrentCommentPage] = useState<number>(1);
+  const scrollRef = useRef<HTMLSpanElement>(null);
 
   const commentChange = (evnet: ChangeEvent<HTMLTextAreaElement>) => {
     const comment = evnet.target.value;
@@ -82,6 +83,14 @@ export default function CommentGroup({
     setCommentsState(comments);
   };
 
+  const onPageChange = (page: number) => {
+    setCurrentCommentPage(page);
+    if (scrollRef.current) {
+      // scrollRef.current로 특정 span에 접근하여 스크롤 위치로 이동
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   useEffect(() => {
     fetchComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,7 +121,10 @@ export default function CommentGroup({
           </Button>
         </div>
       </form>
-      <span className="font-jua text-base sm:text-lg">{`댓글 수: ${commentsCountState}`}</span>
+      <span
+        ref={scrollRef}
+        className="font-jua text-base sm:text-lg"
+      >{`댓글 수: ${commentsCountState}`}</span>
       <div className="w-full flex flex-col font-notoKr">
         {commentsState.map((comment) => (
           <CommentItem
@@ -139,7 +151,7 @@ export default function CommentGroup({
             initialPage={1}
             color="success"
             page={currentCommentPage}
-            onChange={setCurrentCommentPage}
+            onChange={onPageChange}
           />
         </div>
       ) : null}

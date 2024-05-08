@@ -7,8 +7,8 @@ import Link from "next/link";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 
 import PostPagination from "@/components/post/post-pagination";
-import { useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const orderBy = {
   latest: "최신순",
@@ -42,14 +42,12 @@ export default function Posts({
     pageState: initPage,
     orderByState: initOrderBy,
   });
-  const { replace } = useRouter();
-  const pathname = usePathname();
   const query = useSearchParams();
 
   const onCategoryChange = (category: EPostCategory) => {
     const newQuery = new URLSearchParams();
     newQuery.set("category", category);
-    replace(`${pathname}?${newQuery}`);
+    window.history.pushState(null, "", `?${newQuery}`);
     setState({
       orderByState: "latest",
       categoryState: category,
@@ -61,7 +59,7 @@ export default function Posts({
     const newQuery = new URLSearchParams(query);
     newQuery.set("orderby", orderBy);
     newQuery.set("page", "1");
-    replace(`${pathname}?${newQuery}`);
+    window.history.pushState(null, "", `?${newQuery}`);
     setState((prev) => ({
       orderByState: orderBy,
       categoryState: prev.categoryState,
@@ -72,7 +70,10 @@ export default function Posts({
   const onPageChange = (page: number) => {
     const newQuery = new URLSearchParams(query);
     newQuery.set("page", page.toString());
-    replace(`${pathname}?${newQuery}`);
+    window.history.pushState(null, "", `?${newQuery}`);
+    // 화면 최상단으로 이동
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     setState((prev) => ({
       orderByState: prev.orderByState,
       categoryState: prev.categoryState,
