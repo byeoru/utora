@@ -37,6 +37,7 @@ export async function getPosts(
         like_count: true,
         dislike_count: true,
         views: true,
+        comment_count: true,
         user: {
           select: {
             nickname: true,

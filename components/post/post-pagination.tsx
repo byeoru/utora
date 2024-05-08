@@ -55,6 +55,7 @@ export default function PostPagination({
             category={state.categoryState}
             likeCount={post.like_count}
             dislikeCount={post.dislike_count}
+            commentCount={post.comment_count}
             createdAt={post.created_at}
             currentPage={state.pageState}
           />

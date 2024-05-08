@@ -101,7 +101,7 @@ export async function cancelLikePost(postId: number) {
       },
       data: {
         like_count: {
-          increment: -1,
+          decrement: 1,
         },
       },
     });
@@ -153,7 +153,7 @@ export async function cancelDislikePost(postId: number) {
       },
       data: {
         dislike_count: {
-          increment: -1,
+          decrement: 1,
         },
       },
     });
@@ -186,6 +186,16 @@ export async function saveComment(formData: FormData, postId: number) {
           select: {
             nickname: true,
           },
+        },
+      },
+    });
+    await db.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        comment_count: {
+          increment: 1,
         },
       },
     });
@@ -237,13 +247,26 @@ export async function getComments(postId: number, page: number) {
 }
 
 export async function deleteComment(commentId: number) {
+  const session = await getSession();
   try {
     const comment = await db.postComment.delete({
       where: {
         id: commentId,
+        user_id: session.id,
       },
       select: {
         id: true,
+        post_id: true,
+      },
+    });
+    await db.post.update({
+      where: {
+        id: comment.post_id,
+      },
+      data: {
+        comment_count: {
+          decrement: 1,
+        },
       },
     });
     return Boolean(comment);
