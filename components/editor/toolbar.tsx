@@ -9,6 +9,8 @@ import {
   Heading2,
   Heading3,
   Italic,
+  List,
+  ListOrdered,
   Quote,
   Strikethrough,
 } from "lucide-react";
@@ -67,19 +69,31 @@ export default function Toolbar({ editor }: ToolbarPropsType) {
           isActive={editor.isActive("strike")}
           icon={<Strikethrough className="size-5" />}
         />
+      </ToolbarItemGroup>
+      <ToolbarItemGroup>
         <ToolbarItem
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           isActive={editor.isActive("codeBlock")}
           icon={<Code2 className="size-5" />}
         />
-      </ToolbarItemGroup>
-      <ToolbarItemGroup>
         <ToolbarItem
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           isActive={editor.isActive("blockquote")}
           icon={<Quote className="size-5" />}
         />
         {/* <ToolbarItem onClick={()=>editor.chain().focus().setImage()} isActive={false} icon={undefined} /> */}
+      </ToolbarItemGroup>
+      <ToolbarItemGroup>
+        <ToolbarItem
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          isActive={editor.isActive("bulletList")}
+          icon={<List className="size-5" />}
+        />
+        <ToolbarItem
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          isActive={editor.isActive("orderedList")}
+          icon={<ListOrdered className="size-5" />}
+        />
       </ToolbarItemGroup>
     </div>
   );
