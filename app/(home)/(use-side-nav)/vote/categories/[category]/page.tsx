@@ -13,6 +13,7 @@ import TopRankTopicSwiper from "@/components/debate/vote/top-rank-topic-swiper";
 import TopicPagination, {
   TopicOrderByType,
 } from "@/components/debate/vote/topic-pagination";
+import getSession from "@/lib/session";
 
 export default async function VoteCategory({
   params,
@@ -24,6 +25,7 @@ export default async function VoteCategory({
   }
   const page = params.page ?? 1;
   const orderBy = params.orderby ?? "popular";
+  const session = await getSession();
   const topTopics = await getTopicsTopRank(params.category as EDebateCategory);
   const topics = await getTopics(
     1,
@@ -59,6 +61,7 @@ export default async function VoteCategory({
             <TopRankTopicSwiper topTopics={topTopics} />
             <Divider />
             <TopicPagination
+              userId={session.id}
               page={page}
               orderBy={orderBy}
               category={params.category as EDebateCategory}

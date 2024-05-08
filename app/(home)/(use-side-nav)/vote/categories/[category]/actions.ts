@@ -41,6 +41,7 @@ export async function getTopics(
         },
         user: {
           select: {
+            id: true,
             nickname: true,
           },
         },

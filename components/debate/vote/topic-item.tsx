@@ -1,7 +1,6 @@
-import LikeDislikeGroup from "@/components/post/like-dislike-group";
 import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
-import { BookmarkMinus, BookmarkPlus } from "lucide-react";
+import { BookmarkPlus } from "lucide-react";
 import VoteButton from "./vote-button";
 import {
   cancelVoteTopic,
@@ -9,8 +8,10 @@ import {
 } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
 
 interface TopicItemPropsType {
+  userId: number;
   topicId: number;
   topic: string;
+  proposerId?: number;
   proposeReason: string;
   createdAt: Date;
   nickname?: string;
@@ -18,13 +19,24 @@ interface TopicItemPropsType {
 }
 
 export default function TopicItem({
+  userId,
   topicId,
+  proposerId,
   topic,
   proposeReason,
   createdAt,
   nickname,
   isVoted,
 }: TopicItemPropsType) {
+  const getProposerName = () => {
+    if (!nickname) {
+      return DELETED_ACCOUNT_NICKNAME;
+    }
+    if (userId === proposerId) {
+      return `&${nickname}`;
+    }
+    return nickname;
+  };
   return (
     <li className="flex flex-col relative justify-between border-b p-2 sm:p-4 break-word">
       <div className="flex flex-col gap-1">
@@ -33,7 +45,7 @@ export default function TopicItem({
         </span>
         <div className="flex justify-between items-center">
           <span className="font-jua text-slate-500 text-sm">
-            | 발의자: {nickname ?? DELETED_ACCOUNT_NICKNAME}
+            | 발의자: {getProposerName()}
           </span>
           {isVoted ? (
             <BookmarkPlus className="size-4 sm:size-5 text-red-600" />
@@ -47,12 +59,14 @@ export default function TopicItem({
         </p>
       </div>
       <div className="flex self-end">
-        <VoteButton
-          isVoted={isVoted}
-          topicId={topicId}
-          onVoteClick={voteTopic}
-          onCancelVoteClick={cancelVoteTopic}
-        />
+        {userId === proposerId ? null : (
+          <VoteButton
+            isVoted={isVoted}
+            topicId={topicId}
+            onVoteClick={voteTopic}
+            onCancelVoteClick={cancelVoteTopic}
+          />
+        )}
       </div>
     </li>
   );

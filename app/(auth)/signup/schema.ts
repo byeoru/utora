@@ -74,7 +74,7 @@ const isAvailableEmail = async (email: string) => {
 };
 
 const isAvailableNickname = async (nickname: string, ctx: z.RefinementCtx) => {
-  if (nickname[0] === "@") {
+  if (nickname[0] === "@" || nickname[0] === "&") {
     ctx.addIssue({
       code: "custom",
       message: NOT_AVAILABLE_CHARACTOR_NICKNAME,

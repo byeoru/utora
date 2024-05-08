@@ -11,6 +11,7 @@ import { Pagination } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface TopicPaginationPropsType {
+  userId: number;
   page: number;
   category: EDebateCategory;
   orderBy: TopicOrderByType;
@@ -26,6 +27,7 @@ const orderByObj = {
 export type TopicOrderByType = keyof typeof orderByObj;
 
 export default function TopicPagination({
+  userId,
   page,
   category,
   orderBy,
@@ -90,7 +92,9 @@ export default function TopicPagination({
         {topicState?.map((topic) => (
           <TopicItem
             key={topic.id}
+            userId={userId}
             topicId={topic.id}
+            proposerId={topic.user?.id}
             topic={topic.topic}
             nickname={topic.user?.nickname}
             proposeReason={topic.propose_reason}
