@@ -65,6 +65,7 @@ export const MIN_LENGTH_TOPIC_ERROR = "주제는 최소 10글자 이상이어야
 export const MIN_LENGTH_TOPIC_PROPOSE_REASON = 10;
 export const MIN_LENGTH_TOPIC_PROPOSE_REASON_ERROR =
   "주제 제시 이유는 최소 10글자 이상이어야 합니다.";
+export const TOPICS_FETCH_SIZE = 20;
 
 // gender
 export const REQUIRED_GENDER = "성별을 선택하세요.";

@@ -3,13 +3,15 @@
 import getSession from "@/lib/session";
 import db from "@/lib/db";
 import { EDebateCategory, Prisma } from "@prisma/client";
-import { OrderByKeyType } from "@/components/order-by-group";
 import { notFound, redirect } from "next/navigation";
+import { TOPICS_FETCH_SIZE } from "@/lib/constants";
+import { TopicOrderByType } from "@/components/debate/vote/topic-pagination";
 
 export type GetTopicsType = Prisma.PromiseReturnType<typeof getTopics>;
 export async function getTopics(
+  page: number,
   category: EDebateCategory,
-  orderBy: OrderByKeyType
+  orderBy: TopicOrderByType
 ) {
   const session = await getSession();
   try {
@@ -43,6 +45,8 @@ export async function getTopics(
           },
         },
       },
+      take: TOPICS_FETCH_SIZE,
+      skip: (page - 1) * TOPICS_FETCH_SIZE,
       orderBy: orderByObj,
     });
     return topics;
@@ -88,6 +92,20 @@ export async function getTopicsTopRank(category: EDebateCategory) {
       },
     });
     return topics;
+  } catch (error) {
+    console.log(error);
+    return notFound();
+  }
+}
+
+export async function getTotalTopicsCountOfCategory(category: EDebateCategory) {
+  try {
+    const count = await db.proposedTopic.count({
+      where: {
+        category,
+      },
+    });
+    return count;
   } catch (error) {
     console.log(error);
     return notFound();

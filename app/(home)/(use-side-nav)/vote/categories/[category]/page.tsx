@@ -1,24 +1,39 @@
 import { notFound } from "next/navigation";
-import { getTopics, getTopicsTopRank } from "./actions";
+import {
+  getTopics,
+  getTopicsTopRank,
+  getTotalTopicsCountOfCategory,
+} from "./actions";
 import { EDebateCategory } from "@prisma/client";
 import Divider from "@/components/divider";
-import TopicList from "@/components/debate/vote/topic-list";
 import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
-import { categories } from "@/lib/constants";
+import { TOPICS_FETCH_SIZE, categories } from "@/lib/constants";
 import TopRankTopicSwiper from "@/components/debate/vote/top-rank-topic-swiper";
+import TopicPagination, {
+  TopicOrderByType,
+} from "@/components/debate/vote/topic-pagination";
 
 export default async function VoteCategory({
   params,
 }: {
-  params: { category: string };
+  params: { category: string; page: number; orderby: TopicOrderByType };
 }) {
   if (!(params.category in categories)) {
     return notFound();
   }
-
+  const page = params.page ?? 1;
+  const orderBy = params.orderby ?? "popular";
   const topTopics = await getTopicsTopRank(params.category as EDebateCategory);
-  const topics = await getTopics(params.category as EDebateCategory, "popular");
+  const topics = await getTopics(
+    1,
+    params.category as EDebateCategory,
+    "popular"
+  );
+  const totalTopicsCount = await getTotalTopicsCountOfCategory(
+    params.category as EDebateCategory
+  );
+  const totalPagesCount = Math.ceil(totalTopicsCount / TOPICS_FETCH_SIZE);
 
   return (
     <div className="w-full flex flex-col m-auto">
@@ -43,11 +58,12 @@ export default async function VoteCategory({
           <>
             <TopRankTopicSwiper topTopics={topTopics} />
             <Divider />
-            <TopicList
+            <TopicPagination
+              page={page}
+              orderBy={orderBy}
               category={params.category as EDebateCategory}
               initialList={topics}
-              onPopularClick={getTopics}
-              onLatestClick={getTopics}
+              totalPagesCount={totalPagesCount}
             />
           </>
         ) : (
