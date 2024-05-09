@@ -21,9 +21,5 @@ export default function DeletePostButton({
     const newQuery = new URLSearchParams(searchParams);
     router.replace(`/posts?${newQuery}`);
   };
-  return (
-    <button onClick={onClick} className="text-red-500">
-      삭제
-    </button>
-  );
+  return <button onClick={onClick}>삭제</button>;
 }

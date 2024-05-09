@@ -7,7 +7,7 @@ import Link from "next/link";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 
 import PostPagination from "@/components/post/post-pagination";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const orderBy = {

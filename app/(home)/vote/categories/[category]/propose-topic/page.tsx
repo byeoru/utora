@@ -22,7 +22,7 @@ export default function ProposeTopic({
   };
   const [state, action] = useFormState(onClick, null);
   return (
-    <div className="mx-auto max-w-screen-md px-3">
+    <div className="w-full mx-auto max-w-screen-md px-3 sm:mt-8 lg:mt-12">
       <h1 className="font-jua text-lg lg:text-2xl text-utora-primary mb-5 mt-10">
         {`분야: ${categories[params.category].title}`}
       </h1>
@@ -47,7 +47,7 @@ export default function ProposeTopic({
             {state?.fieldErrors.proposeReason}
           </span>
         </div>
-        <Button>
+        <Button className="rounded-md">
           <span className="font-notoKr text-white">작성 완료</span>
         </Button>
         <span>{state?.fieldErrors.category}</span>

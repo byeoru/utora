@@ -39,35 +39,39 @@ export default function PostItem({
     <Link
       key={postId}
       href={`/posts/${postId}?${newQuery}`}
-      className="w-full border-b flex gap-2"
+      className="w-full border-b flex"
     >
       <div className="w-full flex">
-        <div className="w-5 p-5 bg-emerald-400 font-doHyeon text-sm flex justify-center items-center">
+        <div className="p-2 bg-emerald-400 font-doHyeon text-sm flex justify-center items-center">
           {postId}
         </div>
-        <div className="flex flex-1 flex-col p-3 gap-1 font-notoKr">
-          <h2 className="w-full text-sm font-semibold text-ellipsis overflow-hidden break-words line-clamp-1">
+        <div className="flex flex-1 flex-col p-3 pr-0 gap-1">
+          <h2 className="w-full text-sm font-notoKr font-semibold text-ellipsis overflow-hidden break-words line-clamp-1">
             {title}
           </h2>
-          <div className="flex gap-5 items-center text-xs font-jua text-slate-500">
-            <span className="px-1">| 작성자: {nickname}</span>
-            <div className="flex items-center gap-1 text-slate-500">
+          <div className="flex items-center text-xs">
+            <span className="px-1 flex-1 font-notoKr font-medium text-ellipsis overflow-hidden break-all line-clamp-1">
+              | 작성자: {nickname}
+            </span>
+            <div className="min-w-12 sm:min-w-20 font-jua flex items-center gap-1 text-slate-500">
               <EyeIcon className="size-4" />
               <span>{views}</span>
             </div>
-            <div className="flex items-center gap-1 text-slate-500">
+            <div className="min-w-12 sm:min-w-20 font-jua flex items-center gap-1 text-slate-500">
               <MessageSquareText className="size-4" />
               <span>{commentCount}</span>
             </div>
-            <span className="">{formatToTimeAgo(createdAt)}</span>
+            <span className="font-jua text-slate-400 min-w-14">
+              {formatToTimeAgo(createdAt)}
+            </span>
           </div>
         </div>
         <div className="flex flex-col px-3 gap-1 justify-center font-jua">
-          <div className="w-10 flex justify-between items-center gap-1">
+          <div className="min-w-12 flex justify-between items-center gap-1">
             <HandThumbUpIcon className="size-4 text-red-400" />
             <span className="text-xs text-slate-500">{likeCount}</span>
           </div>
-          <div className="w-10 flex justify-between items-center gap-1">
+          <div className="min-w-12 flex justify-between items-center gap-1">
             <HandThumbDownIcon className="size-4 text-blue-400" />
             <span className="text-xs text-slate-500">{dislikeCount}</span>
           </div>

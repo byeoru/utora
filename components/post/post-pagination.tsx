@@ -44,7 +44,7 @@ export default function PostPagination({
   }, [state.categoryState]);
   return (
     <div className="flex flex-col">
-      <ul className="flex flex-col p-2">
+      <ul className="flex flex-col">
         {postsState?.map((post) => (
           <PostItem
             key={post.id}

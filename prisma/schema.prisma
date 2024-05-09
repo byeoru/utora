@@ -137,7 +137,6 @@ model Post {
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-
   user_id Int
 
   @@index([user_id])

@@ -51,13 +51,8 @@ export default async function PostDetail({
                 </span>
               </div>
               {session.id === post.user_id ? (
-                <div className="self-end flex gap-2 text-sm">
-                  <Link
-                    href={`/posts/${params.id}/edit`}
-                    className="text-red-500"
-                  >
-                    수정
-                  </Link>
+                <div className="self-end flex gap-2 text-sm font-jua text-red-400">
+                  <Link href={`/posts/${params.id}/edit`}>수정</Link>
                   <DeletePostButton postId={id} />
                 </div>
               ) : null}

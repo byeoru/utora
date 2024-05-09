@@ -1,10 +1,10 @@
 "use server";
 
 import getSession from "@/lib/session";
-import { topicProposeSchema } from "./schema";
 import db from "@/lib/db";
 import { notFound } from "next/navigation";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { topicProposeSchema } from "./schema";
 
 export async function createTopic(formData: FormData) {
   const validation = topicProposeSchema.safeParse({

@@ -5,7 +5,6 @@ import {
   getTotalTopicsCountOfCategory,
 } from "./actions";
 import { EDebateCategory } from "@prisma/client";
-import Divider from "@/components/divider";
 import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
 import { TOPICS_FETCH_SIZE, categories } from "@/lib/constants";
@@ -14,6 +13,7 @@ import TopicPagination, {
   TopicOrderByType,
 } from "@/components/debate/vote/topic-pagination";
 import getSession from "@/lib/session";
+import { PencilSquareIcon } from "@heroicons/react/24/solid";
 
 export default async function VoteCategory({
   params,
@@ -42,7 +42,6 @@ export default async function VoteCategory({
       <div className="w-full shadow-md p-5 lg:p-5 gap-2 flex flex-col justify-center items-center">
         <div className="w-full flex flex-col justify-center items-center max-w-screen-lg m-auto">
           <span className="font-doHyeon flex gap-3 items-center">
-            {categories[params.category].icon}
             <span className="text-2xl md:text-3xl lg:text-4xl text-utora-primary">{`${
               categories[params.category].title
             } `}</span>
@@ -50,16 +49,39 @@ export default async function VoteCategory({
               토론 주제 투표
             </span>
           </span>
-          <span className="text-xs md:text-sm font-notoKr self-end font-bold">
-            TODO: 투표 마감 시간 구현
-          </span>
         </div>
       </div>
       <div className="w-full max-w-screen-lg p-2 md:p-5 flex flex-col gap-10 m-auto">
         {topics.length > 0 ? (
           <>
             <TopRankTopicSwiper topTopics={topTopics} />
-            <Divider />
+            <div className="flex flex-col sm:flex-row gap-2 mx-auto">
+              <ul className="flex flex-col list-disc gap-2 p-5 pl-8 bg-slate-200 rounded-md text-xs font-notoKr font-medium">
+                <li>
+                  투표는 이번 주 일요일 밤 12시에 종료됨과 동시에 표를 많이 받은
+                  상위 3개의 주제에 대하여 토론방이 생성됩니다.
+                </li>
+                <li>
+                  투표 중에는 최상위 3개의 주제에 대하여 투표 연령층, 성별
+                  통계를 공개합니다.
+                </li>
+                <li>
+                  각 토론 주제 카테고리별로 일주일에 하나의 주제만 발의할 수
+                  있습니다.
+                </li>
+                <li>
+                  본인이 발의한 주제에 본인이 투표할 수 없으며 한 번 투표한
+                  주제는 투표 취소할 수 없습니다.
+                </li>
+              </ul>
+              <Link
+                href={`/vote/categories/${params.category}/propose-topic`}
+                className="flex gap-1 justify-center items-center p-4 text-green-400 font-notoKr font-medium bg-slate-500 rounded-md"
+              >
+                <PencilSquareIcon className="size-6 " />
+                <span>주제 발의</span>
+              </Link>
+            </div>
             <TopicPagination
               userId={session.id}
               page={page}
