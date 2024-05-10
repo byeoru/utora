@@ -30,10 +30,6 @@ export default function RootLayout({
         <nav className="w-full h-10 shadow-sm sm:hidden flex gap-2 justify-center items-center">
           <TopNavigationItem href="/" icon={<HomeIcon className="size-5" />} />
           <TopNavigationItem
-            href="/popular"
-            icon={<ArrowTrendingUpIcon className="size-5" />}
-          />
-          <TopNavigationItem
             href="/posts"
             icon={<ClipboardList className="size-5" />}
           />
