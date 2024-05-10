@@ -7,9 +7,9 @@ export default async function Debate() {
   const thisWeekTopics = await getThisWeekTopics();
   return (
     <div className="w-full max-w-screen-lg flex flex-col m-auto justify-center items-center gap-5">
-      <div className="w-full h-32 bg-slate-200">
+      {/* <div className="w-full h-32 bg-slate-200">
         TODO: 지난주 토론 주제, 통계
-      </div>
+      </div> */}
       <div className="w-full flex flex-col">
         <h1 className="font-doHyeon text-base lg:text-xl p-2 md:p-5">
           | 이번주 토론
