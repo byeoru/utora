@@ -268,8 +268,8 @@ export async function evaluateDebate(
   debateRoomId: string,
   evaluationBallet: EEvaluation
 ) {
+  const session = await getSession();
   try {
-    const session = await getSession();
     const debateRoom = await db.debateRoom.findUnique({
       where: {
         id: debateRoomId,

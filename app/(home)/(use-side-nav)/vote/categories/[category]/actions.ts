@@ -133,67 +133,26 @@ export async function voteTopic(topicId: number) {
     if (!user.gender || !user.age_group) {
       return;
     }
-    await db.proposedTopicBallet.create({
-      data: {
-        user_id: session.id,
-        user_id_copy: session.id,
-        proposed_topic_id: topicId,
-        gender: user.gender,
-        ageGroup: user.age_group,
-      },
-    });
-    await db.proposedTopic.update({
-      where: {
-        id: topicId,
-      },
-      data: {
-        vote_count: {
-          increment: 1,
-        },
-      },
-    });
-  } catch (error) {}
-}
-
-export type CancelVoteTopicType = Prisma.PromiseReturnType<
-  typeof cancelVoteTopic
->;
-export async function cancelVoteTopic(topicId: number) {
-  const session = await getSession();
-  try {
-    const user = await db.user.findUnique({
-      where: {
-        id: session.id,
-      },
-      select: {
-        gender: true,
-        age_group: true,
-      },
-    });
-    if (!user) {
-      session.destroy();
-      redirect("/login");
-    }
-    if (!user.gender || !user.age_group) {
-      return;
-    }
-    await db.proposedTopicBallet.delete({
-      where: {
-        id: {
+    await db.$transaction([
+      db.proposedTopicBallet.create({
+        data: {
+          user_id: session.id,
           user_id_copy: session.id,
           proposed_topic_id: topicId,
+          gender: user.gender,
+          ageGroup: user.age_group,
         },
-      },
-    });
-    await db.proposedTopic.update({
-      where: {
-        id: topicId,
-      },
-      data: {
-        vote_count: {
-          increment: -1,
+      }),
+      db.proposedTopic.update({
+        where: {
+          id: topicId,
         },
-      },
-    });
+        data: {
+          vote_count: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
   } catch (error) {}
 }

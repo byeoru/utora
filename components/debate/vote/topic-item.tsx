@@ -2,10 +2,7 @@ import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
 import { BookmarkPlus } from "lucide-react";
 import VoteButton from "./vote-button";
-import {
-  cancelVoteTopic,
-  voteTopic,
-} from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
+import { voteTopic } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
 
 interface TopicItemPropsType {
   userId: number;
@@ -54,7 +51,7 @@ export default function TopicItem({
         <span className="font-notoKr text-xs lg:text-sm opacity-50 self-end">
           {formatToTimeAgo(createdAt)}
         </span>
-        <p className="font-notoKr text-slate-500 font-semibold opacity-70 text-xs text-ellipsis overflow-hidden line-clamp-6 lg:line-clamp-4">
+        <p className="font-notoKr text-slate-500 font-medium opacity-70 text-xs text-ellipsis overflow-hidden line-clamp-6 lg:line-clamp-4">
           {proposeReason}
         </p>
       </div>

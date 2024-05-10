@@ -45,23 +45,23 @@ export default function PostItem({
         <div className="p-2 bg-emerald-400 font-doHyeon text-sm flex justify-center items-center">
           {postId}
         </div>
-        <div className="flex flex-1 flex-col p-3 pr-0 gap-1">
+        <div className="flex flex-1 flex-col p-2.5 pr-0 gap-1">
           <h2 className="w-full text-sm font-notoKr font-semibold text-ellipsis overflow-hidden break-words line-clamp-1">
             {title}
           </h2>
-          <div className="flex items-center text-xs">
-            <span className="px-1 flex-1 font-notoKr font-medium text-ellipsis overflow-hidden break-all line-clamp-1">
+          <div className="flex items-center font-jua text-xs">
+            <span className="px-1 flex-1 text-ellipsis text-slate-500 overflow-hidden break-all line-clamp-1">
               | 작성자: {nickname}
             </span>
-            <div className="min-w-12 sm:min-w-20 font-jua flex items-center gap-1 text-slate-500">
+            <div className="min-w-12 sm:min-w-20 flex items-center gap-1 text-slate-500">
               <EyeIcon className="size-4" />
               <span>{views}</span>
             </div>
-            <div className="min-w-12 sm:min-w-20 font-jua flex items-center gap-1 text-slate-500">
+            <div className="min-w-12 sm:min-w-20 flex items-center gap-1 text-slate-500">
               <MessageSquareText className="size-4" />
               <span>{commentCount}</span>
             </div>
-            <span className="font-jua text-slate-400 min-w-14">
+            <span className="text-slate-400 min-w-14">
               {formatToTimeAgo(createdAt)}
             </span>
           </div>

@@ -60,24 +60,26 @@ export type LikePostType = Prisma.PromiseReturnType<typeof likePost>;
 export async function likePost(postId: number) {
   const session = await getSession();
   try {
-    await db.postReaction.create({
-      data: {
-        user_id: session.id,
-        user_id_copy: session.id,
-        post_id: postId,
-        reaction: "like",
-      },
-    });
-    await db.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        like_count: {
-          increment: 1,
+    await db.$transaction([
+      db.postReaction.create({
+        data: {
+          user_id: session.id,
+          user_id_copy: session.id,
+          post_id: postId,
+          reaction: "like",
         },
-      },
-    });
+      }),
+      db.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          like_count: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
   } catch (error) {}
 }
 
@@ -87,24 +89,26 @@ export type CancelLikePostType = Prisma.PromiseReturnType<
 export async function cancelLikePost(postId: number) {
   const session = await getSession();
   try {
-    await db.postReaction.delete({
-      where: {
-        id: {
-          user_id_copy: session.id,
-          post_id: postId,
+    await db.$transaction([
+      db.postReaction.delete({
+        where: {
+          id: {
+            user_id_copy: session.id,
+            post_id: postId,
+          },
         },
-      },
-    });
-    await db.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        like_count: {
-          decrement: 1,
+      }),
+      db.post.update({
+        where: {
+          id: postId,
         },
-      },
-    });
+        data: {
+          like_count: {
+            decrement: 1,
+          },
+        },
+      }),
+    ]);
   } catch (error) {}
 }
 
@@ -112,24 +116,26 @@ export type DislikePostType = Prisma.PromiseReturnType<typeof dislikePost>;
 export async function dislikePost(postId: number) {
   const session = await getSession();
   try {
-    await db.postReaction.create({
-      data: {
-        user_id: session.id,
-        user_id_copy: session.id,
-        post_id: postId,
-        reaction: "dislike",
-      },
-    });
-    await db.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        dislike_count: {
-          increment: 1,
+    await db.$transaction([
+      db.postReaction.create({
+        data: {
+          user_id: session.id,
+          user_id_copy: session.id,
+          post_id: postId,
+          reaction: "dislike",
         },
-      },
-    });
+      }),
+      db.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          dislike_count: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
   } catch (error) {}
 }
 
@@ -139,24 +145,26 @@ export type CancelDislikePostType = Prisma.PromiseReturnType<
 export async function cancelDislikePost(postId: number) {
   const session = await getSession();
   try {
-    await db.postReaction.delete({
-      where: {
-        id: {
-          user_id_copy: session.id,
-          post_id: postId,
+    await db.$transaction([
+      db.postReaction.delete({
+        where: {
+          id: {
+            user_id_copy: session.id,
+            post_id: postId,
+          },
         },
-      },
-    });
-    await db.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        dislike_count: {
-          decrement: 1,
+      }),
+      db.post.update({
+        where: {
+          id: postId,
         },
-      },
-    });
+        data: {
+          dislike_count: {
+            decrement: 1,
+          },
+        },
+      }),
+    ]);
   } catch (error) {}
 }
 
@@ -171,34 +179,36 @@ export async function saveComment(formData: FormData, postId: number) {
     };
   }
   try {
-    const comment = await db.postComment.create({
-      data: {
-        content: validation.data,
-        post_id: postId,
-        user_id: session.id,
-      },
-      select: {
-        id: true,
-        user_id: true,
-        content: true,
-        created_at: true,
-        user: {
-          select: {
-            nickname: true,
+    const [comment] = await db.$transaction([
+      db.postComment.create({
+        data: {
+          content: validation.data,
+          post_id: postId,
+          user_id: session.id,
+        },
+        select: {
+          id: true,
+          user_id: true,
+          content: true,
+          created_at: true,
+          user: {
+            select: {
+              nickname: true,
+            },
           },
         },
-      },
-    });
-    await db.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        comment_count: {
-          increment: 1,
+      }),
+      db.post.update({
+        where: {
+          id: postId,
         },
-      },
-    });
+        data: {
+          comment_count: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
     return {
       formErrors: null,
       comment,
