@@ -9,7 +9,6 @@ const publicOnlyUrls: Routes = {
   "/": true,
   "/login": true,
   "/signup": true,
-  "/popular": true,
   "/vote/categories": true,
   "/posts": true,
   "/debate": true,
