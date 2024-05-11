@@ -88,7 +88,7 @@ export default async function PostDetail({
           </div>
           <CommentGroup
             sessionId={session.id}
-            commentsCount={post._count.comments}
+            commentsCount={post.comment_count}
             postId={post.id}
           />
         </div>

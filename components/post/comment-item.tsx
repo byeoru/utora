@@ -1,48 +1,230 @@
+"use client";
+
 import { formatToTimeAgo } from "@/lib/utils";
+import { ChangeEvent, MouseEvent, useState } from "react";
+import Button from "../button";
+import {
+  COMMENT_SAVE_ERROR,
+  FETCH_COMMENTS_ERROR,
+  MAX_COMMENT_INDENT,
+} from "@/lib/constants";
+import {
+  CommentsType,
+  SaveCommentType,
+  deleteComment,
+  getComments,
+  saveComment,
+} from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
+import { CornerDownRight, MessageSquareText } from "lucide-react";
 
 interface CommentItemPropsType {
   id: number;
+  postId: number;
   commentUserId: number | null;
   sessionId: number;
+  indent: number;
+  isDeleted: boolean;
+  parentCommentId: number | null;
+  childCommentsCount: number;
   nickname?: string;
-  content: string;
+  content: string | null;
   createdAt: Date;
-  onDelete: Function;
+  increaseTotalCommentsCount: () => void;
+  decreaseTotalCommentsCount: () => void;
+  onDelete: (id: number, parentId: number | null) => Promise<void>;
 }
 
 export default function CommentItem({
   id,
+  postId,
   commentUserId,
   sessionId,
+  indent,
+  isDeleted,
+  parentCommentId,
+  childCommentsCount,
   nickname,
   content,
   createdAt,
   onDelete,
+  increaseTotalCommentsCount,
+  decreaseTotalCommentsCount,
 }: CommentItemPropsType) {
+  const [showTextarea, setShowTextarea] = useState<boolean>(false);
+  const [showChildComments, setShowChildComments] = useState<boolean>(false);
+  const [mySubcommentState, setMySubcommentState] = useState<string>("");
+  const [childComments, setChildComments] = useState<CommentsType[]>([]);
+  const [childCountState, setChildCountState] =
+    useState<number>(childCommentsCount);
+  const onCancelClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (mySubcommentState.length > 0) {
+      const isConfirmed = confirm(
+        "작성 중인 댓글이 있습니다. 정말 취소하시겠습니까?"
+      );
+      if (!isConfirmed) {
+        return;
+      }
+    }
+    setMySubcommentState("");
+    setShowTextarea(false);
+  };
+  const onSubmitClick = async (formData: FormData) => {
+    const saveResult: SaveCommentType = await saveComment(formData, postId, id);
+    if (!saveResult) {
+      alert(COMMENT_SAVE_ERROR);
+      return;
+    }
+    setMySubcommentState("");
+    if (saveResult.comment) {
+      setChildCountState((prev) => prev + 1);
+      increaseTotalCommentsCount();
+    }
+  };
+  const onCommentDelete = async (id: number, parentId: number | null) => {
+    const isConfirmed = confirm("정말 삭제하시겠습니까?");
+    if (!isConfirmed) {
+      return;
+    }
+    const result = await deleteComment(id, parentId);
+    if (!result) {
+      alert("댓글 삭제에 실패하였습니다.");
+      return;
+    }
+    if (result.isDeleted) {
+      // row 보존
+      setChildComments((prev) => [
+        ...prev.map((comment) => {
+          if (comment.id === id) {
+            comment.content === "삭제된 댓글입니다.";
+            comment.isDeleted = true;
+            return comment;
+          }
+          return comment;
+        }),
+      ]);
+      decreaseTotalCommentsCount();
+    } else {
+      // row 삭제
+      setChildComments((prev) => [
+        ...prev.filter((comment) => comment.id !== id),
+      ]);
+    }
+    setChildCountState((prev) => prev - 1);
+  };
+  const onSubcommentChange = (evnet: ChangeEvent<HTMLTextAreaElement>) => {
+    setMySubcommentState(evnet.target.value);
+  };
+  const onChildCommentsClick = async () => {
+    if (showChildComments) {
+      setChildComments([]);
+    } else {
+      const children = await getComments(postId, 1, id);
+      if (!children) {
+        alert(FETCH_COMMENTS_ERROR);
+        return;
+      }
+      setChildComments((prev) => [...children, ...prev]);
+    }
+
+    setShowChildComments((prev) => !prev);
+  };
   return (
-    <div key={id} className="w-full py-2 rounded-lg flex gap-2 justify-between">
-      <div className="flex flex-col gap-1 items-center">
+    <div className="flex flex-col gap-2">
+      <div className="w-full rounded-lg flex gap-2 justify-between">
+        {/* <div className="flex flex-col gap-1 items-center">
         <div className="size-7 sm:size-9 bg-slate-200 rounded-full"></div>
-      </div>
-      <div className="flex flex-col flex-1 gap-1">
-        <div className="flex items-center gap-2 font-jua">
-          <span className="text-sm">{nickname ?? "@탈퇴한 계정"}</span>
-          <span className="text-xs text-slate-400">
-            {formatToTimeAgo(createdAt)}
+      </div> */}
+        <div className="flex flex-col flex-1 gap-1">
+          <div className="flex items-center gap-2 font-jua">
+            <span className="text-sm">{nickname ?? "@탈퇴한 계정"}</span>
+            <span className="text-xs text-slate-400">
+              {formatToTimeAgo(createdAt)}
+            </span>
+          </div>
+          <span
+            className={`text-sm font-notoKr ${
+              isDeleted ? "text-red-400" : "text-black"
+            }`}
+          >
+            {isDeleted ? "삭제된 댓글입니다." : content}
           </span>
         </div>
-        <span className="text-sm font-notoKr">{content}</span>
       </div>
-      <div className="flex flex-col text-xs font-jua">
-        {sessionId === commentUserId ? (
+      <div className="flex gap-3 text-xs font-notoKr font-medium">
+        {indent < MAX_COMMENT_INDENT ? (
           <button
-            onClick={async () => await onDelete(id)}
+            onClick={() => setShowTextarea((prev) => !prev)}
+            className="text-slate-400"
+          >
+            답글
+          </button>
+        ) : null}
+        <button
+          disabled={childCountState === 0}
+          onClick={onChildCommentsClick}
+          className="flex gap-1 items-center text-slate-400"
+        >
+          <MessageSquareText className="size-3" />
+          <span className="font-jua">{childCountState}</span>
+        </button>
+        {sessionId === commentUserId && !isDeleted ? (
+          <button
+            onClick={async () => await onDelete(id, parentCommentId)}
             className="text-red-400"
           >
             삭제
           </button>
         ) : null}
       </div>
+      {showTextarea ? (
+        <form action={onSubmitClick} className="flex flex-col gap-1">
+          <textarea
+            value={mySubcommentState}
+            onChange={onSubcommentChange}
+            name="comment"
+            id="comment"
+            className="w-full font-notoKr text-sm resize-none bg-slate-50 overflow-hidden border-slate-400 border-t-0 border-l-0 border-r-0 border-b-1 focus:ring-0 focus:border-slate-600"
+          />
+          <div className="flex self-end">
+            <Button
+              onClick={onCancelClick}
+              className="py-1 px-3 rounded-md bg-white"
+            >
+              <span className="text-sm font-jua text-red-400">취소</span>
+            </Button>
+            <Button className="py-1 px-3 rounded-md bg-white">
+              <span className="text-sm font-jua">완료</span>
+            </Button>
+          </div>
+        </form>
+      ) : null}
+      {showChildComments && (
+        <div className="flex gap-1">
+          <CornerDownRight className="size-5" />
+          <div className="w-full flex flex-col gap-5">
+            {childComments.map((childComment) => (
+              <CommentItem
+                key={`comment: ${childComment.id}`}
+                id={childComment.id}
+                postId={postId}
+                commentUserId={childComment.user_id}
+                sessionId={sessionId}
+                isDeleted={childComment.isDeleted}
+                nickname={childComment.user?.nickname}
+                indent={childComment.indent}
+                parentCommentId={childComment.parent_comment_id}
+                childCommentsCount={childComment.child_comments_count}
+                content={childComment.content}
+                createdAt={childComment.created_at}
+                onDelete={onCommentDelete}
+                increaseTotalCommentsCount={increaseTotalCommentsCount}
+                decreaseTotalCommentsCount={decreaseTotalCommentsCount}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

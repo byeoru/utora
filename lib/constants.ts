@@ -55,6 +55,7 @@ export const COMMENTS_FETCH_SIZE = 20;
 export const FETCH_COMMENTS_ERROR = "댓글을 불러오는데 실패하였습니다.";
 export const COMMENT_SAVE_ERROR = "댓글 작성에 실패하였습니다.";
 export const MAX_LENGTH_MY_COMMENT = 200;
+export const MAX_COMMENT_INDENT = 4;
 
 // common
 export const DELETE_COMPLETE = "삭제가 완료되었습니다.";

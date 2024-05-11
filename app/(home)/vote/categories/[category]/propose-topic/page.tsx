@@ -47,7 +47,7 @@ export default function ProposeTopic({
             {state?.fieldErrors.proposeReason}
           </span>
         </div>
-        <Button className="rounded-md">
+        <Button className="rounded-md py-1">
           <span className="font-notoKr text-white">작성 완료</span>
         </Button>
         <span>{state?.fieldErrors.category}</span>

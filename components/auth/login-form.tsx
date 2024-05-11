@@ -29,7 +29,7 @@ export default function LoginForm() {
           type="password"
           errors={state?.fieldErrors.password}
         />
-        <Button className="w-full rounded-md">로그인하기</Button>
+        <Button className="w-full rounded-md py-2">로그인하기</Button>
         <div className="text-xs text-slate-500 text-center">
           아직 <span className="text-utora-primary">유토라</span>회원이
           아니신가요?

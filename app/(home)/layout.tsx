@@ -1,7 +1,7 @@
 import LoginButton from "@/components/auth/login-button";
 import NoticeButton from "@/components/nav/notice-button";
 import TopNavigationItem from "@/components/nav/top-navigation-item";
-import { ArrowTrendingUpIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { HomeIcon } from "@heroicons/react/24/outline";
 import { ClipboardList, Speech, Vote } from "lucide-react";
 import Link from "next/link";
 

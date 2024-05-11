@@ -30,9 +30,12 @@ export default function CommentGroup({
   commentsCount,
   sessionId,
 }: CommentGroupPropsType) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const onSubmit = async (_: any, formData: FormData) => {
-    const saveResult: SaveCommentType = await saveComment(formData, postId);
+    const saveResult: SaveCommentType = await saveComment(
+      formData,
+      postId,
+      null
+    );
     if (!saveResult) {
       alert(COMMENT_SAVE_ERROR);
       return;
@@ -43,6 +46,12 @@ export default function CommentGroup({
       setCommentsCountState((prev) => prev + 1);
     }
     return saveResult;
+  };
+  const increaseTotalCount = () => {
+    setCommentsCountState((prev) => prev + 1);
+  };
+  const decreaseTotalCount = () => {
+    setCommentsCountState((prev) => prev - 1);
   };
   const [state, action] = useFormState(onSubmit, null);
   const [myCommentState, setMyCommentState] = useState<string>("");
@@ -59,15 +68,36 @@ export default function CommentGroup({
     }
     setMyCommentState(comment);
   };
-  const onCommentDelete = async (id: number) => {
+  const onCommentDelete = async (id: number, parentId: number | null) => {
     const isConfirmed = confirm("정말 삭제하시겠습니까?");
     if (!isConfirmed) {
       return;
     }
-    const result = await deleteComment(id);
-    if (result) {
-      setCommentsCountState((prev) => prev - 1);
+    const result = await deleteComment(id, parentId);
+    if (!result) {
+      alert("댓글 삭제에 실패하였습니다.");
+      return;
     }
+
+    if (result.isDeleted) {
+      // row 보존
+      setCommentsState((prev) => [
+        ...prev.map((comment) => {
+          if (comment.id === id) {
+            comment.content = null;
+            comment.isDeleted = true;
+            return comment;
+          }
+          return comment;
+        }),
+      ]);
+    } else {
+      // row 삭제
+      setCommentsState((prev) => [
+        ...prev.filter((comment) => comment.id !== id),
+      ]);
+    }
+    setCommentsCountState((prev) => prev - 1);
   };
 
   const totalCommentPageCount = Math.ceil(
@@ -75,7 +105,7 @@ export default function CommentGroup({
   );
 
   const fetchComments = async () => {
-    const comments = await getComments(postId, currentCommentPage);
+    const comments = await getComments(postId, currentCommentPage, null);
     if (!comments) {
       alert(FETCH_COMMENTS_ERROR);
       return;
@@ -100,12 +130,11 @@ export default function CommentGroup({
     <div className="w-full flex flex-col gap-6 p-5 text-slate-500">
       <form action={action} className="flex flex-col gap-3">
         <textarea
-          ref={textareaRef}
           onChange={commentChange}
           value={myCommentState}
           name="comment"
           id="comment"
-          className="w-full h-16 font-notoKr rounded-t-md text-sm resize-none bg-slate-50 overflow-hidden border-slate-400 border-t-0 border-l-0 border-r-0 border-b-1 focus:ring-0 focus:border-slate-600"
+          className="w-full h-16 font-notoKr text-sm resize-none bg-slate-50 overflow-hidden border-slate-400 border-t-0 border-l-0 border-r-0 border-b-1 focus:ring-0 focus:border-slate-600"
         />
         {state?.formErrors ? (
           <span className="text-red-600 text-sm">
@@ -116,7 +145,7 @@ export default function CommentGroup({
           {myCommentState.length} / {MAX_LENGTH_MY_COMMENT}
         </span>
         <div className="w-full sm:w-32 self-end">
-          <Button className="w-full rounded-md">
+          <Button className="w-full rounded-md py-1">
             <span className="text-white font-jua">작성 완료</span>
           </Button>
         </div>
@@ -125,17 +154,24 @@ export default function CommentGroup({
         ref={scrollRef}
         className="font-jua text-base sm:text-lg"
       >{`댓글 수: ${commentsCountState}`}</span>
-      <div className="w-full flex flex-col font-notoKr">
+      <div className="w-full flex flex-col gap-5">
         {commentsState.map((comment) => (
           <CommentItem
-            key={comment.id}
+            key={`comment: ${comment.id}`}
             id={comment.id}
+            postId={postId}
             nickname={comment.user?.nickname}
             content={comment.content}
+            isDeleted={comment.isDeleted}
             createdAt={comment.created_at}
             onDelete={onCommentDelete}
             commentUserId={comment.user_id}
             sessionId={sessionId}
+            indent={comment.indent}
+            parentCommentId={comment.parent_comment_id}
+            childCommentsCount={comment.child_comments_count}
+            increaseTotalCommentsCount={increaseTotalCount}
+            decreaseTotalCommentsCount={decreaseTotalCount}
           />
         ))}
       </div>

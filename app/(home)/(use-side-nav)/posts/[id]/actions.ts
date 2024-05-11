@@ -5,7 +5,7 @@ import getSession from "@/lib/session";
 import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 import { comment } from "./schema";
-import { COMMENTS_FETCH_SIZE } from "@/lib/constants";
+import { COMMENTS_FETCH_SIZE, MAX_COMMENT_INDENT } from "@/lib/constants";
 
 export type GetPostType = Prisma.PromiseReturnType<typeof getPost>;
 export async function getPost(postId: number) {
@@ -29,11 +29,6 @@ export async function getPost(postId: number) {
         user: {
           select: {
             nickname: true,
-          },
-        },
-        _count: {
-          select: {
-            comments: true,
           },
         },
       },
@@ -169,7 +164,11 @@ export async function cancelDislikePost(postId: number) {
 }
 
 export type SaveCommentType = Prisma.PromiseReturnType<typeof saveComment>;
-export async function saveComment(formData: FormData, postId: number) {
+export async function saveComment(
+  formData: FormData,
+  postId: number,
+  parentCommentId: number | null
+) {
   const validation = comment.safeParse(formData.get("comment"));
   const session = await getSession();
   if (!validation.success) {
@@ -179,16 +178,42 @@ export async function saveComment(formData: FormData, postId: number) {
     };
   }
   try {
+    let parentIndent: number = -1;
+    if (parentCommentId) {
+      const result = await db.postComment.findUnique({
+        where: {
+          id: parentCommentId,
+        },
+        select: {
+          indent: true,
+        },
+      });
+      if (!result) {
+        return null;
+      }
+      parentIndent = result.indent;
+    }
+
+    if (parentIndent > MAX_COMMENT_INDENT - 1) {
+      return null;
+    }
+
     const [comment] = await db.$transaction([
       db.postComment.create({
         data: {
           content: validation.data,
           post_id: postId,
           user_id: session.id,
+          parent_comment_id: parentCommentId,
+          indent: parentIndent + 1,
         },
         select: {
           id: true,
           user_id: true,
+          parent_comment_id: true,
+          child_comments_count: true,
+          isDeleted: true,
+          indent: true,
           content: true,
           created_at: true,
           user: {
@@ -198,6 +223,20 @@ export async function saveComment(formData: FormData, postId: number) {
           },
         },
       }),
+      ...(parentCommentId
+        ? [
+            db.postComment.update({
+              where: {
+                id: parentCommentId,
+              },
+              data: {
+                child_comments_count: {
+                  increment: 1,
+                },
+              },
+            }),
+          ]
+        : []),
       db.post.update({
         where: {
           id: postId,
@@ -214,30 +253,44 @@ export async function saveComment(formData: FormData, postId: number) {
       comment,
     };
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
 
 export interface CommentsType {
   id: number;
-  content: string;
+  content: string | null;
   created_at: Date;
   user_id: number | null;
+  isDeleted: boolean;
+  parent_comment_id: number | null;
+  child_comments_count: number;
+  indent: number;
   user: {
     nickname: string;
   } | null;
 }
-export async function getComments(postId: number, page: number) {
+export async function getComments(
+  postId: number,
+  page: number,
+  parentCommentId: number | null
+) {
   try {
     const comments = await db.postComment.findMany({
       where: {
         post_id: postId,
+        parent_comment_id: parentCommentId,
       },
       select: {
         id: true,
         content: true,
         created_at: true,
         user_id: true,
+        isDeleted: true,
+        parent_comment_id: true,
+        child_comments_count: true,
+        indent: true,
         user: {
           select: {
             nickname: true,
@@ -252,35 +305,103 @@ export async function getComments(postId: number, page: number) {
     });
     return comments;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
 
-export async function deleteComment(commentId: number) {
+export async function deleteComment(
+  commentId: number,
+  parentCommentId: number | null
+) {
   const session = await getSession();
   try {
-    const comment = await db.postComment.delete({
+    const comment = await db.postComment.findUnique({
       where: {
         id: commentId,
-        user_id: session.id,
+        parent_comment_id: parentCommentId,
       },
       select: {
-        id: true,
-        post_id: true,
-      },
-    });
-    await db.post.update({
-      where: {
-        id: comment.post_id,
-      },
-      data: {
-        comment_count: {
-          decrement: 1,
+        child_comments_count: true,
+        parent_comment: {
+          select: {
+            isDeleted: true,
+          },
         },
       },
     });
-    return Boolean(comment);
+    if (!comment) {
+      return null;
+    }
+
+    let result;
+    if (comment.child_comments_count > 0) {
+      result = await db.postComment.update({
+        where: {
+          id: commentId,
+          user_id: session.id,
+          parent_comment_id: parentCommentId,
+        },
+        data: {
+          isDeleted: true,
+          content: null,
+        },
+        select: {
+          post_id: true,
+          isDeleted: true,
+        },
+      });
+    } else {
+      result = await db.postComment.delete({
+        where: {
+          id: commentId,
+          user_id: session.id,
+          parent_comment_id: parentCommentId,
+        },
+        select: {
+          post_id: true,
+          isDeleted: true,
+        },
+      });
+    }
+
+    await db.$transaction([
+      ...(parentCommentId
+        ? [
+            db.postComment.update({
+              where: {
+                id: parentCommentId,
+              },
+              data: {
+                child_comments_count: {
+                  decrement: 1,
+                },
+              },
+            }),
+          ]
+        : []),
+      db.post.update({
+        where: {
+          id: result.post_id,
+        },
+        data: {
+          comment_count: {
+            decrement: 1,
+          },
+        },
+      }),
+      ...(parentCommentId && comment.parent_comment?.isDeleted
+        ? [
+            db.postComment.delete({
+              where: {
+                id: parentCommentId,
+              },
+            }),
+          ]
+        : []),
+    ]);
+    return result;
   } catch (error) {
-    return false;
+    return null;
   }
 }
