@@ -150,15 +150,13 @@ model PostComment {
   content String?
   indent Int
   child_comments_count Int @default(0)
-  isDeleted Boolean @default(false)
+  is_deleted Boolean @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
   post Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  parent_comment PostComment? @relation(name: "subcomment", fields: [parent_comment_id], references: [id], onUpdate: Restrict, onDelete: Restrict)
-  child_comments PostComment[] @relation(name: "subcomment")
 
   user_id Int?
   post_id Int
@@ -166,7 +164,6 @@ model PostComment {
 
   @@index([user_id])
   @@index([post_id])
-  @@index([parent_comment_id])
 }
 
 enum Reaction {

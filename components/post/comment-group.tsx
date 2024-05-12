@@ -73,19 +73,19 @@ export default function CommentGroup({
     if (!isConfirmed) {
       return;
     }
-    const result = await deleteComment(id, parentId);
+    const result = await deleteComment(postId, id, parentId);
     if (!result) {
       alert("댓글 삭제에 실패하였습니다.");
       return;
     }
 
-    if (result.isDeleted) {
+    if (result.child_comments_count > 0) {
       // row 보존
       setCommentsState((prev) => [
         ...prev.map((comment) => {
           if (comment.id === id) {
             comment.content = null;
-            comment.isDeleted = true;
+            comment.is_deleted = true;
             return comment;
           }
           return comment;
@@ -162,7 +162,7 @@ export default function CommentGroup({
             postId={postId}
             nickname={comment.user?.nickname}
             content={comment.content}
-            isDeleted={comment.isDeleted}
+            isDeleted={comment.is_deleted}
             createdAt={comment.created_at}
             onDelete={onCommentDelete}
             commentUserId={comment.user_id}

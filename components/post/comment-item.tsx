@@ -86,30 +86,30 @@ export default function CommentItem({
     if (!isConfirmed) {
       return;
     }
-    const result = await deleteComment(id, parentId);
+    const result = await deleteComment(postId, id, parentId);
     if (!result) {
       alert("댓글 삭제에 실패하였습니다.");
       return;
     }
-    if (result.isDeleted) {
+    if (result.child_comments_count > 0) {
       // row 보존
       setChildComments((prev) => [
         ...prev.map((comment) => {
           if (comment.id === id) {
-            comment.content === "삭제된 댓글입니다.";
-            comment.isDeleted = true;
+            comment.content === "[삭제된 댓글입니다]";
+            comment.is_deleted = true;
             return comment;
           }
           return comment;
         }),
       ]);
-      decreaseTotalCommentsCount();
     } else {
       // row 삭제
       setChildComments((prev) => [
         ...prev.filter((comment) => comment.id !== id),
       ]);
     }
+    decreaseTotalCommentsCount();
     setChildCountState((prev) => prev - 1);
   };
   const onSubcommentChange = (evnet: ChangeEvent<HTMLTextAreaElement>) => {
@@ -144,10 +144,10 @@ export default function CommentItem({
           </div>
           <span
             className={`text-sm font-notoKr ${
-              isDeleted ? "text-red-400" : "text-black"
+              isDeleted ? "text-stone-400 font-semibold" : "text-black"
             }`}
           >
-            {isDeleted ? "삭제된 댓글입니다." : content}
+            {isDeleted ? "[삭제된 댓글입니다]" : content}
           </span>
         </div>
       </div>
@@ -210,7 +210,7 @@ export default function CommentItem({
                 postId={postId}
                 commentUserId={childComment.user_id}
                 sessionId={sessionId}
-                isDeleted={childComment.isDeleted}
+                isDeleted={childComment.is_deleted}
                 nickname={childComment.user?.nickname}
                 indent={childComment.indent}
                 parentCommentId={childComment.parent_comment_id}

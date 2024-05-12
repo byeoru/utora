@@ -180,7 +180,7 @@ export async function saveComment(
   try {
     let parentIndent: number = -1;
     if (parentCommentId) {
-      const result = await db.postComment.findUnique({
+      const parent = await db.postComment.findUnique({
         where: {
           id: parentCommentId,
         },
@@ -188,10 +188,10 @@ export async function saveComment(
           indent: true,
         },
       });
-      if (!result) {
+      if (!parent) {
         return null;
       }
-      parentIndent = result.indent;
+      parentIndent = parent.indent;
     }
 
     if (parentIndent > MAX_COMMENT_INDENT - 1) {
@@ -212,7 +212,7 @@ export async function saveComment(
           user_id: true,
           parent_comment_id: true,
           child_comments_count: true,
-          isDeleted: true,
+          is_deleted: true,
           indent: true,
           content: true,
           created_at: true,
@@ -263,7 +263,7 @@ export interface CommentsType {
   content: string | null;
   created_at: Date;
   user_id: number | null;
-  isDeleted: boolean;
+  is_deleted: boolean;
   parent_comment_id: number | null;
   child_comments_count: number;
   indent: number;
@@ -287,7 +287,7 @@ export async function getComments(
         content: true,
         created_at: true,
         user_id: true,
-        isDeleted: true,
+        is_deleted: true,
         parent_comment_id: true,
         child_comments_count: true,
         indent: true,
@@ -311,6 +311,7 @@ export async function getComments(
 }
 
 export async function deleteComment(
+  postId: number,
   commentId: number,
   parentCommentId: number | null
 ) {
@@ -323,54 +324,42 @@ export async function deleteComment(
       },
       select: {
         child_comments_count: true,
-        parent_comment: {
-          select: {
-            isDeleted: true,
-          },
-        },
       },
     });
     if (!comment) {
       return null;
     }
 
-    let result;
-    if (comment.child_comments_count > 0) {
-      result = await db.postComment.update({
-        where: {
-          id: commentId,
-          user_id: session.id,
-          parent_comment_id: parentCommentId,
-        },
-        data: {
-          isDeleted: true,
-          content: null,
-        },
-        select: {
-          post_id: true,
-          isDeleted: true,
-        },
-      });
-    } else {
-      result = await db.postComment.delete({
-        where: {
-          id: commentId,
-          user_id: session.id,
-          parent_comment_id: parentCommentId,
-        },
-        select: {
-          post_id: true,
-          isDeleted: true,
-        },
-      });
-    }
-
     await db.$transaction([
+      ...(comment.child_comments_count > 0
+        ? [
+            db.postComment.update({
+              where: {
+                id: commentId,
+                user_id: session.id,
+                parent_comment_id: parentCommentId,
+              },
+              data: {
+                is_deleted: true,
+                content: null,
+              },
+            }),
+          ]
+        : [
+            db.postComment.delete({
+              where: {
+                id: commentId,
+                user_id: session.id,
+                parent_comment_id: parentCommentId,
+              },
+            }),
+          ]),
       ...(parentCommentId
         ? [
             db.postComment.update({
               where: {
                 id: parentCommentId,
+                post_id: postId,
               },
               data: {
                 child_comments_count: {
@@ -382,7 +371,7 @@ export async function deleteComment(
         : []),
       db.post.update({
         where: {
-          id: result.post_id,
+          id: postId,
         },
         data: {
           comment_count: {
@@ -390,18 +379,12 @@ export async function deleteComment(
           },
         },
       }),
-      ...(parentCommentId && comment.parent_comment?.isDeleted
-        ? [
-            db.postComment.delete({
-              where: {
-                id: parentCommentId,
-              },
-            }),
-          ]
-        : []),
     ]);
-    return result;
+    return comment;
   } catch (error) {
+    console.error(error);
     return null;
+  } finally {
+    db.$disconnect();
   }
 }
