@@ -88,7 +88,8 @@ export default async function PostDetail({
           </div>
           <CommentGroup
             sessionId={session.id}
-            commentsCount={post.comment_count}
+            totalCommentsCount={post.comment_count}
+            indentZoroCommentsCount={post._count.comments}
             postId={post.id}
           />
         </div>

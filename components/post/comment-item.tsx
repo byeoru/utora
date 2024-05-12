@@ -1,9 +1,10 @@
 "use client";
 
 import { formatToTimeAgo } from "@/lib/utils";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Button from "../button";
 import {
+  COMMENTS_FETCH_SIZE,
   COMMENT_SAVE_ERROR,
   FETCH_COMMENTS_ERROR,
   MAX_COMMENT_INDENT,
@@ -53,9 +54,12 @@ export default function CommentItem({
   const [showTextarea, setShowTextarea] = useState<boolean>(false);
   const [showChildComments, setShowChildComments] = useState<boolean>(false);
   const [mySubcommentState, setMySubcommentState] = useState<string>("");
+  const [subcommentPageState, setSubcommentPageState] = useState<number>(1);
   const [childComments, setChildComments] = useState<CommentsType[]>([]);
   const [childCountState, setChildCountState] =
     useState<number>(childCommentsCount);
+  const lastPage = Math.ceil(childCountState / COMMENTS_FETCH_SIZE);
+
   const onCancelClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (mySubcommentState.length > 0) {
@@ -108,17 +112,20 @@ export default function CommentItem({
       setChildComments((prev) => [
         ...prev.filter((comment) => comment.id !== id),
       ]);
+      decreaseTotalCommentsCount();
+      setChildCountState((prev) => prev - 1);
     }
-    decreaseTotalCommentsCount();
-    setChildCountState((prev) => prev - 1);
   };
   const onSubcommentChange = (evnet: ChangeEvent<HTMLTextAreaElement>) => {
     setMySubcommentState(evnet.target.value);
   };
   const onChildCommentsClick = async () => {
     if (showChildComments) {
+      // 닫기
       setChildComments([]);
+      setSubcommentPageState(1);
     } else {
+      // 열기
       const children = await getComments(postId, 1, id);
       if (!children) {
         alert(FETCH_COMMENTS_ERROR);
@@ -129,8 +136,18 @@ export default function CommentItem({
 
     setShowChildComments((prev) => !prev);
   };
+  const onMoreFetchClick = async () => {
+    const comments = await getComments(postId, subcommentPageState + 1, id);
+    if (!comments) {
+      alert(FETCH_COMMENTS_ERROR);
+      return;
+    }
+    setChildComments((prev) => [...prev, ...comments]);
+    setSubcommentPageState((prev) => prev + 1);
+  };
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2">
       <div className="w-full rounded-lg flex gap-2 justify-between">
         {/* <div className="flex flex-col gap-1 items-center">
         <div className="size-7 sm:size-9 bg-slate-200 rounded-full"></div>
@@ -200,28 +217,34 @@ export default function CommentItem({
         </form>
       ) : null}
       {showChildComments && (
-        <div className="flex gap-1">
-          <CornerDownRight className="size-5" />
+        <div className="w-full flex gap-1 border-l-2">
           <div className="w-full flex flex-col gap-5">
             {childComments.map((childComment) => (
-              <CommentItem
-                key={`comment: ${childComment.id}`}
-                id={childComment.id}
-                postId={postId}
-                commentUserId={childComment.user_id}
-                sessionId={sessionId}
-                isDeleted={childComment.is_deleted}
-                nickname={childComment.user?.nickname}
-                indent={childComment.indent}
-                parentCommentId={childComment.parent_comment_id}
-                childCommentsCount={childComment.child_comments_count}
-                content={childComment.content}
-                createdAt={childComment.created_at}
-                onDelete={onCommentDelete}
-                increaseTotalCommentsCount={increaseTotalCommentsCount}
-                decreaseTotalCommentsCount={decreaseTotalCommentsCount}
-              />
+              <div key={`comment: ${childComment.id}`} className="w-full flex">
+                <CornerDownRight className="size-5" />
+                <CommentItem
+                  id={childComment.id}
+                  postId={postId}
+                  commentUserId={childComment.user_id}
+                  sessionId={sessionId}
+                  isDeleted={childComment.is_deleted}
+                  nickname={childComment.user?.nickname}
+                  indent={childComment.indent}
+                  parentCommentId={childComment.parent_comment_id}
+                  childCommentsCount={childComment.child_comments_count}
+                  content={childComment.content}
+                  createdAt={childComment.created_at}
+                  onDelete={onCommentDelete}
+                  increaseTotalCommentsCount={increaseTotalCommentsCount}
+                  decreaseTotalCommentsCount={decreaseTotalCommentsCount}
+                />
+              </div>
             ))}
+            {subcommentPageState < lastPage ? (
+              <div className="flex pl-5 text-xs font-notoKr font-medium underline underline-offset-2">
+                <button onClick={onMoreFetchClick}>더 보기</button>
+              </div>
+            ) : null}
           </div>
         </div>
       )}

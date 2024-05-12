@@ -21,6 +21,15 @@ export async function getPost(postId: number) {
         },
       },
       include: {
+        _count: {
+          select: {
+            comments: {
+              where: {
+                indent: 0,
+              },
+            },
+          },
+        },
         post_reactions: {
           where: {
             user_id_copy: session.id,
@@ -353,32 +362,32 @@ export async function deleteComment(
                 parent_comment_id: parentCommentId,
               },
             }),
-          ]),
-      ...(parentCommentId
-        ? [
-            db.postComment.update({
+            ...(parentCommentId
+              ? [
+                  db.postComment.update({
+                    where: {
+                      id: parentCommentId,
+                      post_id: postId,
+                    },
+                    data: {
+                      child_comments_count: {
+                        decrement: 1,
+                      },
+                    },
+                  }),
+                ]
+              : []),
+            db.post.update({
               where: {
-                id: parentCommentId,
-                post_id: postId,
+                id: postId,
               },
               data: {
-                child_comments_count: {
+                comment_count: {
                   decrement: 1,
                 },
               },
             }),
-          ]
-        : []),
-      db.post.update({
-        where: {
-          id: postId,
-        },
-        data: {
-          comment_count: {
-            decrement: 1,
-          },
-        },
-      }),
+          ]),
     ]);
     return comment;
   } catch (error) {

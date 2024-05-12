@@ -20,14 +20,16 @@ import {
 import { Pagination } from "@nextui-org/react";
 
 interface CommentGroupPropsType {
-  commentsCount: number;
+  totalCommentsCount: number;
+  indentZoroCommentsCount: number;
   postId: number;
   sessionId: number;
 }
 
 export default function CommentGroup({
   postId,
-  commentsCount,
+  totalCommentsCount,
+  indentZoroCommentsCount,
   sessionId,
 }: CommentGroupPropsType) {
   const onSubmit = async (_: any, formData: FormData) => {
@@ -57,7 +59,7 @@ export default function CommentGroup({
   const [myCommentState, setMyCommentState] = useState<string>("");
   const [commentsState, setCommentsState] = useState<CommentsType[]>([]);
   const [commentsCountState, setCommentsCountState] =
-    useState<number>(commentsCount);
+    useState<number>(totalCommentsCount);
   const [currentCommentPage, setCurrentCommentPage] = useState<number>(1);
   const scrollRef = useRef<HTMLSpanElement>(null);
 
@@ -101,7 +103,7 @@ export default function CommentGroup({
   };
 
   const totalCommentPageCount = Math.ceil(
-    commentsCountState / COMMENTS_FETCH_SIZE
+    indentZoroCommentsCount / COMMENTS_FETCH_SIZE
   );
 
   const fetchComments = async () => {
