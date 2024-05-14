@@ -1,16 +1,15 @@
+import LoginMyInfoButton from "@/components/login-my-info-button";
 import NoticeButton from "@/components/nav/notice-button";
 import TopNavigationItem from "@/components/nav/top-navigation-item";
-import getSession from "@/lib/session";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { ClipboardList, Speech, Vote } from "lucide-react";
 import Link from "next/link";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
   return (
     <div className="w-full sm:h-screen flex flex-col sm:flex-row">
       <div className="w-full sm:fixed bg-white">
@@ -25,11 +24,7 @@ export default async function RootLayout({
           </div>
           <div className="h-full flex items-center gap-5 text-sm font-doHyeon">
             <NoticeButton />
-            {session.id ? (
-              <Link href="/me">내 정보</Link>
-            ) : (
-              <Link href="/login">로그인</Link>
-            )}
+            <LoginMyInfoButton />
           </div>
         </div>
         <nav className="w-full h-10 shadow-sm sm:hidden flex gap-2 justify-center items-center">

@@ -2,7 +2,7 @@
 
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import {
   ageGroupSchema,
   editPasswordSchema,
@@ -25,9 +25,6 @@ export async function getMyInfo() {
         gender: true,
       },
     });
-    if (!myInfo) {
-      session.destroy();
-    }
     return myInfo;
   } catch (error) {
     console.error(error);
