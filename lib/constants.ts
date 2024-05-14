@@ -59,6 +59,7 @@ export const MAX_COMMENT_INDENT = 4;
 
 // common
 export const DELETE_COMPLETE = "삭제가 완료되었습니다.";
+export const INVALID_TYPE_ERROR = "잘못된 데이터 형식입니다.";
 
 // topic
 export const MIN_LENGTH_TOPIC = 10;
@@ -78,7 +79,7 @@ export interface CategoriesType {
   [key: string]: { [key: string]: string | any };
 }
 
-interface ObjectType {
+export interface ObjectType {
   [key: string]: string;
 }
 
@@ -155,6 +156,11 @@ export const ageGroups: ObjectType = {
   thirties: "30대",
   forties: "40대",
   fifty_and_over: "50대 이상",
+};
+
+export const genders: ObjectType = {
+  male: "남",
+  female: "여",
 };
 
 // debate room

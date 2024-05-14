@@ -4,6 +4,7 @@ import {
   DESCRIPTION_PWD,
   DUPLICATE_ERROR_EMAIL,
   DUPLICATE_ERROR_NICKNAME,
+  INVALID_TYPE_ERROR,
   INVALID_TYPE_ERROR_EMAIL,
   LENGTH_NICKNAME_ERROR,
   MAX_LENGTH_EMAIL,
@@ -73,7 +74,10 @@ const isAvailableEmail = async (email: string) => {
   return user === null;
 };
 
-const isAvailableNickname = async (nickname: string, ctx: z.RefinementCtx) => {
+export const isAvailableNickname = async (
+  nickname: string,
+  ctx: z.RefinementCtx
+) => {
   if (nickname[0] === "@" || nickname[0] === "&") {
     ctx.addIssue({
       code: "custom",
@@ -136,8 +140,12 @@ export const signupSchema = z
       .min(MIN_LENGTH_NICKNAME, LENGTH_NICKNAME_ERROR)
       .max(MAX_LENGTH_NICKNAME, LENGTH_NICKNAME_ERROR)
       .superRefine(isAvailableNickname),
-    gender: z.nativeEnum(EGender).nullable(),
-    ageGroup: z.nativeEnum(EAgeGroup).nullable(),
+    gender: z
+      .nativeEnum(EGender, { invalid_type_error: INVALID_TYPE_ERROR })
+      .nullable(),
+    ageGroup: z
+      .nativeEnum(EAgeGroup, { invalid_type_error: INVALID_TYPE_ERROR })
+      .nullable(),
     passSelectForm: z.boolean(),
   })
   .refine(checkConfirmPassword, {

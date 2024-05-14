@@ -84,7 +84,7 @@ export default function SignupForm() {
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <span>나이</span>
+                <span>연령층</span>
                 <select name="ageGroup" className="mb-2 rounded-md text-sm">
                   <option key="default" value="none">
                     선택
@@ -101,8 +101,7 @@ export default function SignupForm() {
                   <span className="flex flex-col gap-1 text-warn text-xs">
                     {state?.fieldErrors.gender.map((error, index) => (
                       <span key={index} className="flex items-center gap-1">
-                        <ExclamationTriangleIcon className="size-4" />
-                        <span>{error}</span>
+                        {`• ${error}`}
                       </span>
                     ))}
                   </span>
@@ -111,8 +110,7 @@ export default function SignupForm() {
                   <span className="flex flex-col gap-1 text-warn text-xs">
                     {state?.fieldErrors.ageGroup.map((error, index) => (
                       <span key={index} className="flex items-center gap-1">
-                        <ExclamationTriangleIcon className="size-4" />
-                        <span>{error}</span>
+                        {`• ${error}`}
                       </span>
                     ))}
                   </span>
