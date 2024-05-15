@@ -11,6 +11,7 @@ export async function createTopic(formData: FormData) {
     topic: formData.get("topic"),
     proposeReason: formData.get("proposeReason"),
     category: formData.get("category"),
+    debateType: formData.get("debateType"),
   });
 
   if (!validation.success) {
@@ -19,6 +20,20 @@ export async function createTopic(formData: FormData) {
 
   const session = await getSession();
   try {
+    // 이전에 발의한 주제 check;
+    const myTopic = await db.proposedTopic.findFirst({
+      where: {
+        user_id: session.id,
+        category: validation.data.category,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (myTopic) {
+      return;
+    }
+
     await db.proposedTopic.create({
       data: {
         topic: validation.data.topic,
@@ -30,6 +45,7 @@ export async function createTopic(formData: FormData) {
           },
         },
         category: validation.data.category,
+        debate_type: validation.data.debateType,
       },
     });
   } catch (error) {

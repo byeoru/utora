@@ -1,4 +1,5 @@
 import {
+  INVALID_TYPE_ERROR,
   MIN_LENGTH_POST_CONTENT,
   MIN_LENGTH_POST_CONTENT_ERROR,
   MIN_LENGTH_POST_NAME,
@@ -22,7 +23,9 @@ export const postSchema = z
     content: z
       .string()
       .min(MIN_LENGTH_POST_CONTENT, MIN_LENGTH_POST_CONTENT_ERROR),
-    postCategory: z.nativeEnum(EPostCategory).nullable(),
+    postCategory: z
+      .nativeEnum(EPostCategory, { invalid_type_error: INVALID_TYPE_ERROR })
+      .nullable(),
   })
   .refine(checkPostCategory, {
     message: SELECT_POST_CATEGORY,

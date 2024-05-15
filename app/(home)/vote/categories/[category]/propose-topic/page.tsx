@@ -5,7 +5,7 @@ import { createTopic } from "./actions";
 import { EDebateCategory } from "@prisma/client";
 import Button from "@/components/button";
 import { redirect } from "next/navigation";
-import { categories } from "@/lib/constants";
+import { categories, debateTypes } from "@/lib/constants";
 
 export default function ProposeTopic({
   params,
@@ -23,7 +23,7 @@ export default function ProposeTopic({
   const [state, action] = useFormState(onClick, null);
   return (
     <div className="w-full mx-auto max-w-screen-md px-3 sm:mt-8 lg:mt-12">
-      <h1 className="font-jua text-lg lg:text-2xl text-utora-primary mb-5 mt-10">
+      <h1 className="font-jua text-lg lg:text-2xl text-utora-primary">
         {`분야: ${categories[params.category].title}`}
       </h1>
       <form action={action} className="flex flex-col gap-3">
@@ -35,6 +35,24 @@ export default function ProposeTopic({
             className="w-full rounded-md border-none ring-1 focus:ring-slate-500 ring-slate-500 focus:outline-none font-notoKr"
           />
           <span className="text-xs text-warn">{state?.fieldErrors.topic}</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="font-notoKr font-medium text-slate-500">
+            토론 형식
+          </span>
+          <div className="flex items-center gap-2">
+            <input
+              type="radio"
+              id="proponentOpponent"
+              name="debateType"
+              value="proponentOpponent"
+              className="size-3"
+              checked
+            />
+            <label htmlFor="proponentOpponent">
+              {debateTypes["proponentOpponent"]}
+            </label>
+          </div>
         </div>
         <div className="flex flex-col">
           <textarea

@@ -33,7 +33,7 @@ export const LENGTH_NICKNAME_ERROR = "닉네임은 2 ~ 10 자리이어야 합니
 export const DUPLICATE_ERROR_NICKNAME = "이미 존재하는 닉네임입니다.";
 export const DELETED_ACCOUNT_NICKNAME = "@탈퇴한 계정";
 export const NOT_AVAILABLE_CHARACTOR_NICKNAME =
-  "닉네임 첫 글자에 '@', '&'는 사용하실 수 없습니다.";
+  "닉네임 첫 글자에 '@'는 사용하실 수 없습니다.";
 
 // login failed
 export const FAILED_LOGIN_ERROR = "이메일 또는 비밀번호가 맞지 않습니다.";
@@ -82,6 +82,10 @@ export interface CategoriesType {
 export interface ObjectType {
   [key: string]: string;
 }
+
+export const debateTypes: ObjectType = {
+  proponentOpponent: "찬반",
+};
 
 export const categories: CategoriesType = {
   politics_society: {

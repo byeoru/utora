@@ -102,6 +102,7 @@ export default function TopicPagination({
             topic={topic.topic}
             nickname={topic.user?.nickname}
             proposeReason={topic.propose_reason}
+            debateType={topic.debate_type}
             createdAt={topic.created_at}
             isVoted={topic.proposed_topic_ballets.length > 0}
           />

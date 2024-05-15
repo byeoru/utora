@@ -1,8 +1,9 @@
-import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
+import { DELETED_ACCOUNT_NICKNAME, debateTypes } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
 import { BookmarkPlus } from "lucide-react";
 import VoteButton from "./vote-button";
 import { voteTopic } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
+import { EDebateType } from "@prisma/client";
 
 interface TopicItemPropsType {
   userId: number;
@@ -10,6 +11,7 @@ interface TopicItemPropsType {
   topic: string;
   proposerId?: number;
   proposeReason: string;
+  debateType: EDebateType;
   createdAt: Date;
   nickname?: string;
   isVoted: boolean;
@@ -21,19 +23,11 @@ export default function TopicItem({
   proposerId,
   topic,
   proposeReason,
+  debateType,
   createdAt,
   nickname,
   isVoted,
 }: TopicItemPropsType) {
-  const getProposerName = () => {
-    if (!nickname) {
-      return DELETED_ACCOUNT_NICKNAME;
-    }
-    if (userId === proposerId) {
-      return `&${nickname}`;
-    }
-    return nickname;
-  };
   return (
     <li className="flex flex-col relative justify-between border-b p-2 sm:p-4 break-word">
       <div className="flex flex-col gap-1">
@@ -41,8 +35,10 @@ export default function TopicItem({
           {topic}
         </span>
         <div className="flex justify-between items-center">
-          <span className="font-jua text-slate-500 text-sm">
-            | 발의자: {getProposerName()}
+          <span className="flex gap-3 font-jua text-slate-500 text-sm">
+            <span>발의자: {nickname ?? DELETED_ACCOUNT_NICKNAME}</span>
+            <span>|</span>
+            <span>토론 형식: {debateTypes[debateType]}</span>
           </span>
           {isVoted ? (
             <BookmarkPlus className="size-4 sm:size-5 text-red-600" />

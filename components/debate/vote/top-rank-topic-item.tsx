@@ -1,9 +1,9 @@
 "use client";
 
 import Divider from "@/components/divider";
-import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
+import { DELETED_ACCOUNT_NICKNAME, debateTypes } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
-import { EAgeGroup, EGender } from "@prisma/client";
+import { EAgeGroup, EDebateType, EGender } from "@prisma/client";
 import {
   Chart,
   ArcElement,
@@ -21,6 +21,7 @@ interface TopRankTopicItemPropsType {
   proposeReason: string;
   createdAt: Date;
   voteCount: number;
+  debateType: EDebateType;
   nickname?: string;
   ballets: {
     gender: EGender;
@@ -34,6 +35,7 @@ export default function TopRankTopicItem({
   proposeReason,
   createdAt,
   voteCount,
+  debateType,
   nickname,
   ballets,
 }: TopRankTopicItemPropsType) {
@@ -148,8 +150,10 @@ export default function TopRankTopicItem({
       </div>
       <Divider />
       <div className="flex flex-col px-3">
-        <span className="font-jua text-sm">
-          발의자: {nickname ?? DELETED_ACCOUNT_NICKNAME}
+        <span className="flex gap-3 font-jua text-sm">
+          <span>발의자: {nickname ?? DELETED_ACCOUNT_NICKNAME}</span>
+          <span>|</span>
+          <span>토론 형식: {debateTypes[debateType]}</span>
         </span>
         <span className="font-doHyeon text-sm text-slate-400">
           {formatToTimeAgo(createdAt)}

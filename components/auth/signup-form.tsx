@@ -7,7 +7,6 @@ import BackSpan from "../back-span";
 import Button from "../button";
 import { ageGroups } from "@/lib/constants";
 import { useState } from "react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 export default function SignupForm() {
   const [state, action] = useFormState(signUp, null);

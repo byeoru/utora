@@ -29,6 +29,7 @@ export default function TopRankTopicSwiper({
           <TopRankTopicItem
             ranking={index}
             topic={topTopic.topic}
+            debateType={topTopic.debate_type}
             nickname={topTopic.user?.nickname}
             proposeReason={topTopic.propose_reason}
             createdAt={topTopic.created_at}

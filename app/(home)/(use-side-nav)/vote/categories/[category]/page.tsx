@@ -1,19 +1,21 @@
 import { notFound } from "next/navigation";
 import {
+  getMyProposeTopic,
   getTopics,
   getTopicsTopRank,
   getTotalTopicsCountOfCategory,
 } from "./actions";
 import { EDebateCategory } from "@prisma/client";
-import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
-import { TOPICS_FETCH_SIZE, categories } from "@/lib/constants";
+import { TOPICS_FETCH_SIZE, categories, debateTypes } from "@/lib/constants";
 import TopRankTopicSwiper from "@/components/debate/vote/top-rank-topic-swiper";
 import TopicPagination, {
   TopicOrderByType,
 } from "@/components/debate/vote/topic-pagination";
 import getSession from "@/lib/session";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import TopicItem from "@/components/debate/vote/topic-item";
+import { formatToTimeAgo } from "@/lib/utils";
 
 export default async function VoteCategory({
   params,
@@ -33,6 +35,9 @@ export default async function VoteCategory({
     "popular"
   );
   const totalTopicsCount = await getTotalTopicsCountOfCategory(
+    params.category as EDebateCategory
+  );
+  const myProposeTopic = await getMyProposeTopic(
     params.category as EDebateCategory
   );
   const totalPagesCount = Math.ceil(totalTopicsCount / TOPICS_FETCH_SIZE);
@@ -55,7 +60,11 @@ export default async function VoteCategory({
         {topics.length > 0 ? (
           <>
             <TopRankTopicSwiper topTopics={topTopics} />
-            <div className="flex flex-col sm:flex-row gap-2 mx-auto">
+            <div
+              className={`flex flex-col ${
+                myProposeTopic ? "sm:flex-col" : "sm:flex-row"
+              }  gap-2 mx-auto`}
+            >
               <ul className="flex flex-col list-disc gap-2 p-5 pl-8 bg-slate-200 rounded-md text-xs font-notoKr font-medium">
                 <li>
                   투표는 이번 주 일요일 밤 12시에 종료됨과 동시에 표를 많이 받은
@@ -74,13 +83,37 @@ export default async function VoteCategory({
                   주제는 투표 취소할 수 없습니다.
                 </li>
               </ul>
-              <Link
-                href={`/vote/categories/${params.category}/propose-topic`}
-                className="flex gap-1 justify-center items-center p-4 text-green-400 font-notoKr font-medium bg-slate-500 rounded-md"
-              >
-                <PencilSquareIcon className="size-6 " />
-                <span>주제 발의</span>
-              </Link>
+              {myProposeTopic ? (
+                <li className="flex flex-col gap-3 border shadow-md rounded-md justify-between p-2 sm:p-4 break-word">
+                  <h2 className="font-notoKr font-medium">나의 주제</h2>
+                  <div className="flex flex-col gap-1">
+                    <span className="font-notoKr font-semibold text-base break-all mr-7">
+                      {myProposeTopic.topic}
+                    </span>
+                    <div className="flex justify-between items-center">
+                      <span className="flex gap-3 font-jua text-slate-500 text-sm">
+                        <span>
+                          토론 형식: {debateTypes[myProposeTopic.debate_type]}
+                        </span>
+                      </span>
+                    </div>
+                    <span className="font-notoKr text-xs lg:text-sm opacity-50 self-end">
+                      {formatToTimeAgo(myProposeTopic.created_at)}
+                    </span>
+                    <p className="font-notoKr text-slate-500 font-medium opacity-70 text-xs text-ellipsis overflow-hidden line-clamp-6 lg:line-clamp-4">
+                      {myProposeTopic.propose_reason}
+                    </p>
+                  </div>
+                </li>
+              ) : (
+                <Link
+                  href={`/vote/categories/${params.category}/propose-topic`}
+                  className="flex gap-1 justify-center items-center p-4 text-green-400 font-notoKr font-medium bg-slate-500 rounded-md"
+                >
+                  <PencilSquareIcon className="size-6 " />
+                  <span>주제 발의</span>
+                </Link>
+              )}
             </div>
             <TopicPagination
               userId={session.id}

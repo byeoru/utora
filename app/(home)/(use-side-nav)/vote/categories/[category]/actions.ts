@@ -31,6 +31,7 @@ export async function getTopics(
         propose_reason: true,
         vote_count: true,
         created_at: true,
+        debate_type: true,
         proposed_topic_ballets: {
           where: {
             user_id: session.id,
@@ -75,6 +76,7 @@ export async function getTopicsTopRank(category: EDebateCategory) {
         propose_reason: true,
         vote_count: true,
         created_at: true,
+        debate_type: true,
         proposed_topic_ballets: {
           select: {
             gender: true,
@@ -95,6 +97,33 @@ export async function getTopicsTopRank(category: EDebateCategory) {
     return topics;
   } catch (error) {
     console.log(error);
+    return notFound();
+  }
+}
+
+export async function getMyProposeTopic(category: EDebateCategory) {
+  const session = await getSession();
+  try {
+    const topic = await db.proposedTopic.findFirst({
+      where: {
+        category,
+        user_id: session.id,
+      },
+      select: {
+        topic: true,
+        propose_reason: true,
+        debate_type: true,
+        created_at: true,
+        user: {
+          select: {
+            nickname: true,
+          },
+        },
+      },
+    });
+    return topic;
+  } catch (error) {
+    console.error(error);
     return notFound();
   }
 }
