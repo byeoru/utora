@@ -44,6 +44,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <meta
+        name="google-adsense-account"
+        content="ca-pub-6283813776166899"
+      ></meta>
       <body
         className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable} w-full`}
       >
