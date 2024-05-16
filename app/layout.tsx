@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Jua, Do_Hyeon, Noto_Sans_KR } from "next/font/google";
-import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import "./globals.css";
 
 const jua = Jua({
   subsets: ["latin"],

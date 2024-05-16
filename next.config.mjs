@@ -2,7 +2,7 @@
 const nextConfig = {
   experimental: {
     taint: true,
-    instrumentationHook: true,
+    // instrumentationHook: true,
   },
   logging: {
     fetches: {

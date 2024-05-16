@@ -1,12 +1,34 @@
+import db from "@/lib/db";
 import { Client } from "@upstash/qstash/.";
-import db from "./lib/db";
+import { NextRequest } from "next/server";
 
-export function register() {
-  createDebateRoom();
-  evaluateDebate();
-  endEvaluate();
-  createArchive();
-  deleteAllDebate();
+/**
+ *
+ * all cron schedule register
+ */
+export async function POST(req: NextRequest) {
+  // 개발자를 통한 요청만 허가
+  const apiKey = req.headers.get("utora-apikey");
+  if (apiKey !== process.env.UTORA_API_KEY!) {
+    return Response.json(
+      {
+        success: false,
+        error: "허가되지 않은 요청입니다.",
+      },
+      { status: 401 }
+    );
+  }
+  try {
+    await Promise.all([
+      createDebateRoom(),
+      evaluateDebate(),
+      endEvaluate(),
+      createArchive(),
+      deleteAllDebate(),
+    ]);
+  } catch (error) {
+    return Response.json({ success: false, error }, { status: 500 });
+  }
 }
 
 const client = new Client({
