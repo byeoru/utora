@@ -1,6 +1,6 @@
 "use client";
 
-import { evaluateDebate } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
+import { evaluateDebate } from "@/app/(main)/(use-side-nav)/debate/[id]/actions";
 import Button from "@/components/button";
 import { EEvaluation } from "@prisma/client";
 import { useState } from "react";

@@ -393,7 +393,5 @@ export async function deleteComment(
   } catch (error) {
     console.error(error);
     return null;
-  } finally {
-    db.$disconnect();
   }
 }

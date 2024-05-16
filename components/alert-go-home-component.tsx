@@ -1,6 +1,6 @@
 "use client";
 
-import { logout } from "@/app/(home)/(use-side-nav)/me/actions";
+import { logout } from "@/app/(main)/(use-side-nav)/me/actions";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

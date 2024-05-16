@@ -1,7 +1,7 @@
 "use client";
 
-import { getMyDebateRole } from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
-import { getDebateRoomId } from "@/app/(home)/(use-side-nav)/debate/actions";
+import { getMyDebateRole } from "@/app/(main)/(use-side-nav)/debate/[id]/actions";
+import { getDebateRoomId } from "@/app/(main)/(use-side-nav)/debate/actions";
 import { ArrowRightCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";

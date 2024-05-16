@@ -3,7 +3,7 @@
 import { useFormState } from "react-dom";
 import Button from "../button";
 import Input from "../input";
-import { editMyPassword } from "@/app/(home)/(use-side-nav)/me/actions";
+import { editMyPassword } from "@/app/(main)/(use-side-nav)/me/actions";
 import { ChangeEvent, useState } from "react";
 
 export default function EditMyPassword() {

@@ -8,7 +8,7 @@ import {
   CancelLikePostType,
   DislikePostType,
   LikePostType,
-} from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
+} from "@/app/(main)/(use-side-nav)/posts/[id]/actions";
 
 interface LikeDislikeGroupPropsType {
   className?: string;

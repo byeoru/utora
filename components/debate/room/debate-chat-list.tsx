@@ -3,7 +3,7 @@
 import {
   GetDebateMessagesType,
   saveDebateMessage,
-} from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
+} from "@/app/(main)/(use-side-nav)/debate/[id]/actions";
 import { EDebateRole, EDebateStatus } from "@prisma/client";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";

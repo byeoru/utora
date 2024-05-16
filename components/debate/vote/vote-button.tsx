@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Vote } from "lucide-react";
-import { VoteTopicType } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
+import { VoteTopicType } from "@/app/(main)/(use-side-nav)/vote/categories/[category]/actions";
 
 interface VoteButtonPropsType {
   isVoted: boolean;

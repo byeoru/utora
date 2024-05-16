@@ -1,7 +1,7 @@
 "use client";
 
 import TopRankTopicItem from "./top-rank-topic-item";
-import { GetTopicsTopRankType } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
+import { GetTopicsTopRankType } from "@/app/(main)/(use-side-nav)/vote/categories/[category]/actions";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";

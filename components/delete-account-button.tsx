@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteAccount } from "@/app/(home)/(use-side-nav)/me/actions";
+import { deleteAccount } from "@/app/(main)/(use-side-nav)/me/actions";
 import { useRouter } from "next/navigation";
 
 export default function DeleteAccountButton() {

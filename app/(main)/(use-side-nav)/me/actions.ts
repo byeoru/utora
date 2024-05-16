@@ -29,8 +29,6 @@ export async function getMyInfo() {
   } catch (error) {
     console.error(error);
     return notFound();
-  } finally {
-    db.$disconnect();
   }
 }
 

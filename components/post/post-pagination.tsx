@@ -6,10 +6,10 @@ import {
   GetPostsType,
   getPosts,
   getPostsCount,
-} from "@/app/(home)/(use-side-nav)/posts/actions";
+} from "@/app/(main)/(use-side-nav)/posts/actions";
 import { Pagination } from "@nextui-org/react";
 import { POSTS_FETCH_SIZE } from "@/lib/constants";
-import { PostStateType } from "@/app/(home)/(use-side-nav)/posts/page";
+import { PostStateType } from "@/app/(main)/(use-side-nav)/posts/page";
 
 interface PostPaginationPropsType {
   state: PostStateType;

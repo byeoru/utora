@@ -7,7 +7,7 @@ import { RealtimeChannel } from "@supabase/supabase-js";
 import {
   GetDebateCommentMessagesType,
   saveDebateCommentMessage,
-} from "@/app/(home)/(use-side-nav)/debate/[id]/actions";
+} from "@/app/(main)/(use-side-nav)/debate/[id]/actions";
 import { EDebateRole } from "@prisma/client";
 import { Supabase } from "@/lib/supabase";
 import RightSideCommentBubble from "./right-side-comment-bubble";

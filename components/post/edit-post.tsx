@@ -3,7 +3,7 @@
 import Tiptap from "@/components/editor/tiptap";
 import { useEffect, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { GetMyPostType, editPost } from "@/app/(home)/posts/[id]/edit/actions";
+import { GetMyPostType, editPost } from "@/app/(main)/posts/[id]/edit/actions";
 import Button from "../button";
 import { postCategories } from "@/lib/constants";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { logout } from "@/app/(home)/(use-side-nav)/me/actions";
+import { logout } from "@/app/(main)/(use-side-nav)/me/actions";
 import { redirect, useRouter } from "next/navigation";
 
 export default function LogoutButton() {

@@ -16,7 +16,7 @@ import {
   deleteComment,
   getComments,
   saveComment,
-} from "@/app/(home)/(use-side-nav)/posts/[id]/actions";
+} from "@/app/(main)/(use-side-nav)/posts/[id]/actions";
 import { Pagination } from "@nextui-org/react";
 
 interface CommentGroupPropsType {

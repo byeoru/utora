@@ -2,7 +2,7 @@ import { DELETED_ACCOUNT_NICKNAME, debateTypes } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
 import { BookmarkPlus } from "lucide-react";
 import VoteButton from "./vote-button";
-import { voteTopic } from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
+import { voteTopic } from "@/app/(main)/(use-side-nav)/vote/categories/[category]/actions";
 import { EDebateType } from "@prisma/client";
 
 interface TopicItemPropsType {

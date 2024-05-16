@@ -3,7 +3,7 @@
 import {
   GetTopicsType,
   getTopics,
-} from "@/app/(home)/(use-side-nav)/vote/categories/[category]/actions";
+} from "@/app/(main)/(use-side-nav)/vote/categories/[category]/actions";
 import { EDebateCategory } from "@prisma/client";
 import { useRef, useState } from "react";
 import TopicItem from "./topic-item";
