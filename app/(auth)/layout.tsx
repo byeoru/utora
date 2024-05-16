@@ -14,9 +14,6 @@ export default function RootLayout({
           <span className="text-utora-primary"> 유토라</span>에 오신 것을
           환영합니다.
         </span>
-        <span className="font-bold font-notoKr">
-          현재 <span className="text-red-500">Alpha Version</span> 개발 중입니다
-        </span>
       </div>
       <div className="md:ml-[27rem] max-w-screen-sm w-full md:w-2/3 font-notoKr flex flex-col gap-14 pt-10 items-start px-10 overflow-y-auto">
         {children}

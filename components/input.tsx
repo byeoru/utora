@@ -1,8 +1,7 @@
-import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 import { InputHTMLAttributes } from "react";
 
 interface InputPropsType {
-  label: string;
+  label?: string;
   id: string;
   name: string;
   errors?: string[];
@@ -17,7 +16,7 @@ export default function Input({
 }: InputPropsType & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div className="flex flex-col w-full gap-1">
-      <label htmlFor={name}>{label}</label>
+      {label ? <label htmlFor={name}>{label}</label> : null}
       <input
         id={id}
         name={name}

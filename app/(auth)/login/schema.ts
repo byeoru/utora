@@ -23,4 +23,5 @@ export const loginSchema = z.object({
     })
     .min(1, REQUIRED_ERROR_PWD)
     .max(MAX_LENGTH_PWD, MAX_LENGTH_PWD_ERROR),
+  autoLogin: z.string().nullable(),
 });

@@ -3,7 +3,6 @@
 import db from "@/lib/db";
 import { signupSchema } from "./schema";
 import bcrypt from "bcrypt";
-import getSession from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export const signUp = async (_: any, formData: FormData) => {
@@ -39,10 +38,5 @@ export const signUp = async (_: any, formData: FormData) => {
     },
   });
 
-  // login
-  const session = await getSession();
-  session.id = user.id;
-  await session.save();
-
-  redirect("/");
+  redirect("/login");
 };

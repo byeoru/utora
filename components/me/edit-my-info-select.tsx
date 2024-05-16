@@ -58,8 +58,8 @@ export default function EditMyInfoSelect({
       <div className="flex flex-col gap-3 p-3">
         {currentData ? (
           <Input
-            id="current"
-            name="current"
+            id={`current_${formName}`}
+            name={`current_${formName}`}
             disabled
             value={currentDataState}
             label="현재"
@@ -67,7 +67,11 @@ export default function EditMyInfoSelect({
         ) : null}
         <form action={action} className="flex flex-col">
           <label htmlFor={formName}>{`${title} 변경`}</label>
-          <select name={formName} className="mb-2 rounded-md text-sm">
+          <select
+            id={formName}
+            name={formName}
+            className="mb-2 rounded-md text-sm"
+          >
             {Object.keys(optionsObj).map((gender, index) => (
               <option key={index} value={gender}>
                 {optionsObj[gender]}

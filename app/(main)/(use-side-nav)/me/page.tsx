@@ -23,9 +23,19 @@ export default async function Me() {
       <div className="w-full max-w-screen-lg gap-10 p-2 md:p-5 flex flex-col m-auto">
         <h1 className="font-semibold text-xl">내 정보</h1>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <MyInfoForm title="이메일" currentData={myInfo?.email ?? "[error]"} />
+          <MyInfoForm
+            id="my_email"
+            name="my_email"
+            title="이메일"
+            currentData={myInfo?.email ?? "[error]"}
+          />
           {myInfo && myInfo.gender ? (
-            <MyInfoForm title="성별" currentData={genders[myInfo.gender]} />
+            <MyInfoForm
+              id="my_gender"
+              name="my_gender"
+              title="성별"
+              currentData={genders[myInfo.gender]}
+            />
           ) : null}
           <EditMyInfoForm
             title="닉네임"

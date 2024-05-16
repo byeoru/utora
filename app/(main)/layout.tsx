@@ -18,7 +18,7 @@ export default function RootLayout({
             <Link href="/">
               <span className="text-utora-primary font-jua">유토라</span>
               <span className="text-xs font-doHyeon text-utora-primary">
-                .Alpha
+                .Beta
               </span>
             </Link>
           </div>

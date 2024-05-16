@@ -48,8 +48,8 @@ export default function EditMyInfoForm({
           disabled
           value={currentDataState}
           label="현재"
-          id="current"
-          name="current"
+          id={`current_${formName}`}
+          name={`current_${formName}`}
         />
         <form action={action} className="flex flex-col">
           <Input

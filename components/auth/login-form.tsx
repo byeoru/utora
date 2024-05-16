@@ -29,6 +29,18 @@ export default function LoginForm() {
           type="password"
           errors={state?.fieldErrors.password}
         />
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            name="autoLogin"
+            id="autoLogin"
+            className="rounded-md transition-all focus:ring-0"
+          />
+          <label htmlFor="autoLogin" className="text-sm">
+            자동 로그인
+          </label>
+        </div>
+        <span>{state?.fieldErrors.autoLogin}</span>
         <Button className="w-full rounded-md py-2">로그인하기</Button>
         <div className="text-xs text-slate-500 text-center">
           아직 <span className="text-utora-primary">유토라</span>회원이
