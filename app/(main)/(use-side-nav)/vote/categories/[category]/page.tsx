@@ -14,8 +14,12 @@ import TopicPagination, {
 } from "@/components/debate/vote/topic-pagination";
 import getSession from "@/lib/session";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
-import TopicItem from "@/components/debate/vote/topic-item";
 import { formatToTimeAgo } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "주제 투표",
+};
 
 export default async function VoteCategory({
   params,

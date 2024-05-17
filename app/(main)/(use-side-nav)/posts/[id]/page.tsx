@@ -12,9 +12,14 @@ import { EyeIcon } from "@heroicons/react/24/outline";
 import LikeDislikeGroup from "@/components/post/like-dislike-group";
 import CommentGroup from "@/components/post/comment-group";
 import getSession from "@/lib/session";
-import { postCategories } from "@/lib/constants";
+import { DELETED_ACCOUNT_NICKNAME, postCategories } from "@/lib/constants";
 import Link from "next/link";
 import DeletePostButton from "@/components/post/delete-post-button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "게시판",
+};
 
 export default async function PostDetail({
   params,
@@ -41,7 +46,9 @@ export default async function PostDetail({
             <div className="flex flex-col gap-2">
               <h2 className="text-xl font-notoKr">{post.title}</h2>
               <div className="text-sm flex gap-5 text-gray-500">
-                <span>{`작성자: ${post.user.nickname}`}</span>
+                <span>{`작성자: ${
+                  post.user?.nickname ?? DELETED_ACCOUNT_NICKNAME
+                }`}</span>
                 <span>|</span>
                 <span>{formatToTimeAgo(post.created_at)}</span>
                 <span>|</span>

@@ -1,6 +1,11 @@
 import EditPost from "@/components/post/edit-post";
 import { getMyPost } from "./actions";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "게시물 수정",
+};
 
 export default async function EditPostPage({
   params,

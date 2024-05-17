@@ -1,3 +1,4 @@
+import { DELETED_ACCOUNT_NICKNAME } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
 import {
   HandThumbDownIcon,
@@ -10,7 +11,7 @@ import Link from "next/link";
 interface PostItemPropsType {
   postId: number;
   title: string;
-  nickname: string;
+  nickname?: string;
   views: number;
   category: EPostCategory;
   likeCount: number;
@@ -51,7 +52,7 @@ export default function PostItem({
           </h2>
           <div className="flex items-center font-jua text-xs">
             <span className="px-1 flex-1 text-ellipsis text-slate-500 overflow-hidden break-all line-clamp-1">
-              | 작성자: {nickname}
+              | 작성자: {nickname ?? DELETED_ACCOUNT_NICKNAME}
             </span>
             <div className="min-w-12 sm:min-w-20 flex items-center gap-1 text-slate-500">
               <EyeIcon className="size-4" />

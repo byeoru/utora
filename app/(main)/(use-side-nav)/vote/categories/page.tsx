@@ -1,5 +1,10 @@
 import { categories } from "@/lib/constants";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "카테고리",
+};
 
 export default function Categories() {
   return (

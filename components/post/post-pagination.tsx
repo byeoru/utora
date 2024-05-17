@@ -50,7 +50,7 @@ export default function PostPagination({
             key={post.id}
             postId={post.id}
             title={post.title}
-            nickname={post.user.nickname}
+            nickname={post.user?.nickname}
             views={post.views}
             category={state.categoryState}
             likeCount={post.like_count}

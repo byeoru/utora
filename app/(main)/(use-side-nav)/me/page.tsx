@@ -12,6 +12,11 @@ import EditMyInfoSelect from "@/components/me/edit-my-info-select";
 import EditMyPassword from "@/components/me/edit-my-password";
 import MyInfoForm from "@/components/me/my-info-form";
 import { ageGroups, genders } from "@/lib/constants";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "내 정보",
+};
 
 export default async function Me() {
   const myInfo = await getMyInfo();

@@ -12,6 +12,11 @@ import DebateChatList from "@/components/debate/room/debate-chat-list";
 import CommentChatList from "@/components/debate/room/comment-chat-list";
 import SupportChatList from "@/components/debate/room/support-chat-list";
 import EvaluationBallet from "@/components/debate/room/evaluation-ballet";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "토론방",
+};
 
 export default async function DebateRoom({
   params,

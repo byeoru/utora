@@ -2,6 +2,11 @@ import JoinDebateButton from "@/components/debate/join-debate-button";
 import { getThisWeekTopics } from "./actions";
 import { DELETED_ACCOUNT_NICKNAME, categories } from "@/lib/constants";
 import { Vote } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "토론",
+};
 
 export default async function Debate() {
   const thisWeekTopics = await getThisWeekTopics();
