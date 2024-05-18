@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default async function Notice() {
   const notices = await getNotices();
   return (
-    <ul className="w-full mx-auto max-w-screen-md p-2 sm:mt-8 lg:mt-12">
+    <ul>
       {notices.map((notice, index) => (
         <li
           key={index}

@@ -16,6 +16,8 @@ const publicOnlyUrls: Routes = {
   "/api/cron/debate/evaluate": true,
   "/api/cron/debate/end": true,
   "/api/cron/archive": true,
+  "/policy/terms-of-service": true,
+  "/policy/privacy-policy": true,
 };
 
 export async function middleware(request: NextRequest) {

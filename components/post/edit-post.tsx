@@ -3,7 +3,10 @@
 import Tiptap from "@/components/editor/tiptap";
 import { useEffect, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { GetMyPostType, editPost } from "@/app/(main)/posts/[id]/edit/actions";
+import {
+  GetMyPostType,
+  editPost,
+} from "@/app/(main)/(no-side-nav)/posts/[id]/edit/actions";
 import Button from "../button";
 import { postCategories } from "@/lib/constants";
 
@@ -44,7 +47,7 @@ export default function EditPost({ postId, oldPost }: EditPostPropsType) {
     }
   }, [oldPost, router]);
   return (
-    <div className="w-full mx-auto max-w-screen-md p-2 sm:mt-8 lg:mt-12">
+    <div>
       <h1 className="font-jua text-lg sm:text-2xl text-utora-primary">
         게시글 수정하기
       </h1>

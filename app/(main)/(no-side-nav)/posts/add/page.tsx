@@ -27,7 +27,7 @@ export default function PostAdd() {
     }
   };
   return (
-    <div className="w-full mx-auto max-w-screen-md p-2 sm:mt-8 lg:mt-12">
+    <div>
       <h1 className="font-jua text-lg sm:text-2xl text-utora-primary">
         게시판 글쓰기
       </h1>
