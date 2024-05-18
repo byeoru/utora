@@ -80,7 +80,7 @@ export async function getTopicsTopRank(category: EDebateCategory) {
         proposed_topic_ballets: {
           select: {
             gender: true,
-            ageGroup: true,
+            age_group: true,
           },
         },
         user: {
@@ -169,7 +169,7 @@ export async function voteTopic(topicId: number) {
           user_id_copy: session.id,
           proposed_topic_id: topicId,
           gender: user.gender,
-          ageGroup: user.age_group,
+          age_group: user.age_group,
         },
       }),
       db.proposedTopic.update({

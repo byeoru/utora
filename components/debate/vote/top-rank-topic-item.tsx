@@ -25,7 +25,7 @@ interface TopRankTopicItemPropsType {
   nickname?: string;
   ballets: {
     gender: EGender;
-    ageGroup: EAgeGroup;
+    age_group: EAgeGroup;
   }[];
 }
 
@@ -51,7 +51,7 @@ export default function TopRankTopicItem({
     female: 0,
   };
   ballets.forEach((ballet) => {
-    ageGroupObj[ballet.ageGroup]++;
+    ageGroupObj[ballet.age_group]++;
     genderObj[ballet.gender]++;
   });
   Chart.register(ArcElement, Legend, SubTitle, Tooltip);

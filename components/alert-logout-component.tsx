@@ -4,13 +4,13 @@ import { logout } from "@/app/(main)/(use-side-nav)/me/actions";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-interface AlertComponentPropsType {
+interface AlertLogoutComponentPropsType {
   text: string;
 }
 
-export default function AlertGoHomeComponent({
+export default function AlertLogoutComponent({
   text,
-}: AlertComponentPropsType) {
+}: AlertLogoutComponentPropsType) {
   const router = useRouter();
   useEffect(() => {
     alert(text);

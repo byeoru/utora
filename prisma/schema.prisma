@@ -135,6 +135,7 @@ model Post {
   comment_count Int @default(0)
   views Int @default(0)
   category EPostCategory
+  is_blocked Boolean @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -216,7 +217,7 @@ model ProposedTopic {
 
 model ProposedTopicBallet {
   gender EGender
-  ageGroup EAgeGroup
+  age_group EAgeGroup
   
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

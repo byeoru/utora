@@ -16,6 +16,7 @@ import { DELETED_ACCOUNT_NICKNAME, postCategories } from "@/lib/constants";
 import Link from "next/link";
 import DeletePostButton from "@/components/post/delete-post-button";
 import { Metadata } from "next";
+import AlertGoBackComponent from "@/components/alert-go-back-component";
 
 export const metadata: Metadata = {
   title: "게시판",
@@ -31,33 +32,38 @@ export default async function PostDetail({
     return notFound();
   }
 
-  const post = await getPost(id);
-  const session = await getSession();
-  return (
+  const [post, session] = await Promise.allSettled([getPost(id), getSession()]);
+  if (post.status === "rejected" || session.status === "rejected") {
+    return null;
+  }
+  return post.value.is_blocked ? (
+    <AlertGoBackComponent text="관리자에 의해 차단된 게시물입니다." />
+  ) : (
     <>
       <div className="w-full px-2 py-1 border-b-2 border-slate-200 bg-utora-primary shadow-md block">
         <h1 className="font-jua mx-auto text-lg sm:text-xl max-w-screen-lg">
-          {`${postCategories[post.category].title} 게시판`}
+          {`${postCategories[post.value.category].title} 게시판`}
         </h1>
       </div>
       <div className="max-w-screen-lg m-auto flex md:gap-2">
         <div className="w-full flex flex-col gap-1">
           <div className="flex flex-col gap-7 p-5">
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-notoKr">{post.title}</h2>
+              <h2 className="text-xl font-notoKr">{post.value.title}</h2>
               <div className="text-sm flex gap-5 text-gray-500">
                 <span>{`작성자: ${
-                  post.user?.nickname ?? DELETED_ACCOUNT_NICKNAME
+                  post.value.user?.nickname ?? DELETED_ACCOUNT_NICKNAME
                 }`}</span>
                 <span>|</span>
-                <span>{formatToTimeAgo(post.created_at)}</span>
+                <span>{formatToTimeAgo(post.value.created_at)}</span>
                 <span>|</span>
                 <span className="flex items-center gap-2">
                   <EyeIcon className="size-4" />
-                  <span>{post.views}</span>
+                  <span>{post.value.views}</span>
                 </span>
               </div>
-              {session.id === post.user_id ? (
+              {session.status === "fulfilled" &&
+              session.value.id === post.value.user_id ? (
                 <div className="self-end flex gap-2 text-sm font-jua text-red-400">
                   <Link href={`/posts/${params.id}/edit`}>수정</Link>
                   <DeletePostButton postId={id} />
@@ -67,7 +73,7 @@ export default async function PostDetail({
             <Divider />
             <div
               className="prose prose-sm sm:prose-base"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: post.value.content }}
             />
           </div>
           <div className="flex flex-col p-5 gap-3">
@@ -75,18 +81,18 @@ export default async function PostDetail({
             <LikeDislikeGroup
               className="self-end"
               isLiked={
-                post.post_reactions.filter(
+                post.value.post_reactions.filter(
                   (reaction) => reaction.reaction === "like"
                 ).length > 0
               }
               isDisliked={
-                post.post_reactions.filter(
+                post.value.post_reactions.filter(
                   (reaction) => reaction.reaction === "dislike"
                 ).length > 0
               }
-              likeCount={post.like_count}
-              dislikeCount={post.dislike_count}
-              postId={post.id}
+              likeCount={post.value.like_count}
+              dislikeCount={post.value.dislike_count}
+              postId={post.value.id}
               onLikeClick={likePost}
               onCancelLikeClick={cancelLikePost}
               onDislikeClick={dislikePost}
@@ -94,10 +100,10 @@ export default async function PostDetail({
             />
           </div>
           <CommentGroup
-            sessionId={session.id}
-            totalCommentsCount={post.comment_count}
-            indentZoroCommentsCount={post._count.comments}
-            postId={post.id}
+            sessionId={session.value.id}
+            totalCommentsCount={post.value.comment_count}
+            indentZoroCommentsCount={post.value._count.comments}
+            postId={post.value.id}
           />
         </div>
       </div>

@@ -23,22 +23,32 @@ export default async function DebateRoom({
 }: {
   params: { id: string };
 }) {
-  const myDebateRole = await getMyDebateRole(params.id);
-  const initialDebateMessages = await getDebateMessages(params.id);
-  const myProfile = await getUserProfile();
-  const debateRoomInfo = await getDebateRoomInfo(params.id);
+  const [myDebateRole, initialDebateMessages, myProfile, debateRoomInfo] =
+    await Promise.allSettled([
+      getMyDebateRole(params.id),
+      getDebateMessages(params.id),
+      getUserProfile(),
+      getDebateRoomInfo(params.id),
+    ]);
   const supabasePublicKey = process.env.SUPABASE_PUBLIC_KEY!;
   let initialSubMessages;
   let subChatNameKr;
   let subChannelName;
   let evaluationHistory = null;
-
-  if (!myDebateRole || !debateRoomInfo || !myProfile) {
+  if (
+    myDebateRole.status === "rejected" ||
+    initialDebateMessages.status === "rejected" ||
+    myProfile.status === "rejected" ||
+    debateRoomInfo.status === "rejected"
+  ) {
+    return null;
+  }
+  if (!myDebateRole.value || !debateRoomInfo.value || !myProfile.value) {
     // 나중에 코드 개선할 것
     return notFound();
   }
-  if (debateRoomInfo.status === "in_debate") {
-    switch (myDebateRole.debate_role) {
+  if (debateRoomInfo.value.status === "in_debate") {
+    switch (myDebateRole.value.debate_role) {
       case "Audience":
         subChatNameKr = "댓글창";
         subChannelName = "comment";
@@ -66,16 +76,17 @@ export default async function DebateRoom({
         break;
     }
   } else if (
-    debateRoomInfo.status === "under_evaluation" &&
-    debateRoomInfo.debate_evaluation_ballets.length > 0
+    debateRoomInfo.value.status === "under_evaluation" &&
+    debateRoomInfo.value.debate_evaluation_ballets.length > 0
   ) {
-    evaluationHistory = debateRoomInfo.debate_evaluation_ballets[0].evaluation;
+    evaluationHistory =
+      debateRoomInfo.value.debate_evaluation_ballets[0].evaluation;
   }
 
   const salt = Buffer.from("utora-debate").toString("base64");
   const hashDebateChannelName = crypto
     .pbkdf2Sync(
-      `${debateRoomInfo.created_at}-debate-${params.id}-UtOrA`,
+      `${debateRoomInfo.value.created_at}-debate-${params.id}-UtOrA`,
       salt,
       1000,
       64,
@@ -85,7 +96,7 @@ export default async function DebateRoom({
 
   const hashSubChannelName = crypto
     .pbkdf2Sync(
-      `uToRa-${params.id}-${subChannelName}-${debateRoomInfo.created_at}`,
+      `uToRa-${params.id}-${subChannelName}-${debateRoomInfo.value.created_at}`,
       salt,
       1000,
       64,
@@ -97,26 +108,26 @@ export default async function DebateRoom({
       <DebateChatList
         supabasePublicKey={supabasePublicKey}
         debateRoomId={params.id}
-        userId={myProfile.id}
-        nickname={myProfile.nickname}
-        debateRole={myDebateRole.debate_role}
-        debateRoleKr={myDebateRole.debate_role_kr}
-        initialDebateMessages={initialDebateMessages}
-        topicTitle={debateRoomInfo.this_week_topic.topic}
-        proposeReason={debateRoomInfo.this_week_topic.propose_reason}
+        userId={myProfile.value.id}
+        nickname={myProfile.value.nickname}
+        debateRole={myDebateRole.value.debate_role}
+        debateRoleKr={myDebateRole.value.debate_role_kr}
+        initialDebateMessages={initialDebateMessages.value}
+        topicTitle={debateRoomInfo.value.this_week_topic.topic}
+        proposeReason={debateRoomInfo.value.this_week_topic.propose_reason}
         channelName={hashDebateChannelName}
-        status={debateRoomInfo.status}
+        status={debateRoomInfo.value.status}
       />
-      {debateRoomInfo.status === "in_debate" ? (
-        myDebateRole.debate_role === "Audience" ? (
+      {debateRoomInfo.value.status === "in_debate" ? (
+        myDebateRole.value.debate_role === "Audience" ? (
           <CommentChatList
             supabasePublicKey={supabasePublicKey}
             commentChatRoomName={subChatNameKr!}
             initialCommentMessages={initialSubMessages!}
             debateRoomId={params.id}
-            debateRole={myDebateRole.debate_role}
-            userId={myProfile.id}
-            nickname={myProfile.nickname}
+            debateRole={myDebateRole.value.debate_role}
+            userId={myProfile.value.id}
+            nickname={myProfile.value.nickname}
             channelName={hashSubChannelName}
           />
         ) : (
@@ -125,9 +136,9 @@ export default async function DebateRoom({
             supportChatRoomName={subChatNameKr!}
             initialSupportMessages={initialSubMessages!}
             debateRoomId={params.id}
-            debateRole={myDebateRole.debate_role}
-            userId={myProfile.id}
-            nickname={myProfile.nickname}
+            debateRole={myDebateRole.value.debate_role}
+            userId={myProfile.value.id}
+            nickname={myProfile.value.nickname}
             channelName={hashSubChannelName}
           />
         )

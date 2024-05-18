@@ -4,7 +4,7 @@ import {
   editMyNickname,
   getMyInfo,
 } from "./actions";
-import AlertGoHomeComponent from "@/components/alert-go-home-component";
+import AlertLogoutComponent from "@/components/alert-logout-component";
 import DeleteAccountButton from "@/components/delete-account-button";
 import LogoutButton from "@/components/logout-button";
 import EditMyInfoForm from "@/components/me/edit-my-info-form";
@@ -23,7 +23,7 @@ export default async function Me() {
   return (
     <>
       {!myInfo ? (
-        <AlertGoHomeComponent text="유저 정보가 존재하지 않습니다." />
+        <AlertLogoutComponent text="유저 정보가 존재하지 않습니다." />
       ) : null}
       <div className="w-full max-w-screen-lg gap-10 p-2 md:p-5 flex flex-col m-auto">
         <h1 className="font-semibold text-xl">내 정보</h1>

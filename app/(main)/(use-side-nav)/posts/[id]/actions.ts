@@ -44,6 +44,7 @@ export async function getPost(postId: number) {
     });
     return post;
   } catch (error) {
+    console.error(error);
     return notFound();
   }
 }
