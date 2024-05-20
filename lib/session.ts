@@ -5,6 +5,8 @@ import { COOKIE_NAME } from "./constants";
 
 interface SessionDataType {
   id: number;
+  visitDate: Date;
+  ipAddress: string;
 }
 
 export default function getSession(isAutoLogin?: boolean) {

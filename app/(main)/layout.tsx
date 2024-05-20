@@ -4,12 +4,15 @@ import TopNavigationItem from "@/components/nav/top-navigation-item";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { ClipboardList, Speech, Vote } from "lucide-react";
 import Link from "next/link";
+import { checkIpAddressProcess } from "./actions";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 접속로그 기록
+  checkIpAddressProcess();
   return (
     <div className="w-full sm:h-screen flex flex-col sm:flex-row">
       <div className="w-full sm:fixed bg-white">

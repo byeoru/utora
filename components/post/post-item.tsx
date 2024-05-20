@@ -43,9 +43,7 @@ export default function PostItem({
       className="w-full border-b flex"
     >
       <div className="w-full flex">
-        <div className="p-2 bg-emerald-400 font-doHyeon text-sm flex justify-center items-center">
-          {postId}
-        </div>
+        <div className="p-2 bg-emerald-400 font-doHyeon text-sm flex justify-center items-center"></div>
         <div className="flex flex-1 flex-col p-2.5 pr-0 gap-1">
           <h2 className="w-full text-sm font-notoKr font-semibold text-ellipsis overflow-hidden break-words line-clamp-1">
             {title}

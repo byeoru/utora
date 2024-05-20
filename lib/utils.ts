@@ -1,3 +1,5 @@
+import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
+
 export function formatToTimeAgo(date: Date): string {
   const minsInMs = 1000 * 60;
   const hoursInMs = minsInMs * 60;
@@ -39,4 +41,19 @@ export function toFlattenArray(arr: any[]): any[] {
   }
 
   return result;
+}
+
+export function isToday(date: Date) {
+  const today = new Date();
+  const sessionDate = new Date(date);
+  return (
+    sessionDate.getDate() === today.getDate() &&
+    sessionDate.getMonth() === today.getMonth() &&
+    sessionDate.getFullYear() === today.getFullYear()
+  );
+}
+
+export function getIP(headers: ReadonlyHeaders) {
+  const forwardedFor = headers.get("x-forwarded-for");
+  return forwardedFor?.split(",")[0] ?? "Unknown";
 }

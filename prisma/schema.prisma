@@ -72,6 +72,15 @@ enum EEvaluation {
   opponent
 }
 
+model VisitLog {
+  id Int @id @default(autoincrement())
+  user_id Int
+  ip_address String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 model Admin {
   id Int @id @default(autoincrement())
   email String? @unique

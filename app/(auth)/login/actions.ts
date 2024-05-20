@@ -6,10 +6,12 @@ import bcrypt from "bcrypt";
 import { FAILED_LOGIN_ERROR } from "@/lib/constants";
 import getSession from "@/lib/session";
 import { redirect } from "next/navigation";
+import { getIP } from "@/lib/utils";
+import { headers } from "next/headers";
+import { writeLog } from "@/app/(main)/actions";
 
 export const login = async (_: any, formData: FormData) => {
   // login data 검증
-  console.log(`@@@@@@@${formData.get("autoLogin")}`);
   const validation = loginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -49,7 +51,9 @@ export const login = async (_: any, formData: FormData) => {
   // login
   const session = await getSession(validation.data.autoLogin === "on");
   session.id = user.id;
+  session.visitDate = new Date();
+  session.ipAddress = getIP(headers());
   await session.save();
-
+  await writeLog(session.id, getIP(headers()));
   redirect("/");
 };
