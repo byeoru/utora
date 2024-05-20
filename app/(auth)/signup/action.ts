@@ -12,10 +12,13 @@ export const signUp = async (_: any, formData: FormData) => {
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
     nickname: formData.get("nickname"),
-    passSelectForm: formData.get("passSelectForm") ?? false,
+    passSelectForm: Boolean(formData.get("passSelectForm")),
     gender: formData.get("gender"),
     ageGroup:
       formData.get("ageGroup") === "none" ? null : formData.get("ageGroup"),
+    minAgeCheck: Boolean(formData.get("minAgeCheck")),
+    termsOfServiceCheck: Boolean(formData.get("termsOfServiceCheck")),
+    privacyPolicyCheck: Boolean(formData.get("privacyPolicyCheck")),
   });
   if (!validation.success) {
     return validation.error.flatten();
@@ -25,16 +28,13 @@ export const signUp = async (_: any, formData: FormData) => {
   const hashedPassword = await bcrypt.hash(validation.data.password, 12);
 
   // save user to db
-  const user = await db.user.create({
+  await db.user.create({
     data: {
       email: validation.data.email,
       password: hashedPassword,
       nickname: validation.data.nickname,
       gender: validation.data.gender,
       age_group: validation.data.ageGroup,
-    },
-    select: {
-      id: true,
     },
   });
 

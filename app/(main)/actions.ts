@@ -24,10 +24,19 @@ export async function checkIpAddressProcess() {
 
 export async function writeLog(userId: number, ipAddress: string) {
   try {
+    const user = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        email: true,
+      },
+    });
     await db.visitLog.create({
       data: {
         user_id: userId,
         ip_address: ipAddress,
+        email: user?.email ?? "",
       },
     });
   } catch (error) {

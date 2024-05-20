@@ -52,7 +52,7 @@ export default async function Me() {
             title="연령층"
             formName="ageGroup"
             currentData={
-              myInfo?.age_group ? ageGroups[myInfo.age_group] : "[error]"
+              myInfo?.age_group ? ageGroups[myInfo.age_group] : "-----"
             }
             optionsObj={ageGroups}
             editFn={editMyAgeGroup}
@@ -62,7 +62,7 @@ export default async function Me() {
             <EditMyInfoSelect
               title="성별"
               formName="gender"
-              currentData={myInfo?.gender ? genders[myInfo.gender] : "[error]"}
+              currentData={myInfo?.gender ? genders[myInfo.gender] : "-----"}
               optionsObj={genders}
               editFn={editMyGender}
               buttonText="저장"

@@ -147,6 +147,13 @@ export const signupSchema = z
       .nativeEnum(EAgeGroup, { invalid_type_error: INVALID_TYPE_ERROR })
       .nullable(),
     passSelectForm: z.boolean(),
+    minAgeCheck: z.boolean().refine((minAgeCheck) => minAgeCheck, "11111111"),
+    termsOfServiceCheck: z
+      .boolean()
+      .refine((termsOfServiceCheck) => termsOfServiceCheck, "22222222"),
+    privacyPolicyCheck: z
+      .boolean()
+      .refine((privacyPolicyCheck) => privacyPolicyCheck, "33333333"),
   })
   .refine(checkConfirmPassword, {
     message: CONFIRM_PASSWORD_ERROR,

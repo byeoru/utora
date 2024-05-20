@@ -13,7 +13,7 @@ export default function Login() {
       <div className="w-full flex justify-center items-center gap-3 p-3 font-notoKr text-sm">
         <Link href="/policy/terms-of-service">이용약관</Link>
         <Link href="/policy/privacy-policy" className="font-bold">
-          개인정보취급방침
+          개인정보처리방침
         </Link>
       </div>
     </>

@@ -68,6 +68,7 @@ export async function editMyGender(formData: FormData) {
     await db.user.update({
       where: {
         id: session.id,
+        gender: null,
       },
       data: {
         gender: validation.data,

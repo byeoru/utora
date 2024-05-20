@@ -7,6 +7,7 @@ import BackSpan from "../back-span";
 import Button from "../button";
 import { ageGroups } from "@/lib/constants";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function SignupForm() {
   const [state, action] = useFormState(signUp, null);
@@ -117,17 +118,18 @@ export default function SignupForm() {
               </div>
             </div>
           </fieldset>
-          <div className="flex items-end gap-2">
-            <label htmlFor="passSelectForm" className="text-sm">
-              다음에 입력
-            </label>
+          <div className="flex items-center gap-2">
             <input
+              className="focus:ring-0 size-3.5"
               onChange={onSelectFormStateChange}
               type="checkbox"
               name="passSelectForm"
               id="passSelectForm"
               value="true"
             />
+            <label htmlFor="passSelectForm" className="text-sm">
+              선택사항 다음에 입력
+            </label>
           </div>
           {disableSelectFormState ? (
             <span className="text-xs text-red-600 mt-3">
@@ -136,6 +138,75 @@ export default function SignupForm() {
               입장하실 수 없습니다.
             </span>
           ) : null}
+          <div className="flex items-center gap-2 mt-5">
+            <input
+              className="focus:ring-0 size-3.5"
+              type="checkbox"
+              name="minAgeCheck"
+              id="minAgeCheck"
+              value="true"
+            />
+            <label
+              htmlFor="minAgeCheck"
+              className={`text-sm  ${
+                state?.fieldErrors.minAgeCheck
+                  ? "text-red-400"
+                  : "text-slate-600"
+              }`}
+            >
+              (필수) 만 14세 이상입니다.
+            </label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              className="focus:ring-0 size-3.5"
+              type="checkbox"
+              name="termsOfServiceCheck"
+              id="termsOfServiceCheck"
+              value="true"
+            />
+            <label
+              htmlFor="termsOfServiceCheck"
+              className={`text-sm ${
+                state?.fieldErrors.termsOfServiceCheck
+                  ? "text-red-400"
+                  : "text-slate-600"
+              }`}
+            >
+              (필수) 서비스 이용약관
+            </label>
+            <Link
+              href="/policy/terms-of-service"
+              className="text-sm text-utora-primary underline decoration-dotted underline-offset-2"
+            >
+              전문보기
+            </Link>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              className="focus:ring-0 size-3.5"
+              type="checkbox"
+              name="privacyPolicyCheck"
+              id="privacyPolicyCheck"
+              value="true"
+            />
+            <label
+              htmlFor="privacyPolicyCheck"
+              className={`text-sm ${
+                state?.fieldErrors.privacyPolicyCheck
+                  ? "text-red-400"
+                  : "text-slate-600"
+              }`}
+            >
+              (필수) 개인정보 수집 이용 동의
+            </label>
+            <Link
+              href="/policy/privacy-policy"
+              className="text-sm text-utora-primary underline decoration-dotted underline-offset-2"
+            >
+              전문보기
+            </Link>
+          </div>
         </div>
         <Button className="w-full rounded-md py-2">가입하기</Button>
         <div className="text-xs text-slate-500 text-center">
