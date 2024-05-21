@@ -2,6 +2,7 @@
 
 import {
   GetDebateMessagesType,
+  getDebateMessages,
   saveDebateMessage,
 } from "@/app/(main)/(use-side-nav)/debate/[id]/actions";
 import { EDebateRole, EDebateStatus } from "@prisma/client";
@@ -13,7 +14,6 @@ import DebateInfoBox from "./debate-info-box";
 import LeftSideDebateBubble from "./left-side-debate-bubble";
 import RightSideDebateBubble from "./right-side-debate-bubble";
 import { Supabase } from "@/lib/supabase";
-import useStateWithCallback from "use-state-with-callback";
 
 interface DebateChatListPropsType {
   supabasePublicKey: string;
@@ -42,15 +42,15 @@ export default function DebateChatList({
   channelName,
   status,
 }: DebateChatListPropsType) {
-  const [debateMessages, setDebateMessages] = useStateWithCallback(
-    initialDebateMessages,
-    () => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }
-    }
+  const [debateMessages, setDebateMessages] = useState(
+    initialDebateMessages.toReversed()
   );
   const [sendDebateMessage, setSendDebateMessage] = useState("");
+  const [page, setPage] = useState(1);
+  const [isLastPage, setIsLastPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [scrollHeight, setScrollHeight] = useState(0);
+  const trigger = useRef<HTMLSpanElement>(null);
   const channel = useRef<RealtimeChannel>();
   const scrollRef = useRef<HTMLDivElement>(null);
   const onDebateMsgChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -123,6 +123,38 @@ export default function DebateChatList({
     }
   };
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      async (
+        entries: IntersectionObserverEntry[],
+        observer: IntersectionObserver
+      ) => {
+        const element = entries[0];
+        if (element.isIntersecting && trigger.current) {
+          observer.unobserve(trigger.current);
+          setIsLoading(true);
+          const newMessages = await getDebateMessages(debateRoomId, page + 1);
+          if (newMessages.length !== 0) {
+            setPage((prev) => prev + 1);
+            setDebateMessages((prev) => [...newMessages.toReversed(), ...prev]);
+          } else {
+            setIsLastPage(true);
+          }
+          setIsLoading(false);
+        }
+      },
+      {
+        threshold: 1.0,
+      }
+    );
+    if (trigger.current) {
+      observer.observe(trigger.current);
+    }
+    return () => {
+      observer.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+  useEffect(() => {
     channel.current =
       Supabase.getClient(supabasePublicKey).channel(channelName);
     channel.current
@@ -138,6 +170,15 @@ export default function DebateChatList({
       channel.current?.unsubscribe();
     };
   }, [debateRoomId, channelName, supabasePublicKey, setDebateMessages]);
+  useEffect(() => {
+    if (!scrollRef) return;
+    if (scrollRef.current) {
+      const scrollTop = scrollRef.current.scrollHeight - scrollHeight;
+      scrollRef.current.scrollTop = scrollTop;
+      setScrollHeight(scrollRef.current.scrollHeight);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debateMessages.length && page]);
   return (
     <div className="w-full lg:h-full flex flex-col gap-2">
       <span className="w-full flex justify-between px-3 py-1 font-doHyeon bg-slate-100">
@@ -153,6 +194,14 @@ export default function DebateChatList({
           ref={scrollRef}
           className="w-full h-[30rem] border lg:h-full p-3 flex flex-col gap-2 overflow-y-auto"
         >
+          {isLastPage ? null : (
+            <span
+              ref={trigger}
+              className="text-sm font-semibold text-slate-500 font-jua mx-auto"
+            >
+              {isLoading ? "불러오는 중" : ""}
+            </span>
+          )}
           {debateMessages.map((msg) =>
             isRightSide(debateRole, msg.debate_role) ? (
               <RightSideDebateBubble

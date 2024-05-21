@@ -166,7 +166,10 @@ export default function PrivacyPolicy() {
         <br />
         <p className="font-medium">서버 등 관련</p>
         <li>수탁자: Supabase</li>
-        <li>위탁 업무 내용: 데이터베이스 호스팅 및 관리</li>
+        <li>
+          위탁 업무 내용: 데이터베이스 호스팅 및 관리, 실시간 데이터 스트리밍 및
+          메시징 서비스
+        </li>
         <li>
           개인정보의 보유 및 이용 기간: 회원 탈퇴 시 또는 위탁 계약 종료 시까지
         </li>

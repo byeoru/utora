@@ -26,7 +26,7 @@ export default async function DebateRoom({
   const [myDebateRole, initialDebateMessages, myProfile, debateRoomInfo] =
     await Promise.allSettled([
       getMyDebateRole(params.id),
-      getDebateMessages(params.id),
+      getDebateMessages(params.id, 1),
       getUserProfile(),
       getDebateRoomInfo(params.id),
     ]);
@@ -52,27 +52,19 @@ export default async function DebateRoom({
       case "Audience":
         subChatNameKr = "댓글창";
         subChannelName = "comment";
-        initialSubMessages = await getDebateCommentMessages(params.id);
+        initialSubMessages = await getDebateCommentMessages(params.id, 1);
         break;
       case "Proponent":
       case "ProponentSupporter":
         subChatNameKr = "찬성 측 회의실";
         subChannelName = "support-proponent";
-        initialSubMessages = await getDebateSupportMessages(
-          params.id,
-          "Proponent",
-          "ProponentSupporter"
-        );
+        initialSubMessages = await getDebateSupportMessages(params.id, 1);
         break;
       case "Opponent":
       case "OpponentSupporter":
         subChatNameKr = "반대 측 회의실";
         subChannelName = "support-opponent";
-        initialSubMessages = await getDebateSupportMessages(
-          params.id,
-          "Opponent",
-          "OpponentSupporter"
-        );
+        initialSubMessages = await getDebateSupportMessages(params.id, 1);
         break;
     }
   } else if (
@@ -145,6 +137,7 @@ export default async function DebateRoom({
       ) : (
         <EvaluationBallet
           debateRoomId={params.id}
+          debateRole={myDebateRole.value.debate_role}
           evaluationHistory={evaluationHistory}
         />
       )}

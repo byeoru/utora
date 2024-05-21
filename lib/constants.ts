@@ -63,6 +63,7 @@ export const MAX_COMMENT_INDENT = 4;
 // common
 export const DELETE_COMPLETE = "삭제가 완료되었습니다.";
 export const INVALID_TYPE_ERROR = "잘못된 데이터 형식입니다.";
+export const DEPLOYMENT_YEAR = 2024;
 
 // topic
 export const MIN_LENGTH_TOPIC = 10;
@@ -172,6 +173,7 @@ export const genders: ObjectType = {
 
 // debate room
 export const SUPABASE_URL = "https://toxakqydxmsmomvwkqsh.supabase.co";
+export const DEBATE_ROOM_MSG_FETCH_SIZE = 20;
 
 // debateRoleKr
 export const PROPONENT_KR = "찬성 측 토론자";
@@ -218,9 +220,7 @@ export const OPPONENT_SUPPORTER_TEXT = `반대 측이 승리할 수 있게 토�
 강화하고, 토론에서 승리할 수 있도록 돕는 중요한 역할을 합니다.`;
 export const AUDIENCE_TEXT = `관중은 토론 과정을 관찰하고 참여하는 중립적인 집단으로, 다양한
 관점과 의견을 가지고 있습니다. 그들은 토론자들의 주장을 듣고
-평가하며, 토론의 주제에 대한 이해를 높이기 위해 노력합니다.
-관중은 토론의 핵심 이슈에 대한 질문을 제기하거나, 추가적인
-정보를 요청하여 토론의 깊이를 더합니다. 또한 관중은 토론자들의
-논리와 주장을 검증하고, 공정한 판단을 내리는 데 도움이 됩니다.
+평가하며, 토론의 주제에 대한 이해를 높이기 위해 노력합니다. 
+또한 관중은 토론자들의 논리와 주장을 검증하고, 공정한 판단을 내리는 데 도움이 됩니다.
 그들의 존재는 토론의 다양성을 보장하고, 토론의 결과를 더욱
 풍부하고 유의미하게 만듭니다.`;

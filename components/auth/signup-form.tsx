@@ -64,37 +64,48 @@ export default function SignupForm() {
             className="flex flex-col border-2 px-5 py-2 rounded-md disabled:opacity-30"
           >
             <legend className="text-red-600 px-2">선택사항</legend>
-            <div className="flex gap-10">
-              <div className="flex flex-col gap-2">
-                <span>성별</span>
-                <div className="flex gap-3">
-                  <div className="flex items-center gap-0.5">
-                    <input type="radio" id="male" name="gender" value="male" />
-                    <label htmlFor="male">남</label>
-                  </div>
-                  <div className="flex items-center gap-0.5">
-                    <input
-                      type="radio"
-                      id="female"
-                      name="gender"
-                      value="female"
-                    />
-                    <label htmlFor="male">여</label>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex gap-10">
+                <div className="flex flex-col gap-2">
+                  <span>성별</span>
+                  <div className="flex gap-3">
+                    <div className="flex items-center gap-0.5">
+                      <input
+                        type="radio"
+                        id="male"
+                        name="gender"
+                        value="male"
+                      />
+                      <label htmlFor="male" className="text-sm">
+                        남
+                      </label>
+                    </div>
+                    <div className="flex items-center gap-0.5">
+                      <input
+                        type="radio"
+                        id="female"
+                        name="gender"
+                        value="female"
+                      />
+                      <label htmlFor="male" className="text-sm">
+                        여
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <span>연령층</span>
-                <select name="ageGroup" className="mb-2 rounded-md text-sm">
-                  <option key="default" value="none">
-                    선택
-                  </option>
-                  {Object.keys(ageGroups).map((ageGroup, index) => (
-                    <option key={index} value={ageGroup}>
-                      {ageGroups[ageGroup]}
+                <div className="flex flex-col gap-2">
+                  <span>연령층</span>
+                  <select name="ageGroup" className="mb-2 rounded-md text-sm">
+                    <option key="default" value="none">
+                      선택
                     </option>
-                  ))}
-                </select>
+                    {Object.keys(ageGroups).map((ageGroup, index) => (
+                      <option key={index} value={ageGroup}>
+                        {ageGroups[ageGroup]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className="flex flex-col">
                 {state?.fieldErrors.gender ? (

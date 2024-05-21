@@ -10,6 +10,7 @@ import {
 import { Pagination } from "@nextui-org/react";
 import { POSTS_FETCH_SIZE } from "@/lib/constants";
 import { PostStateType } from "@/app/(main)/(use-side-nav)/posts/page";
+import BlankPostItem from "./blank-post-item";
 
 interface PostPaginationPropsType {
   state: PostStateType;
@@ -47,7 +48,7 @@ export default function PostPagination({
       <ul className="flex flex-col">
         {postsState?.map((post) => (
           <PostItem
-            key={post.id}
+            key={`post-${post.id}`}
             postId={post.id}
             title={post.title}
             nickname={post.user?.nickname}
@@ -60,6 +61,12 @@ export default function PostPagination({
             currentPage={state.pageState}
           />
         ))}
+        {Array.from(
+          { length: POSTS_FETCH_SIZE - (postsState?.length ?? 0) },
+          (_, index) => (
+            <BlankPostItem key={`blank-${index}`} />
+          )
+        )}
       </ul>
       {totalPagesCount > 0 ? (
         <div className="flex justify-center">

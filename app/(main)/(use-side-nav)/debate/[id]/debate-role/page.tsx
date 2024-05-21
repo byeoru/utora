@@ -57,7 +57,7 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
       case "in_debate":
         return "토론이 진행 중입니다.";
       case "under_evaluation":
-        return "토론 평가 중에는 관중으로만 새롭게 입장이 가능합니다.";
+        return `토론 평가 중에는 ${AUDIENCE_KR}으로만 새롭게 입장이 가능합니다.`;
       case "end":
         return "토론이 종료되었습니다.";
     }
@@ -239,7 +239,9 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
               }`}
             >
               <div className="flex flex-col gap-2 px-2 py-4">
-                <span className="font-doHyeon text-lg self-center">| 관중</span>
+                <span className="font-doHyeon text-lg self-center">
+                  | {AUDIENCE_KR}
+                </span>
                 <span className="font-notoKr text-sm text-start">
                   {AUDIENCE_TEXT}
                 </span>

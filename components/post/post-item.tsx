@@ -38,9 +38,8 @@ export default function PostItem({
   newQuery.set("page", currentPage.toString());
   return (
     <Link
-      key={postId}
       href={`/posts/${postId}?${newQuery}`}
-      className="w-full border-b flex"
+      className="w-full border-b flex odd:bg-gray-100"
     >
       <div className="w-full flex">
         <div className="p-2 bg-emerald-400 font-doHyeon text-sm flex justify-center items-center"></div>

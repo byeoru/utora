@@ -330,7 +330,7 @@ export default function TermsOfService() {
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-medium">부칙</h2>
-        <p>본 약관은 2024년 5월 20일부터 시행합니다.</p>
+        <p>본 약관은 2024년 5월 21일부터 시행합니다.</p>
       </div>
     </div>
   );

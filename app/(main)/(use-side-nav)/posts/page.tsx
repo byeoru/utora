@@ -82,7 +82,7 @@ export default function Posts({
   };
 
   return (
-    <div className="h-full flex flex-col m-auto max-w-screen-lg">
+    <div className="w-full flex flex-col m-auto max-w-screen-lg">
       <div className="flex flex-col p-1 pb-2 gap-1 shadow-sm">
         <div className="flex justify-between items-center gap-2">
           <div className="flex gap-5">

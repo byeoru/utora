@@ -25,7 +25,7 @@ export default async function Me() {
       {!myInfo ? (
         <AlertLogoutComponent text="유저 정보가 존재하지 않습니다." />
       ) : null}
-      <div className="w-full max-w-screen-lg gap-10 p-2 md:p-5 flex flex-col m-auto">
+      <div className="w-full max-w-screen-lg gap-10 p-2 md:p-5 flex flex-col mx-auto">
         <h1 className="font-semibold text-xl">내 정보</h1>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <MyInfoForm

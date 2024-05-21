@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Categories() {
   return (
-    <div className="w-full flex flex-col m-auto">
+    <div className="w-full flex flex-col">
       <div className="w-full shadow-md p-5 lg:p-12 bg-slate-50 gap-2 flex flex-col justify-center items-center">
         <div className="w-full flex flex-col gap-2 justify-center items-center max-w-screen-lg m-auto break-words">
           <span className="font-notoKr font-bold text-sm lg:text-lg">

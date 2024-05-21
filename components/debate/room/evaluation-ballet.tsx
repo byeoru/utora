@@ -2,17 +2,20 @@
 
 import { evaluateDebate } from "@/app/(main)/(use-side-nav)/debate/[id]/actions";
 import Button from "@/components/button";
-import { EEvaluation } from "@prisma/client";
+import { AUDIENCE_KR } from "@/lib/constants";
+import { EDebateRole, EEvaluation } from "@prisma/client";
 import { useState } from "react";
 
 interface EvaluationBalletPropsType {
   debateRoomId: string;
   evaluationHistory: EEvaluation | null;
+  debateRole: EDebateRole;
 }
 
 export default function EvaluationBallet({
   debateRoomId,
   evaluationHistory,
+  debateRole,
 }: EvaluationBalletPropsType) {
   const [evaluationState, setEvaluationState] = useState<EEvaluation | null>(
     null
@@ -53,7 +56,13 @@ export default function EvaluationBallet({
       </span>
       {!evaluationHistoryState ? (
         <div className="w-full flex flex-col gap-5 lg:flex-1 overflow-y-auto">
-          <div className="w-full p-3 flex flex-col gap-3 *:rounded-md">
+          <div
+            className={`w-full p-3 flex flex-col gap-3 *:rounded-md ${
+              debateRole !== EDebateRole.Audience
+                ? "pointer-events-none opacity-50"
+                : ""
+            }`}
+          >
             <button
               onClick={() => setEvaluationState("proponent")}
               className={`p-5 font-notoKr font-bold shadow-md transition-colors ${
@@ -77,7 +86,11 @@ export default function EvaluationBallet({
           </div>
           <form action={onEvaluateClick} className="w-full flex flex-col gap-1">
             <Button disabled={!evaluationState} className="p-5 mx-2 rounded-md">
-              <span className="font-jua">제출</span>
+              <span className="font-jua">
+                {debateRole !== EDebateRole.Audience
+                  ? `토론 평가는 '${AUDIENCE_KR}'만 참여 가능합니다`
+                  : "제출"}
+              </span>
             </Button>
           </form>
         </div>

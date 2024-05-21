@@ -51,7 +51,7 @@ export default async function VoteCategory({
   const totalPagesCount = Math.ceil(totalTopicsCount.value / TOPICS_FETCH_SIZE);
 
   return (
-    <div className="w-full flex flex-col m-auto">
+    <div className="w-full flex flex-col">
       <div className="w-full shadow-md p-5 lg:p-5 gap-2 flex flex-col justify-center items-center">
         <div className="w-full flex flex-col justify-center items-center max-w-screen-lg m-auto">
           <span className="font-doHyeon flex gap-3 items-center">

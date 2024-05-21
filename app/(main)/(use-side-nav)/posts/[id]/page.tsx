@@ -45,7 +45,7 @@ export default async function PostDetail({
           {`${postCategories[post.value.category].title} 게시판`}
         </h1>
       </div>
-      <div className="max-w-screen-lg m-auto flex md:gap-2">
+      <div className="w-full max-w-screen-lg m-auto flex md:gap-2">
         <div className="w-full flex flex-col gap-1">
           <div className="flex flex-col gap-7 p-5">
             <div className="flex flex-col gap-2">

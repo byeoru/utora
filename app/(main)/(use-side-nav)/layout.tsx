@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import SideNavigationGroup from "@/components/nav/side-navigation-group";
 import SideNavigationItem from "@/components/nav/side-navigation-item";
 import { HomeIcon } from "@heroicons/react/24/outline";
@@ -38,7 +39,12 @@ export default function RootLayout({
           />
         </SideNavigationGroup>
       </nav>
-      <div className="sm:mt-8 lg:mt-12 overflow-y-auto w-full">{children}</div>
+      <div className="flex flex-col mx-auto sm:mt-8 lg:mt-12 overflow-y-auto w-full">
+        {children}
+        <div className="md:hidden">
+          <Footer />
+        </div>
+      </div>
     </>
   );
 }

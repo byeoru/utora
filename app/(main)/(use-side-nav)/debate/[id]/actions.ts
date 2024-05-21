@@ -1,5 +1,6 @@
 "use server";
 
+import { DEBATE_ROOM_MSG_FETCH_SIZE } from "@/lib/constants";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { EDebateRole, EEvaluation, Prisma } from "@prisma/client";
@@ -8,7 +9,7 @@ import { notFound, redirect } from "next/navigation";
 export type GetDebateMessagesType = Prisma.PromiseReturnType<
   typeof getDebateMessages
 >;
-export async function getDebateMessages(debateRoomId: string) {
+export async function getDebateMessages(debateRoomId: string, page: number) {
   try {
     const messages = await db.debateMessage.findMany({
       where: {
@@ -28,8 +29,10 @@ export async function getDebateMessages(debateRoomId: string) {
         },
       },
       orderBy: {
-        created_at: "asc",
+        created_at: "desc",
       },
+      take: DEBATE_ROOM_MSG_FETCH_SIZE,
+      skip: (page - 1) * DEBATE_ROOM_MSG_FETCH_SIZE,
     });
     return messages;
   } catch (error) {
@@ -70,14 +73,44 @@ export type GetDebateSupportMessagesType = Prisma.PromiseReturnType<
 >;
 export async function getDebateSupportMessages(
   debateRoomId: string,
-  debaterRole: EDebateRole,
-  supporterRole: EDebateRole
+  page: number
 ) {
+  const getSupportMessageRole = (myDebateRole: EDebateRole) => {
+    switch (myDebateRole) {
+      case "Proponent":
+      case "ProponentSupporter":
+        return [
+          { debate_role: EDebateRole.Proponent },
+          { debate_role: EDebateRole.ProponentSupporter },
+        ];
+      case "Opponent":
+      case "OpponentSupporter":
+        return [
+          { debate_role: EDebateRole.Opponent },
+          { debate_role: EDebateRole.OpponentSupporter },
+        ];
+    }
+  };
+  const session = await getSession();
   try {
+    const myDebateRole = await db.joinedUserDebateRole.findUnique({
+      where: {
+        id: {
+          user_id: session.id,
+          debate_room_id: debateRoomId,
+        },
+      },
+      select: {
+        debate_role: true,
+      },
+    });
+    if (!myDebateRole) {
+      return [];
+    }
     const messages = await db.debateSupportMessage.findMany({
       where: {
         debate_room_id: debateRoomId,
-        OR: [{ debate_role: debaterRole }, { debate_role: supporterRole }],
+        OR: getSupportMessageRole(myDebateRole.debate_role),
       },
       select: {
         id: true,
@@ -92,8 +125,10 @@ export async function getDebateSupportMessages(
         },
       },
       orderBy: {
-        created_at: "asc",
+        created_at: "desc",
       },
+      take: DEBATE_ROOM_MSG_FETCH_SIZE,
+      skip: (page - 1) * DEBATE_ROOM_MSG_FETCH_SIZE,
     });
     return messages;
   } catch (error) {
@@ -126,7 +161,10 @@ export async function saveDebateSupportMessage(
 export type GetDebateCommentMessagesType = Prisma.PromiseReturnType<
   typeof getDebateCommentMessages
 >;
-export async function getDebateCommentMessages(debateRoomId: string) {
+export async function getDebateCommentMessages(
+  debateRoomId: string,
+  page: number
+) {
   try {
     const messages = await db.debateComment.findMany({
       where: {
@@ -145,8 +183,10 @@ export async function getDebateCommentMessages(debateRoomId: string) {
         },
       },
       orderBy: {
-        created_at: "asc",
+        created_at: "desc",
       },
+      take: DEBATE_ROOM_MSG_FETCH_SIZE,
+      skip: (page - 1) * DEBATE_ROOM_MSG_FETCH_SIZE,
     });
     return messages;
   } catch (error) {
