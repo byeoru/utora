@@ -26,11 +26,46 @@ const notoKr = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://utora.vercel.app"),
   title: {
     template: "유토라 | %s",
     default: "유토라 | 자유로운 토론의 장",
   },
+  keywords: [
+    "토론",
+    "커뮤니티",
+    "정치",
+    "사회",
+    "경제",
+    "금융",
+    "문화",
+    "예술",
+    "과학",
+    "기술",
+    "스포츠",
+    "엔터테인먼트",
+    "환경",
+    "교육",
+    "학문",
+    "건강",
+    "복지",
+    "종교",
+    "철학",
+    "역사",
+    "인류학",
+  ],
   description: "다양한 분야의 커뮤니티 기능과 실시간 토론 서비스를 제공합니다.",
+  openGraph: {
+    title: "유토라 | 자유로운 토론의 장",
+    siteName: "유토라 | 자유로운 토론의 장",
+    description: "토론을 통해 다양한 관점을 이해해 보아요.",
+    locale: "ko",
+    type: "website",
+    url: "https://utora.vercel.app",
+    images: {
+      url: "/opengraph-image.png",
+    },
+  },
   verification: {
     other: {
       "naver-site-verification": "1507561c95d2af80f816458a5ecc668b34d9dfc8",
@@ -52,10 +87,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <meta
-        name="google-adsense-account"
-        content="ca-pub-6283813776166899"
-      ></meta>
       <body
         className={`${jua.variable} ${doHyeon.variable} ${notoKr.variable} w-full`}
       >
