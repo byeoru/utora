@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     template: "유토라 | %s",
     default: "유토라 | 자유로운 토론의 장",
   },
+  verification: {
+    other: {
+      "naver-site-verification": "1507561c95d2af80f816458a5ecc668b34d9dfc8",
+    },
+  },
 };
 
 export const viewport: Viewport = {
