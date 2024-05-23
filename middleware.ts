@@ -18,6 +18,8 @@ const publicOnlyUrls: Routes = {
   "/api/cron/archive": true,
   "/policy/terms-of-service": true,
   "/policy/privacy-policy": true,
+  "/robots.txt": true,
+  "/sitemap.xml": true,
 };
 
 export async function middleware(request: NextRequest) {
