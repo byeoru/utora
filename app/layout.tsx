@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "유토라 | 자유로운 토론의 장",
     siteName: "유토라 | 자유로운 토론의 장",
-    description: "토론을 통해 다양한 관점을 이해해 보아요.",
+    description: "토론 특화 커뮤니티 유토라입니다.",
     locale: "ko",
     type: "website",
     url: "https://utora.vercel.app",
