@@ -30,6 +30,7 @@ export const metadata: Metadata = {
     template: "유토라 | %s",
     default: "유토라 | 자유로운 토론의 장",
   },
+  description: "다양한 분야의 커뮤니티 기능과 실시간 토론 서비스를 제공합니다.",
   verification: {
     other: {
       "naver-site-verification": "1507561c95d2af80f816458a5ecc668b34d9dfc8",
