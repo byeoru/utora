@@ -10,7 +10,9 @@ export default function Login() {
   return (
     <>
       <LoginForm />
-      <Footer />
+      <div className="w-full py-14">
+        <Footer />
+      </div>
     </>
   );
 }

@@ -15,6 +15,10 @@ const config: Config = {
         doHyeon: ["var(--doHyeon-font)"],
         notoKr: ["var(--notoKr-font)"],
       },
+      fontSize: {
+        xxs: "0.625rem", // 10px
+        xxxs: "0.5rem", // 8px
+      },
     },
   },
   darkMode: "class",

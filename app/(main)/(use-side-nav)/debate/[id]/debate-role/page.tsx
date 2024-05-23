@@ -66,7 +66,7 @@ export default function SetDebateRole({ params }: { params: { id: string } }) {
     myInfoCheck();
   });
   return (
-    <div className="w-full flex flex-col lg:gap-10 justify-center items-center p-2 max-w-screen-xl m-auto ">
+    <div className="w-full flex flex-col lg:gap-10 justify-center items-center p-2 max-w-screen-xl m-auto">
       <span className="w-full text-center py-1 rounded-md font-notoKr font-bold">
         {getStatusDescription()}
       </span>

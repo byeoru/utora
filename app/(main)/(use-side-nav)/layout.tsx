@@ -38,10 +38,13 @@ export default function RootLayout({
             icon={<Speech className="size-6" />}
           />
         </SideNavigationGroup>
+        <div className="hidden lg:flex mt-auto">
+          <Footer />
+        </div>
       </nav>
       <div className="flex flex-col mx-auto sm:mt-8 lg:mt-12 overflow-y-auto w-full">
         {children}
-        <div className="md:hidden">
+        <div className="w-full lg:hidden py-14">
           <Footer />
         </div>
       </div>
