@@ -16,12 +16,24 @@ export default function getSession(isAutoLogin?: boolean) {
       ? {
           cookieName: COOKIE_NAME,
           password: env.COOKIE_PASSWORD!,
+          // 프로덕션 환경에서는 secure를 true로 설정해야 합니다.
+          cookieOptions: {
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+            path: "/",
+            httpOnly: true,
+          },
         }
       : {
           cookieName: COOKIE_NAME,
           password: env.COOKIE_PASSWORD!,
+          // 프로덕션 환경에서는 secure를 true로 설정해야 합니다.
           cookieOptions: {
             maxAge: undefined,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+            path: "/",
+            httpOnly: true,
           },
         }
   );
