@@ -2,6 +2,10 @@ import db from "@/lib/db";
 import { Client } from "@upstash/qstash/.";
 import { NextRequest } from "next/server";
 
+const client = new Client({
+  token: process.env.QSTASH_TOKEN!,
+});
+
 /**
  *
  * all cron schedule register
@@ -30,10 +34,6 @@ export async function POST(req: NextRequest) {
     return Response.json({ success: false, error }, { status: 500 });
   }
 }
-
-const client = new Client({
-  token: process.env.QSTASH_TOKEN!,
-});
 
 const createDebateRoom = async () => {
   const schedule = await db.schedule.findUnique({

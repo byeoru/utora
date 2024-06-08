@@ -16,6 +16,7 @@ const publicOnlyUrls: Routes = {
   "/api/cron/debate/evaluate": true,
   "/api/cron/debate/end": true,
   "/api/cron/archive": true,
+  "/api/cron/register": true,
   "/policy/terms-of-service": true,
   "/policy/privacy-policy": true,
   "/robots.txt": true,
