@@ -6,13 +6,13 @@ import { ClipboardList, Speech, Vote } from "lucide-react";
 import Link from "next/link";
 import { checkIpAddressProcess } from "./actions";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   // 접속로그 기록
-  checkIpAddressProcess();
+  await checkIpAddressProcess();
   return (
     <div className="w-full sm:h-screen flex flex-col sm:flex-row">
       <div className="w-full sm:fixed bg-white">
