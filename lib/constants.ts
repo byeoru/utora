@@ -172,7 +172,7 @@ export const genders: ObjectType = {
 };
 
 // debate room
-export const SUPABASE_URL = "https://toxakqydxmsmomvwkqsh.supabase.co";
+export const SUPABASE_URL = "https://pcjoaxoslahjutrdlglk.supabase.co";
 export const DEBATE_ROOM_MSG_FETCH_SIZE = 20;
 
 // debateRoleKr
